@@ -1,0 +1,305 @@
+/* ==========================================================================
+   RESET & STILI GENERALI
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Blocco dello scroll globale */
+  background-color: #121212;
+  color: #fff;
+}
+
+/* Contenitore Principale dell'Applicazione */
+.app-container {
+  display: flex;
+  flex-direction: row; /* Desktop di default: Sidebar a Sinistra, Mappa a Destra */
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ==========================================================================
+   SIDEBAR CONTROLLI (DESKTOP: A SINISTRA)
+   ========================================================================== */
+.top-control-bar {
+  width: 320px; /* Larghezza fissa del pannello laterale su PC */
+  flex-shrink: 0;
+  background-color: #0f172a;
+  border-right: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.app-header {
+  text-align: left;
+}
+
+.app-header h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: -0.5px;
+}
+
+.route-banner {
+  display: flex;
+  flex-direction: column; /* Su desktop dispone le opzioni verticalmente */
+  gap: 15px;
+  width: 100%;
+}
+
+.route-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label-from {
+  color: #ea580c; /* Arancione Partenza */
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.label-to {
+  color: #2563eb; /* Blu Arrivo */
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+/* MENU A TENDINA */
+.route-dropdown {
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 2px solid #334155;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+}
+
+.route-dropdown.dropdown-from {
+  border-color: #ea580c;
+}
+
+.route-dropdown.dropdown-to {
+  border-color: #2563eb;
+}
+
+/* PULSANTE SWAP (DESKTOP) */
+.btn-swap {
+  background-color: #334155;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  height: 38px;
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.btn-swap:hover {
+  background-color: #475569;
+  border-color: #64748b;
+}
+
+.btn-swap:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   CONTENITORE MAPPA (TUTTA ALTEZZA SU DESKTOP)
+   ========================================================================== */
+.map-wrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  overflow: hidden;
+  background-color: #121212;
+}
+
+svg#school-map {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease-in-out;
+}
+
+/* ==========================================================================
+   LAYOUT SMARTPHONE / TABLET VERTICALE (MEDIA QUERY <= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column; /* Layout verticale per schermi stretti */
+  }
+
+  .top-control-bar {
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+    border-right: none;
+    border-bottom: 1px solid #1e293b;
+    gap: 8px;
+  }
+
+  .app-header {
+    text-align: center;
+  }
+
+  .app-header h1 {
+    font-size: 1.1rem;
+  }
+
+  .route-banner {
+    flex-direction: row; /* Disposizione orizzontale su smartphone */
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .route-selector {
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+  }
+
+  .route-dropdown {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .btn-swap {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .map-wrapper {
+    padding: 8px;
+  }
+}
+
+/* ==========================================================================
+   STRUTTURA EDIFICIO SVG & WAYFINDING
+   ========================================================================== */
+.terreno {
+  fill: palegreen;
+  fill-opacity: 0.4;
+  stroke: #16a34a;
+  stroke-width: 5;
+  rx: 8;
+}
+
+.blocco {
+  fill-opacity: 0;
+  stroke: slategray;
+  stroke-width: 7;
+}
+
+.cortile {
+  fill-opacity: 0.0;
+  stroke: slategray;
+  stroke-width: 5;
+  pointer-events: none;
+  rx: 6;
+}
+
+.corridoio {
+  fill: lightgray;
+  stroke: lightgray; 
+  stroke-width: 0;
+  pointer-events: none;
+}
+
+.ingresso {
+  fill: lightblue;
+  stroke: steelblue;
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.bagno {
+  fill: lavender; 
+  stroke: black; 
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.room {
+  fill: #ffffff !important;
+  stroke: #475569 !important;
+  stroke-width: 1.5px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.room:hover {
+  fill: #f1f5f9 !important;
+}
+
+.room-label-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.room-label-text {
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #0f172a;
+  line-height: 1.05;
+  word-break: break-word;
+  font-size: clamp(8px, 2.2vw, 13px); 
+}
+
+/* STATI SELEZIONE PERCORSO */
+.room.state-from {
+  fill: #ffedd5 !important;
+  stroke: #ea580c !important;
+  stroke-width: 4px !important;
+}
+
+.room.state-to {
+  fill: #dbeafe !important;
+  stroke: #2563eb !important;
+  stroke-width: 5px !important;
+  filter: drop-shadow(0px 0px 8px rgba(37, 99, 235, 0.7));
+  animation: pulse-arrival 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulse-arrival {
+  0% { stroke-width: 4px; }
+  100% { stroke-width: 7px; }
+}
