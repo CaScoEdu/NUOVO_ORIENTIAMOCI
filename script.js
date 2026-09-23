@@ -1,11 +1,24 @@
 /* ==========================================================================
-   CONFIGURAZIONE STANZE EDIFICIO (54 AULE + LAB + UFFICI)
+   CONFIGURAZIONE STANZE EDIFICIO (AULE + LAB + UFFICI)
    ========================================================================== */
 
-// Mappatura automatica per le 54 Aule Didattiche
+// Lista aule dismesse o sostituite (inclusa la vecchia aula-30 per evitare doppioni)
+const auleRimosse = [
+  "aula-5",
+  "aula-11",
+  "aula-22",
+  "aula-30",
+  "aula-31",
+  "aula-50"
+];
+
+// Mappatura automatica per le Aule Didattiche (escludendo le aule dismesse)
 const auleDidattiche = {};
 for (let i = 1; i <= 54; i++) {
-  auleDidattiche[`aula-${i}`] = { titolo: `Aula ${i}` };
+  const idAula = `aula-${i}`;
+  if (!auleRimosse.includes(idAula)) {
+    auleDidattiche[idAula] = { titolo: `Aula ${i}` };
+  }
 }
 
 const stanzeConfig = {
@@ -13,22 +26,22 @@ const stanzeConfig = {
     "area-ingresso": { titolo: "📍 Ingresso Principale" }
   },
   "Uffici & Direzione": {
-    "presidenza": { titolo: "Presidenza" },
-    "vicepresidenza": { titolo: "Vicepresidenza" },
+    presidenza: { titolo: "Presidenza" },
+    vicepresidenza: { titolo: "Vicepresidenza" },
     "ufficio-segreteria": { titolo: "Segreteria" },
     "ufficio-dsga": { titolo: "Ufficio DSGA" },
     "ufficio-tecnico": { titolo: "Ufficio Tecnico" },
     "aula-commissioni": { titolo: "Sala Commissioni" },
     "sala-professori": { titolo: "Sala Docenti" }
   },
-  "Laboratori": {
+  Laboratori: {
     "lab-informatica": { titolo: "Lab. Informatica" },
     "lab-sistemi-1": { titolo: "Lab. Sistemi 1" },
     "lab-sistemi-2": { titolo: "Lab. Sistemi 2" },
     "lab-cisco": { titolo: "Lab. Cisco" },
-    "tpsee": { titolo: "Lab. TPSEE" },
+    tpsee: { titolo: "Lab. TPSEE" },
     "ele-tele": { titolo: "Lab. Elettronica" },
-    "centro-sistemi": { titolo: "Robotic Lab" },
+    "centro-sistemi": { titolo: "Centro Sistemi" },
     "lab-chimica": { titolo: "Lab. Chimica" },
     "lab-chimica-org": { titolo: "Lab. Chimica Org." },
     "lab-strumentale": { titolo: "Lab. Analisi Strum." },
@@ -41,14 +54,14 @@ const stanzeConfig = {
     "lab-design": { titolo: "Lab. Computer Grafica" }
   },
   "Aule Didattiche": {
-    "aula-3.0": { titolo: "Aula 3.0" },
+    "aula-3-0": { titolo: "Aula 3.0" }, // <--- ID allineato con l'HTML (aula-3-0)
     "aula-polifunzionale": { titolo: "Aula Polifunzionale" },
-    "biblioteca": { titolo: "Biblioteca" },
+    biblioteca: { titolo: "Biblioteca" },
     ...auleDidattiche
   },
   "Servizi & Bagni": {
-    "spazio-ristoro": { titolo: "Spazio Ristoro / Bar" },
-    "infermeria": { titolo: "Infermeria" },
+    "spazio-ristoro": { titolo: "Spazio Ristoro" },
+    infermeria: { titolo: "Infermeria" },
     "sala-stampa": { titolo: "Sala Stampa" },
     "bagno-1N": { titolo: "Bagni Blocco Nord" },
     "bagno-1S": { titolo: "Bagni Blocco Sud" }
@@ -79,8 +92,11 @@ function popolaDropdowns() {
     let groupTo = `<optgroup label="${categoria}">`;
 
     Object.entries(stanze).forEach(([id, info]) => {
-      groupFrom += `<option value="${id}">${info.titolo}</option>`;
-      groupTo += `<option value="${id}">${info.titolo}</option>`;
+      // Filtro di sicurezza aggiuntivo per escludere qualsiasi aula rimossa
+      if (!auleRimosse.includes(id)) {
+        groupFrom += `<option value="${id}">${info.titolo}</option>`;
+        groupTo += `<option value="${id}">${info.titolo}</option>`;
+      }
     });
 
     groupFrom += `</optgroup>`;
