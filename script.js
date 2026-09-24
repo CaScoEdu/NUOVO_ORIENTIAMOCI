@@ -9,7 +9,7 @@ const auleRimosse = [
   "aula-22",
   "aula-30",
   "aula-31",
-  "aula-50"
+  "aula-50",
 ];
 
 // Mappatura automatica per le Aule Didattiche (escludendo le aule dismesse)
@@ -23,7 +23,7 @@ for (let i = 1; i <= 54; i++) {
 
 const stanzeConfig = {
   "Punti di Accesso": {
-    "area-ingresso": { titolo: "📍 Ingresso Principale" }
+    "area-ingresso": { titolo: "📍 Ingresso Principale" },
   },
   "Uffici & Direzione": {
     presidenza: { titolo: "Presidenza" },
@@ -32,7 +32,7 @@ const stanzeConfig = {
     "ufficio-dsga": { titolo: "Ufficio DSGA" },
     "ufficio-tecnico": { titolo: "Ufficio Tecnico" },
     "aula-commissioni": { titolo: "Sala Commissioni" },
-    "sala-professori": { titolo: "Sala Docenti" }
+    "sala-professori": { titolo: "Sala Docenti" },
   },
   Laboratori: {
     "lab-informatica": { titolo: "Lab. Informatica" },
@@ -51,21 +51,21 @@ const stanzeConfig = {
     "lab-disegno": { titolo: "Lab. Disegno Tecnico" },
     "lab-arti-pittoriche": { titolo: "Lab. Arti Pittoriche" },
     "lab-arti-plastiche": { titolo: "Lab. Scultura" },
-    "lab-design": { titolo: "Lab. Computer Grafica" }
+    "lab-design": { titolo: "Lab. Computer Grafica" },
   },
   "Aule Didattiche": {
     "aula-3-0": { titolo: "Aula 3.0" }, // <--- ID allineato con l'HTML (aula-3-0)
     "aula-polifunzionale": { titolo: "Aula Polifunzionale" },
     biblioteca: { titolo: "Biblioteca" },
-    ...auleDidattiche
+    ...auleDidattiche,
   },
   "Servizi & Bagni": {
     "spazio-ristoro": { titolo: "Spazio Ristoro" },
     infermeria: { titolo: "Infermeria" },
     "sala-stampa": { titolo: "Sala Stampa" },
     "bagno-1N": { titolo: "Bagni Blocco Nord" },
-    "bagno-1S": { titolo: "Bagni Blocco Sud" }
-  }
+    "bagno-1S": { titolo: "Bagni Blocco Sud" },
+  },
 };
 
 /* Stato della navigazione */
@@ -207,8 +207,10 @@ function autoFitCamera() {
   }
 
   // Calcola i limiti min e max per racchiudere TUTTE le stanze selezionate
-  let minX = Infinity, minY = Infinity;
-  let maxX = -Infinity, maxY = -Infinity;
+  let minX = Infinity,
+    minY = Infinity;
+  let maxX = -Infinity,
+    maxY = -Infinity;
 
   rects.forEach((rect) => {
     const rx = parseFloat(rect.getAttribute("x"));
@@ -226,8 +228,8 @@ function autoFitCamera() {
   const padding = 150;
   const vX = Math.max(0, minX - padding);
   const vY = Math.max(0, minY - padding);
-  const vW = (maxX - minX) + (padding * 2);
-  const vH = (maxY - minY) + (padding * 2);
+  const vW = maxX - minX + padding * 2;
+  const vH = maxY - minY + padding * 2;
 
   // Applica la vista panoramica calibrata
   svg.setAttribute("viewBox", `${vX} ${vY} ${vW} ${vH}`);
@@ -271,7 +273,7 @@ function autoFitSvgLabels() {
 
       const foreignObj = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        "foreignObject"
+        "foreignObject",
       );
       foreignObj.setAttribute("x", x);
       foreignObj.setAttribute("y", y);
@@ -291,20 +293,42 @@ function autoFitSvgLabels() {
 }
 
 /* ==========================================================================
-   INIZIALIZZAZIONE APPLICAZIONE
+   CARICAMENTO SVG ESTERNO ED INIZIALIZZAZIONE APPLICAZIONE
    ========================================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-  const svg = document.getElementById("school-map");
-  if (svg && svg.getAttribute("viewBox")) {
-    initialViewBox = svg.getAttribute("viewBox");
-  }
+async function caricaMappaSVG() {
+  const container = document.getElementById("map-container");
+  if (!container) return;
 
-  autoFitSvgLabels();
-  popolaDropdowns();
-  setupMapClicks();
-  aggiornaMappa(false);
-});
+  try {
+    // 1. Scarica il file SVG esterno
+    const response = await fetch("mappa.svg");
+    if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
+
+    const svgText = await response.text();
+
+    // 2. Inserisce il contenuto SVG nell'HTML
+    container.innerHTML = svgText;
+
+    // 3. Inizializza la mappa e i listener solo DOPO che l'SVG è presente nel DOM
+    const svg = document.getElementById("school-map");
+    if (svg && svg.getAttribute("viewBox")) {
+      initialViewBox = svg.getAttribute("viewBox");
+    }
+
+    autoFitSvgLabels();
+    popolaDropdowns();
+    setupMapClicks();
+    aggiornaMappa(false);
+  } catch (error) {
+    console.error("Errore durante il caricamento della mappa:", error);
+    container.innerHTML =
+      "<p>Errore nel caricamento della mappa dell'istituto.</p>";
+  }
+}
+
+// Avvio dell'app al caricamento della pagina
+document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 
 /* Registrazione Service Worker per supporto Offline (PWA) */
 if ("serviceWorker" in navigator) {
