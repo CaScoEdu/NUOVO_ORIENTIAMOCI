@@ -68,6 +68,134 @@ const stanzeConfig = {
   },
 };
 
+/* ==========================================================================
+   SISTEMA DI NAVIGAZIONE E ROUTING (ALLINEAMENTO CORRIDOI)
+   ========================================================================== */
+
+const nodiMappa = {
+  // --- PORTE E INGRESSI ---
+  "area-ingresso": { x: 480, y: 500 },
+
+  // --- CORRIDOIO VERTICALE CENTRALE (Asse X = 500) ---
+  "node-corrid-centrale": { x: 500, y: 500 },
+  "node-incrocio-t-nord": { x: 500, y: 320 },     // Snodo principale nel corridoio orizzontale
+
+  // --- CORRIDOIO ORIZZONTALE NORD-EST (Asse Y = 320, passa sopra Lab Gerosa e sotto i Bagni) ---
+  "node-corrid-nord-est": { x: 880, y: 320 },     // Punto di svolta davanti all'Aula 3.0
+
+  // --- ANCORAGGI PERCORSO (Ingresso nelle stanze) ---
+  "aula-3-0": { x: 880, y: 450 },
+  "centro-sistemi": { x: 485, y: 840 }
+};
+
+const grafoCorridoi = {
+  // 1. Dall'ingresso ci si immette al centro del corridoio verticale
+  "area-ingresso": {
+    "node-corrid-centrale": 20
+  },
+  "node-corrid-centrale": {
+    "area-ingresso": 20,
+    "node-incrocio-t-nord": 180
+  },
+
+  // 2. Dal corridoio verticale si sale fino allo snodo e si svolta a destra nel corridoio orizzontale
+  "node-incrocio-t-nord": {
+    "node-corrid-centrale": 180,
+    "node-corrid-nord-est": 380
+  },
+
+  // 3. Dal corridoio orizzontale si scende ortogonalmente dentro l'Aula 3.0
+  "node-corrid-nord-est": {
+    "node-incrocio-t-nord": 380,
+    "aula-3-0": 130
+  },
+  "aula-3-0": {
+    "node-corrid-nord-est": 130
+  }
+};
+
+/* Calcolo del percorso minimo tra due nodi (Dijkstra) */
+function calcolaPercorsoBreve(startNode, endNode) {
+  if (!nodiMappa[startNode] || !nodiMappa[endNode]) return [];
+
+  const distanze = {};
+  const precedenti = {};
+  const nodiDaVisitare = new Set(Object.keys(nodiMappa));
+
+  Object.keys(nodiMappa).forEach((nodo) => {
+    distanze[nodo] = Infinity;
+    precedenti[nodo] = null;
+  });
+  distanze[startNode] = 0;
+
+  while (nodiDaVisitare.size > 0) {
+    // Trova il nodo non visitato con la distanza minore
+    let nodoCorrente = null;
+    nodiDaVisitare.forEach((nodo) => {
+      if (nodoCorrente === null || distanze[nodo] < distanze[nodoCorrente]) {
+        nodoCorrente = nodo;
+      }
+    });
+
+    if (distanze[nodoCorrente] === Infinity || nodoCorrente === endNode) {
+      break;
+    }
+
+    nodiDaVisitare.delete(nodoCorrente);
+
+    // Controlla i vicini collegati nel grafo
+    const vicini = grafoCorridoi[nodoCorrente] || {};
+    Object.entries(vicini).forEach(([vicino, peso]) => {
+      if (nodiDaVisitare.has(vicino)) {
+        const nuovaDistanza = distanze[nodoCorrente] + peso;
+        if (nuovaDistanza < distanze[vicino]) {
+          distanze[vicino] = nuovaDistanza;
+          precedenti[vicino] = nodoCorrente;
+        }
+      }
+    });
+  }
+
+  // Ricostruisci il percorso al contrario
+  const percorso = [];
+  let at = endNode;
+  while (at !== null) {
+    percorso.push(at);
+    at = precedenti[at];
+  }
+
+  return percorso.reverse()[0] === startNode ? percorso : [];
+}
+
+/* Disegna la linea del percorso sull'SVG */
+function mostraPercorsoMappa() {
+  const pathEl = document.getElementById("route-path");
+  if (!pathEl) return;
+
+  if (!partenzaId || !destinazioneId || partenzaId === destinazioneId) {
+    pathEl.setAttribute("d", "");
+    return;
+  }
+
+  const sequenzaNodi = calcolaPercorsoBreve(partenzaId, destinazioneId);
+
+  if (sequenzaNodi.length < 2) {
+    pathEl.setAttribute("d", "");
+    return;
+  }
+
+  // Costruisci il comando SVG 'd' (M x y L x y ...)
+  const pathData = sequenzaNodi.reduce((acc, nodeId, index) => {
+    const coords = nodiMappa[nodeId];
+    if (!coords) return acc;
+    return index === 0
+      ? `M ${coords.x} ${coords.y}`
+      : `${acc} L ${coords.x} ${coords.y}`;
+  }, "");
+
+  pathEl.setAttribute("d", pathData);
+}
+
 /* Stato della navigazione */
 let partenzaId = "area-ingresso";
 let destinazioneId = "";
@@ -164,6 +292,7 @@ function aggiornaMappa(focusActive = false) {
   if (focusActive) {
     autoFitCamera();
   }
+  mostraPercorsoMappa();
 }
 
 function evidenziaElemento(id, cssClass) {
@@ -177,7 +306,7 @@ function evidenziaElemento(id, cssClass) {
   }
 }
 
-/* Inquadra SIA la partenza SIA la destinazione nella mappa in modo fluido */
+/* Inquadra la partenza, la destinazione E il percorso calcolato in modo dinamico */
 function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
@@ -185,53 +314,73 @@ function autoFitCamera() {
   const elFrom = document.getElementById(partenzaId);
   const elTo = document.getElementById(destinazioneId);
 
-  // Se nessuna delle due è valida, ripristina la vista globale
+  // Se nessuna delle due è selezionata, ripristina la vista completa originale
   if (!elFrom && !elTo) {
     svg.setAttribute("viewBox", initialViewBox);
     return;
   }
 
-  const rects = [];
-  if (elFrom) {
-    const r = elFrom.querySelector("rect");
-    if (r) rects.push(r);
-  }
-  if (elTo) {
-    const r = elTo.querySelector("rect");
-    if (r) rects.push(r);
+  let minX = Infinity, minY = Infinity;
+  let maxX = -Infinity, maxY = -Infinity;
+
+  // 1. Considera le coordinate dei rettangoli delle stanze selezionate
+  [elFrom, elTo].forEach((el) => {
+    if (el) {
+      const rect = el.querySelector("rect");
+      if (rect) {
+        const rx = parseFloat(rect.getAttribute("x"));
+        const ry = parseFloat(rect.getAttribute("y"));
+        const rw = parseFloat(rect.getAttribute("width"));
+        const rh = parseFloat(rect.getAttribute("height"));
+
+        minX = Math.min(minX, rx);
+        minY = Math.min(minY, ry);
+        maxX = Math.max(maxX, rx + rw);
+        maxY = Math.max(maxY, ry + rh);
+      }
+    }
+  });
+
+  // 2. Considera anche tutti i nodi del percorso per non tagliare la linea blu
+  if (partenzaId && destinazioneId) {
+    const sequenzaNodi = calcolaPercorsoBreve(partenzaId, destinazioneId);
+    sequenzaNodi.forEach((nodeId) => {
+      const coords = nodiMappa[nodeId];
+      if (coords) {
+        minX = Math.min(minX, coords.x);
+        minY = Math.min(minY, coords.y);
+        maxX = Math.max(maxX, coords.x);
+        maxY = Math.max(maxY, coords.y);
+      }
+    });
   }
 
-  if (rects.length === 0) {
+  if (minX === Infinity) {
     svg.setAttribute("viewBox", initialViewBox);
     return;
   }
 
-  // Calcola i limiti min e max per racchiudere TUTTE le stanze selezionate
-  let minX = Infinity,
-    minY = Infinity;
-  let maxX = -Infinity,
-    maxY = -Infinity;
+ // Calcolo margini d'inquadratura (padding più ampio)
+  const contentWidth = maxX - minX;
+  const contentHeight = maxY - minY;
 
-  rects.forEach((rect) => {
-    const rx = parseFloat(rect.getAttribute("x"));
-    const ry = parseFloat(rect.getAttribute("y"));
-    const rw = parseFloat(rect.getAttribute("width"));
-    const rh = parseFloat(rect.getAttribute("height"));
+  // Aumentiamo il padding minimo a 250px per un panorama più largo
+  const paddingX = Math.max(250, contentWidth * 0.4);
+  const paddingY = Math.max(250, contentHeight * 0.4);
 
-    minX = Math.min(minX, rx);
-    minY = Math.min(minY, ry);
-    maxX = Math.max(maxX, rx + rw);
-    maxY = Math.max(maxY, ry + rh);
-  });
+  let vX = minX - paddingX;
+  let vY = minY - paddingY;
+  let vW = contentWidth + paddingX * 2;
+  let vH = contentHeight + paddingY * 2;
 
-  // Margine d'inquadratura (padding)
-  const padding = 150;
-  const vX = Math.max(0, minX - padding);
-  const vY = Math.max(0, minY - padding);
-  const vW = maxX - minX + padding * 2;
-  const vH = maxY - minY + padding * 2;
+  // Garantisce un'area visiva minima per non stringere mai troppo
+  vW = Math.max(vW, 700);
+  vH = Math.max(vH, 600);
 
-  // Applica la vista panoramica calibrata
+  // Impedisce di uscire dalle coordinate dell'SVG
+  vX = Math.max(0, vX);
+  vY = Math.max(0, vY);
+
   svg.setAttribute("viewBox", `${vX} ${vY} ${vW} ${vH}`);
 }
 

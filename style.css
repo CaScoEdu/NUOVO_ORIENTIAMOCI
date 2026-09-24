@@ -139,6 +139,7 @@ html, body {
   align-items: center;
   overflow: hidden;
   padding: 1rem;
+  background-color: #f8fafc; /* Bianco/Grigio chiaro pulito */
 }
 
 #map-container {
