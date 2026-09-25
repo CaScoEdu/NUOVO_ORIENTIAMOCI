@@ -1,930 +1,634 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<svg viewBox="0 0 2143 2500" xmlns="http://www.w3.org/2000/svg" id="school-map">
+    <defs>
+        <style>
+            /* Stili base temporanei per rendere l'SVG leggibile da solo */
+            .terreno {
+                fill: palegreen;
+                fill-opacity: 0.4;
+                stroke: #16a34a;
+                stroke-width: 5;
+                rx: 30;
+            }
 
-<svg
-          viewBox="0 0 1000 1250"
-          xmlns="http://www.w3.org/2000/svg"
-          id="school-map"
-        >
-        <defs>
-    <style>
-      /* Stili base temporanei per rendere l'SVG leggibile da solo */
-      .terreno {
-  fill: palegreen;
-  fill-opacity: 0.4;
-  stroke: #16a34a;
-  stroke-width: 5;
-  rx: 8;
-}
+            .blocco {
+                fill-opacity: 0;
+                stroke: slategray;
+                stroke-width: 7;
+            }
 
-.blocco {
-  fill-opacity: 0;
-  stroke: slategray;
-  stroke-width: 7;
-}
+            .cortile {
+                fill-opacity: 0.0;
+                stroke: slategray;
+                stroke-width: 5;
+                pointer-events: none;
+                rx: 6;
+            }
 
-.cortile {
-  fill-opacity: 0.0;
-  stroke: slategray;
-  stroke-width: 5;
-  pointer-events: none;
-  rx: 6;
-}
+            .corridoio {
+                fill: lightgray;
+                stroke: lightgray;
+                stroke-width: 0;
+                pointer-events: none;
+            }
 
-.corridoio {
-  fill: lightgray;
-  stroke: lightgray; 
-  stroke-width: 0;
-  pointer-events: none;
-}
+            .ingresso {
+                fill: lightblue;
+                stroke: steelblue;
+                stroke-width: 1.5;
+                pointer-events: none;
+            }
 
-.ingresso {
-  fill: lightblue;
-  stroke: steelblue;
-  stroke-width: 1.5;
-  pointer-events: none;
-}
+            .bagno {
+                fill: lavender;
+                stroke: black;
+                stroke-width: 1.5;
+                pointer-events: none;
+            }
 
-.bagno {
-  fill: lavender; 
-  stroke: black; 
-  stroke-width: 1.5;
-  pointer-events: none;
-}
+            .room {
+                fill: #ffffff !important;
+                stroke: #475569 !important;
+                stroke-width: 1.5px;
+                transition: all 0.25s ease;
+                cursor: pointer;
+            }
 
-.room {
-  fill: #ffffff !important;
-  stroke: #475569 !important;
-  stroke-width: 1.5px;
-  transition: all 0.25s ease;
-  cursor: pointer;
-}
-      text { fill: #1e293b; font-family: sans-serif; }
-    </style>
-  </defs>
-          <!-- ARCHITETTURA DI BASE -->
-          <g id="architecture-base">
-            <rect
-              class="terreno"
-              id="base-structure"
-              x="40"
-              y="40"
-              width="920"
-              height="1170"
-            />
-            <rect
-              id="blocco-nord"
-              x="50"
-              y="50"
-              width="900"
-              height="470"
-              class="blocco"
-            />
-            <rect
-              id="blocco-centrale"
-              x="460"
-              y="520"
-              width="120"
-              height="210"
-              class="blocco"
-            />
-            <rect
-              id="blocco-sud"
-              x="50"
-              y="730"
-              width="900"
-              height="470"
-              class="blocco"
-            />
-          </g>
+            text {
+                fill: #1e293b;
+                font-family: sans-serif;
+            }
+        </style>
+    </defs>
 
-          <!-- CORTILI VERDI INTERNI-->
-          <g id="cortili-verdi">
-            <!-- Cortili Verdi Blocco Nord -->
-            <rect class="cortile" x="150" y="215" width="190" height="215" />
-            <rect x="370" y="215" width="260" height="215" class="cortile" />
-            <rect x="660" y="215" width="190" height="215" class="cortile" />
 
-            <!-- Cortili Verdi Blocco Sud  -->
-            <rect x="150" y="820" width="190" height="190" class="cortile" />
-            <rect x="370" y="820" width="260" height="190" class="cortile" />
-            <rect x="660" y="820" width="190" height="190" class="cortile" />
-          </g>
+    <!-- ARCHITETTURA DI BASE -->
+    <g id="architecture-base">
+        <rect class="terreno" id="base-structure" x="10" y="10" width="2133" height="2480" />
+        <rect id="blocco-nord" x="883.33" y="407.14" width="900" height="470" class="blocco" />
+        <rect id="blocco-centrale" x="1293.33" y="877.14" width="120" height="210" class="blocco" />
+        <rect id="blocco-sud" x="883.33" y="1087.14" width="900" height="470" class="blocco" />
+    </g>
 
-          <!-- CORRIDOI -->
-          <g id="corridors">
-            <!-- Blocco Nord -->
-            <rect
-              id="corridoio-nord-orizzontale"
-              x="50"
-              y="50"
-              width="900"
-              height="110"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-vert-1"
-              x="120"
-              y="130"
-              width="30"
-              height="330"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-vert-2"
-              x="340"
-              y="130"
-              width="30"
-              height="330"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-vert-3"
-              x="630"
-              y="130"
-              width="30"
-              height="330"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-vert-4"
-              x="850"
-              y="130"
-              width="30"
-              height="330"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-centrale-nord"
-              x="50"
-              y="430"
-              width="900"
-              height="90"
-              class="corridoio"
-            />
-            <!-- Corridoio Centrale Nord-Sud (Ingresso I.I.S / Uffici) -->
-            <rect
-              id="corridoio-centrale-nord-sud"
-              x="460"
-              y="430"
-              width="40"
-              height="385"
-              class="corridoio"
-            />
-            <!-- Corridoio Esterno di Ingresso I.I.S / Uffici (ALLARGATO) -->
-            <g id="ingresso-itis-group">
-              <rect
-                id="corridoio-ingresso-principale"
-                x="40"
-                y="595"
-                width="415"
-                height="60"
-                stroke="#0f172a"
-                stroke-width="3"
-                fill="#cbd5e1"
-              />
+    <!-- CORTILI VERDI INTERNI -->
+    <g id="cortili-verdi">
+        <!-- Cortili Verdi Blocco Nord -->
+        <rect class="cortile" x="983.33" y="572.14" width="190" height="215" />
+        <rect x="1203.33" y="572.14" width="260" height="215" class="cortile" />
+        <rect x="1493.33" y="572.14" width="190" height="215" class="cortile" />
 
-              <!-- BADGE "ENTRATA QUI" INGRANDITO AD ALTO CONTRASTO -->
-              <rect
-                x="230"
-                y="600"
-                width="215"
-                height="50"
-                rx="8"
-                ry="8"
-                fill="#16a34a"
-                stroke="#ffffff"
-                stroke-width="3"
-              />
+        <!-- Cortili Verdi Blocco Sud  -->
+        <rect x="983.33" y="1177.14" width="190" height="190" class="cortile" />
+        <rect x="1203.33" y="1177.14" width="260" height="190" class="cortile" />
+        <rect x="1493.33" y="1177.14" width="190" height="190" class="cortile" />
+    </g>
 
-              <!-- TESTO ENTRATA -->
-              <text
-                x="337.5"
-                y="625"
-                fill="#ffffff"
-                font-size="18"
-                font-weight="900"
-                letter-spacing="1"
-                text-anchor="middle"
-                dominant-baseline="central"
-              >
+    <!-- CORRIDOI -->
+    <g id="corridors">
+        <!-- Blocco Nord -->
+        <rect id="corridoio-nord-orizzontale" x="883.33" y="407.14" width="900" height="110" class="corridoio" />
+        <rect id="corridoio-vert-1" x="953.33" y="487.14" width="30" height="330" class="corridoio" />
+        <rect id="corridoio-vert-2" x="1173.33" y="487.14" width="30" height="330" class="corridoio" />
+        <rect id="corridoio-vert-3" x="1463.33" y="487.14" width="30" height="330" class="corridoio" />
+        <rect id="corridoio-vert-4" x="1683.33" y="487.14" width="30" height="330" class="corridoio" />
+        <rect id="corridoio-centrale-nord" x="883.33" y="787.14" width="900" height="90" class="corridoio" />
+        <!-- Corridoio Centrale Nord-Sud (Ingresso I.I.S / Uffici) -->
+        <rect id="corridoio-centrale-nord-sud" x="1293.33" y="787.14" width="40" height="385" class="corridoio" />
+        <!-- Corridoio Esterno di Ingresso I.I.S / Uffici (ALLARGATO) -->
+        <g id="ingresso-itis-group">
+            <rect id="corridoio-ingresso-principale" x="873.33" y="952.14" width="415" height="60" stroke="#0f172a"
+                stroke-width="3" fill="#cbd5e1" />
+
+            <!-- BADGE "ENTRATA QUI" INGRANDITO AD ALTO CONTRASTO -->
+            <rect x="1063.33" y="957.14" width="215" height="50" rx="8" ry="8" fill="#16a34a" stroke="#ffffff"
+                stroke-width="3" />
+
+            <!-- TESTO ENTRATA -->
+            <text x="1170.83" y="982.14" fill="#ffffff" font-size="18" font-weight="900" letter-spacing="1"
+                text-anchor="middle" dominant-baseline="central">
                 ENTRATA QUI ➔
-              </text>
-            </g>
-            <!-- Blocco Sud Corridoi  -->
-            <rect
-              id="corridoio-centrale-sud"
-              x="50"
-              y="730"
-              width="900"
-              height="90"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-sud-vert-1"
-              x="120"
-              y="815"
-              width="30"
-              height="310"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-sud-vert-2"
-              x="340"
-              y="815"
-              width="30"
-              height="310"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-sud-vert-3"
-              x="630"
-              y="815"
-              width="30"
-              height="310"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-sud-vert-4"
-              x="850"
-              y="815"
-              width="30"
-              height="310"
-              class="corridoio"
-            />
-            <rect
-              id="corridoio-sud-orizzontale"
-              x="50"
-              y="1010"
-              width="900"
-              height="190"
-              class="corridoio"
-            />
-          </g>
+            </text>
+        </g>
+        <!-- Blocco Sud Corridoi  -->
+        <rect id="corridoio-centrale-sud" x="883.33" y="1087.14" width="900" height="90" class="corridoio" />
+        <rect id="corridoio-sud-vert-1" x="953.33" y="1172.14" width="30" height="310" class="corridoio" />
+        <rect id="corridoio-sud-vert-2" x="1173.33" y="1172.14" width="30" height="310" class="corridoio" />
+        <rect id="corridoio-sud-vert-3" x="1463.33" y="1172.14" width="30" height="310" class="corridoio" />
+        <rect id="corridoio-sud-vert-4" x="1683.33" y="1172.14" width="30" height="310" class="corridoio" />
+        <rect id="corridoio-sud-orizzontale" x="883.33" y="1367.14" width="900" height="190" class="corridoio" />
+    </g>
 
-          <!-- ==================== INGRESSI ==================== -->
-          <g id="ingressi">
-            <g id="ingresso-nord">
-              <rect
-                id="ingresso-nord-porta"
-                x="460"
-                y="110"
-                width="80"
-                height="20"
-                class="ingresso"
-              />
-              <text
-                x="500"
-                y="120"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+    <!-- ==================== INGRESSI ==================== -->
+    <g id="ingressi">
+        <g id="ingresso-nord">
+            <rect id="ingresso-nord-porta" x="1293.33" y="467.14" width="80" height="20" class="ingresso" />
+            <text x="1333.33" y="477.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 ING.NORD
-              </text>
-            </g>
-            <g id="ingresso-nord-ovest">
-              <rect
-                id="ingresso-nord-ovest-porta"
-                x="50"
-                y="430"
-                width="10"
-                height="30"
-                class="ingresso"
-              />
-              <text
-                x="55"
-                y="445"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              ></text>
-            </g>
-            <g id="ingresso-nord-est">
-              <rect
-                id="ingresso-nord-est-porta"
-                x="940"
-                y="430"
-                width="10"
-                height="30"
-                class="ingresso"
-              />
-              <text
-                x="945"
-                y="445"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              ></text>
-            </g>
-            <g id="ingresso-centrale-itis">
-              <rect
-                id="ingresso-centrale-itis-porta"
-                x="455"
-                y="605"
-                width="10"
-                height="40"
-                class="ingresso"
-              />
-              <text
-                x="460"
-                y="625"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              ></text>
-            </g>
-            <g id="ingresso-sud-ovest">
-              <rect
-                id="ingresso-sud-ovest-porta"
-                x="50"
-                y="790"
-                width="10"
-                height="30"
-                class="ingresso"
-              />
-              <text
-                x="55"
-                y="805"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              ></text>
-            </g>
-            <g id="ingresso-sud-est">
-              <rect
-                id="ingresso-sud-est-porta"
-                x="940"
-                y="790"
-                width="10"
-                height="30"
-                class="ingresso"
-              />
-              <text
-                x="945"
-                y="805"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              ></text>
-            </g>
+            </text>
+        </g>
+        <g id="ingresso-nord-ovest">
+            <rect id="ingresso-nord-ovest-porta" x="883.33" y="787.14" width="10" height="30" class="ingresso" />
+            <text x="888.33" y="802.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+        </g>
+        <g id="ingresso-nord-est">
+            <rect id="ingresso-nord-est-porta" x="1773.33" y="787.14" width="10" height="30" class="ingresso" />
+            <text x="1778.33" y="802.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+        </g>
+        <g id="ingresso-centrale-itis">
+            <rect id="ingresso-centrale-itis-porta" x="1288.33" y="962.14" width="10" height="40" class="ingresso" />
+            <text x="1293.33" y="982.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+        </g>
+        <g id="ingresso-sud-ovest">
+            <rect id="ingresso-sud-ovest-porta" x="883.33" y="1147.14" width="10" height="30" class="ingresso" />
+            <text x="888.33" y="1162.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+        </g>
+        <g id="ingresso-sud-est">
+            <rect id="ingresso-sud-est-porta" x="1773.33" y="1147.14" width="10" height="30" class="ingresso" />
+            <text x="1778.33" y="1162.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+        </g>
 
-            <g id="ingresso-sud">
-              <rect
-                id="ingresso-sud-porta"
-                x="460"
-                y="1155"
-                width="80"
-                height="20"
-                class="ingresso"
-              />
-              <text
-                x="500"
-                y="1165"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+        <g id="ingresso-sud">
+            <rect id="ingresso-sud-porta" x="1293.33" y="1512.14" width="80" height="20" class="ingresso" />
+            <text x="1333.33" y="1522.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 ING.SUD
-              </text>
-            </g>
-          </g>
+            </text>
+        </g>
+    </g>
 
-          <!-- ==================== BAGNI ==================== -->
-          <g id="bagni">
-            <!-- 1. BAGNI BLOCCO NORD -->
-            <g id="bagno-1N">
-              <rect class="bagno" x="245" y="330" width="95" height="50" />
-              <text
-                x="292.5"
-                y="355"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+    <!-- ==================== BAGNI ==================== -->
+    <g id="bagni">
+        <!-- 1. BAGNI BLOCCO NORD -->
+        <g id="bagno-1N">
+            <rect class="bagno" x="1078.33" y="687.14" width="95" height="50" />
+            <text x="1125.83" y="712.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
-            <g id="bagno-2N">
-              <rect class="bagno" x="370" y="330" width="95" height="50" />
-              <text
-                x="417.5"
-                y="355"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+            </text>
+        </g>
+        <g id="bagno-2N">
+            <rect class="bagno" x="1203.33" y="687.14" width="95" height="50" />
+            <text x="1250.83" y="712.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
-            <g id="bagno-3N">
-              <rect class="bagno" x="535" y="330" width="95" height="50" />
-              <text
-                x="582.5"
-                y="355"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+            </text>
+        </g>
+        <g id="bagno-3N">
+            <rect class="bagno" x="1368.33" y="687.14" width="95" height="50" />
+            <text x="1415.83" y="712.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
-            <g id="bagno-4N">
-              <rect class="bagno" x="660" y="330" width="95" height="50" />
-              <text
-                x="707.5"
-                y="355"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+            </text>
+        </g>
+        <g id="bagno-4N">
+            <rect class="bagno" x="1493.33" y="687.14" width="95" height="50" />
+            <text x="1540.83" y="712.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
+            </text>
+        </g>
 
-            <!-- 2. BAGNI BLOCCO SUD -->
-            <g id="bagno-1S">
-              <rect class="bagno" x="245" y="870" width="95" height="50" />
-              <text
-                x="292.5"
-                y="895"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+        <!-- 2. BAGNI BLOCCO SUD -->
+        <g id="bagno-1S">
+            <rect class="bagno" x="1078.33" y="1227.14" width="95" height="50" />
+            <text x="1125.83" y="1252.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
-            <g id="bagno-2S">
-              <rect class="bagno" x="370" y="870" width="95" height="50" />
-              <text
-                x="417.5"
-                y="895"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+            </text>
+        </g>
+        <g id="bagno-2S">
+            <rect class="bagno" x="1203.33" y="1227.14" width="95" height="50" />
+            <text x="1250.83" y="1252.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
-            <g id="bagno-3S">
-              <rect class="bagno" x="535" y="870" width="95" height="50" />
-              <text
-                x="582.5"
-                y="895"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+            </text>
+        </g>
+        <g id="bagno-3S">
+            <rect class="bagno" x="1368.33" y="1227.14" width="95" height="50" />
+            <text x="1415.83" y="1252.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
-            <g id="bagno-4S">
-              <rect class="bagno" x="660" y="870" width="95" height="50" />
-              <text
-                x="707.5"
-                y="895"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+            </text>
+        </g>
+        <g id="bagno-4S">
+            <rect class="bagno" x="1493.33" y="1227.14" width="95" height="50" />
+            <text x="1540.83" y="1252.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 BAGNO
-              </text>
-            </g>
-          </g>
+            </text>
+        </g>
+    </g>
 
-          <!-- ==================== STRUTTURA AULE E UFFICI ==================== -->
-          <g id="rooms">
-            <!-- ===== 1. BLOCCO NORD: RIGA SUPERIORE ===== -->
-            <g id="lab-chimica" class="room-group">
-              <rect class="room" x="50" y="50" width="120" height="80" />
-              <text x="55" y="64" class="room-label">LAB CHIMICA</text>
-            </g>
-            <g id="lab-preparazione" class="room-group">
-              <rect class="room" x="170" y="50" width="40" height="80" />
-              <text x="175" y="64" class="room-label">PREP.</text>
-            </g>
-            <g id="lab-chimica-org" class="room-group">
-              <rect class="room" x="210" y="50" width="65" height="80" />
-              <text x="215" y="64" class="room-label">LAB CHIM.ORG.</text>
-            </g>
-            <g id="lab-strumentale" class="room-group">
-              <rect class="room" x="275" y="50" width="65" height="80" />
-              <text x="280" y="64" class="room-label">LAB STRUM.</text>
-            </g>
-            <g id="aula-12" class="room-group">
-              <rect class="room" x="340" y="50" width="60" height="80" />
-              <text x="345" y="64" class="room-label">12</text>
-            </g>
-            <g id="aula-13" class="room-group">
-              <rect class="room" x="400" y="50" width="60" height="80" />
-              <text x="405" y="64" class="room-label">13</text>
-            </g>
-            <g id="aula-19" class="room-group">
-              <rect class="room" x="540" y="50" width="70" height="80" />
-              <text x="545" y="64" class="room-label">19</text>
-            </g>
-            <g id="aula-20" class="room-group">
-              <rect class="room" x="610" y="50" width="55" height="80" />
-              <text x="615" y="64" class="room-label">20</text>
-            </g>
-            <g id="lab-fisica" class="room-group">
-              <rect class="room" x="665" y="50" width="85" height="80" />
-              <text x="670" y="64" class="room-label">LAB FISICA</text>
-            </g>
-            <g id="lab-arti-pittoriche" class="room-group">
-              <rect class="room" x="750" y="50" width="75" height="80" />
-              <text x="755" y="64" class="room-label">LAB PITTURA</text>
-            </g>
-            <g id="lab-biologia" class="room-group">
-              <rect class="room" x="825" y="50" width="125" height="80" />
-              <text x="830" y="64" class="room-label">LAB BIOLOGIA</text>
-            </g>
+    <!-- ==================== STRUTTURA AULE E UFFICI ==================== -->
+    <g id="rooms">
+        <!-- ===== 1. BLOCCO NORD: RIGA SUPERIORE ===== -->
+        <g id="lab-chimica" class="room-group">
+            <rect class="room" x="883.33" y="407.14" width="120" height="80" />
+            <text x="888.33" y="421.14" class="room-label">LAB CHIMICA</text>
+        </g>
+        <g id="lab-preparazione" class="room-group">
+            <rect class="room" x="1003.33" y="407.14" width="40" height="80" />
+            <text x="1008.33" y="421.14" class="room-label">PREP.</text>
+        </g>
+        <g id="lab-chimica-org" class="room-group">
+            <rect class="room" x="1043.33" y="407.14" width="65" height="80" />
+            <text x="1048.33" y="421.14" class="room-label">LAB CHIM.ORG.</text>
+        </g>
+        <g id="lab-strumentale" class="room-group">
+            <rect class="room" x="1108.33" y="407.14" width="65" height="80" />
+            <text x="1113.33" y="421.14" class="room-label">LAB STRUM.</text>
+        </g>
+        <g id="aula-12" class="room-group">
+            <rect class="room" x="1173.33" y="407.14" width="60" height="80" />
+            <text x="1178.33" y="421.14" class="room-label">12</text>
+        </g>
+        <g id="aula-13" class="room-group">
+            <rect class="room" x="1233.33" y="407.14" width="60" height="80" />
+            <text x="1238.33" y="421.14" class="room-label">13</text>
+        </g>
+        <g id="aula-19" class="room-group">
+            <rect class="room" x="1373.33" y="407.14" width="70" height="80" />
+            <text x="1378.33" y="421.14" class="room-label">19</text>
+        </g>
+        <g id="aula-20" class="room-group">
+            <rect class="room" x="1443.33" y="407.14" width="55" height="80" />
+            <text x="1448.33" y="421.14" class="room-label">20</text>
+        </g>
+        <g id="lab-fisica" class="room-group">
+            <rect class="room" x="1498.33" y="407.14" width="85" height="80" />
+            <text x="1503.33" y="421.14" class="room-label">LAB FISICA</text>
+        </g>
+        <g id="lab-arti-pittoriche" class="room-group">
+            <rect class="room" x="1583.33" y="407.14" width="75" height="80" />
+            <text x="1588.33" y="421.14" class="room-label">LAB PITTURA</text>
+        </g>
+        <g id="lab-biologia" class="room-group">
+            <rect class="room" x="1658.33" y="407.14" width="125" height="80" />
+            <text x="1663.33" y="421.14" class="room-label">LAB BIOLOGIA</text>
+        </g>
 
-            <!-- ===== 1. BLOCCO NORD: MANICA OVEST ===== -->
-            <g id="aula-10" class="room-group">
-              <rect class="room" x="50" y="130" width="70" height="60" />
-              <text x="55" y="144" class="room-label">10</text>
-            </g>
-            <g id="aula-9" class="room-group">
-              <rect class="room" x="50" y="190" width="70" height="60" />
-              <text x="55" y="204" class="room-label">9</text>
-            </g>
-            <g id="aula-8" class="room-group">
-              <rect class="room" x="50" y="250" width="70" height="60" />
-              <text x="55" y="264" class="room-label">8</text>
-            </g>
-            <g id="aula-7" class="room-group">
-              <rect class="room" x="50" y="310" width="70" height="60" />
-              <text x="55" y="324" class="room-label">7</text>
-            </g>
-            <g id="aula-6" class="room-group">
-              <rect class="room" x="50" y="370" width="70" height="60" />
-              <text x="55" y="384" class="room-label">6</text>
-            </g>
+        <!-- ===== 1. BLOCCO NORD: MANICA OVEST ===== -->
+        <g id="aula-10" class="room-group">
+            <rect class="room" x="883.33" y="487.14" width="70" height="60" />
+            <text x="888.33" y="501.14" class="room-label">10</text>
+        </g>
+        <g id="aula-9" class="room-group">
+            <rect class="room" x="883.33" y="547.14" width="70" height="60" />
+            <text x="888.33" y="561.14" class="room-label">9</text>
+        </g>
+        <g id="aula-8" class="room-group">
+            <rect class="room" x="883.33" y="607.14" width="70" height="60" />
+            <text x="888.33" y="621.14" class="room-label">8</text>
+        </g>
+        <g id="aula-7" class="room-group">
+            <rect class="room" x="883.33" y="667.14" width="70" height="60" />
+            <text x="888.33" y="681.14" class="room-label">7</text>
+        </g>
+        <g id="aula-6" class="room-group">
+            <rect class="room" x="883.33" y="727.14" width="70" height="60" />
+            <text x="888.33" y="741.14" class="room-label">6</text>
+        </g>
 
-            <!-- ===== 1. BLOCCO NORD: RIGA CENTRALE ===== -->
-            <g id="vicepresidenza" class="room-group">
-              <rect class="room" x="150" y="160" width="75" height="60" />
-              <text x="155" y="174" class="room-label">VICE PRESID.</text>
-            </g>
-            <g id="presidenza" class="room-group">
-              <rect class="room" x="225" y="160" width="80" height="60" />
-              <text x="230" y="174" class="room-label">PRESID.</text>
-            </g>
-            <g id="ufficio-up" class="room-group">
-              <rect class="room" x="305" y="160" width="35" height="60" />
-              <text x="310" y="174" class="room-label">U.P.</text>
-            </g>
+        <!-- ===== 1. BLOCCO NORD: RIGA CENTRALE ===== -->
+        <g id="vicepresidenza" class="room-group">
+            <rect class="room" x="983.33" y="517.14" width="75" height="60" />
+            <text x="988.33" y="531.14" class="room-label">VICE PRESID.</text>
+        </g>
+        <g id="presidenza" class="room-group">
+            <rect class="room" x="1058.33" y="517.14" width="80" height="60" />
+            <text x="1063.33" y="531.14" class="room-label">PRESID.</text>
+        </g>
+        <g id="ufficio-up" class="room-group">
+            <rect class="room" x="1138.33" y="517.14" width="35" height="60" />
+            <text x="1143.33" y="531.14" class="room-label">U.P.</text>
+        </g>
 
-            <g id="aula-14" class="room-group">
-              <rect class="room" x="370" y="160" width="52" height="60" />
-              <text x="375" y="174" class="room-label">14</text>
-            </g>
-            <g id="aula-15" class="room-group">
-              <rect class="room" x="422" y="160" width="52" height="60" />
-              <text x="427" y="174" class="room-label">15</text>
-            </g>
-            <g id="aula-16" class="room-group">
-              <rect class="room" x="474" y="160" width="52" height="60" />
-              <text x="479" y="174" class="room-label">16</text>
-            </g>
-            <g id="aula-17" class="room-group">
-              <rect class="room" x="526" y="160" width="52" height="60" />
-              <text x="531" y="174" class="room-label">17</text>
-            </g>
-            <g id="aula-18" class="room-group">
-              <rect class="room" x="578" y="160" width="52" height="60" />
-              <text x="583" y="174" class="room-label">18</text>
-            </g>
+        <g id="aula-14" class="room-group">
+            <rect class="room" x="1203.33" y="517.14" width="52" height="60" />
+            <text x="1208.33" y="531.14" class="room-label">14</text>
+        </g>
+        <g id="aula-15" class="room-group">
+            <rect class="room" x="1255.33" y="517.14" width="52" height="60" />
+            <text x="1260.33" y="531.14" class="room-label">15</text>
+        </g>
+        <g id="aula-16" class="room-group">
+            <rect class="room" x="1307.33" y="517.14" width="52" height="60" />
+            <text x="1312.33" y="531.14" class="room-label">16</text>
+        </g>
+        <g id="aula-17" class="room-group">
+            <rect class="room" x="1359.33" y="517.14" width="52" height="60" />
+            <text x="1364.33" y="531.14" class="room-label">17</text>
+        </g>
+        <g id="aula-18" class="room-group">
+            <rect class="room" x="1411.33" y="517.14" width="52" height="60" />
+            <text x="1416.33" y="531.14" class="room-label">18</text>
+        </g>
 
-            <g id="lab-cic" class="room-group">
-              <rect class="room" x="660" y="160" width="40" height="60" />
-              <text x="665" y="174" class="room-label">CIC</text>
-            </g>
-            <g id="lab-disegno" class="room-group">
-              <rect class="room" x="700" y="160" width="95" height="60" />
-              <text x="705" y="174" class="room-label">LAB DISEGNO 1</text>
-            </g>
-            <g id="aula-22" class="room-group">
-              <rect class="room" x="795" y="160" width="55" height="60" />
-              <text x="800" y="174" class="room-label">22</text>
-            </g>
+        <g id="lab-cic" class="room-group">
+            <rect class="room" x="1493.33" y="517.14" width="40" height="60" />
+            <text x="1498.33" y="531.14" class="room-label">CIC</text>
+        </g>
+        <g id="lab-disegno" class="room-group">
+            <rect class="room" x="1533.33" y="517.14" width="95" height="60" />
+            <text x="1538.33" y="531.14" class="room-label">LAB DISEGNO 1</text>
+        </g>
+        <g id="aula-22" class="room-group">
+            <rect class="room" x="1628.33" y="517.14" width="55" height="60" />
+            <text x="1633.33" y="531.14" class="room-label">22</text>
+        </g>
 
-            <!-- ===== 1. BLOCCO NORD: MANICA EST ===== -->
-            <g id="aula-23" class="room-group">
-              <rect class="room" x="880" y="130" width="70" height="60" />
-              <text x="885" y="144" class="room-label">23</text>
-            </g>
-            <g id="aula-24" class="room-group">
-              <rect class="room" x="880" y="190" width="70" height="60" />
-              <text x="885" y="204" class="room-label">24</text>
-            </g>
-            <g id="aula-25" class="room-group">
-              <rect class="room" x="880" y="250" width="70" height="60" />
-              <text x="885" y="264" class="room-label">25</text>
-            </g>
-            <g id="aula-26" class="room-group">
-              <rect class="room" x="880" y="310" width="70" height="60" />
-              <text x="885" y="324" class="room-label">26</text>
-            </g>
-            <g id="aula-27" class="room-group">
-              <rect class="room" x="880" y="370" width="70" height="60" />
-              <text x="885" y="384" class="room-label">27</text>
-            </g>
+        <!-- ===== 1. BLOCCO NORD: MANICA EST ===== -->
+        <g id="aula-23" class="room-group">
+            <rect class="room" x="1713.33" y="487.14" width="70" height="60" />
+            <text x="1718.33" y="501.14" class="room-label">23</text>
+        </g>
+        <g id="aula-24" class="room-group">
+            <rect class="room" x="1713.33" y="547.14" width="70" height="60" />
+            <text x="1718.33" y="561.14" class="room-label">24</text>
+        </g>
+        <g id="aula-25" class="room-group">
+            <rect class="room" x="1713.33" y="607.14" width="70" height="60" />
+            <text x="1718.33" y="621.14" class="room-label">25</text>
+        </g>
+        <g id="aula-26" class="room-group">
+            <rect class="room" x="1713.33" y="667.14" width="70" height="60" />
+            <text x="1718.33" y="681.14" class="room-label">26</text>
+        </g>
+        <g id="aula-27" class="room-group">
+            <rect class="room" x="1713.33" y="727.14" width="70" height="60" />
+            <text x="1718.33" y="741.14" class="room-label">27</text>
+        </g>
 
-            <!-- ===== 1. BLOCCO NORD: RIGA INFERIORE ===== -->
-            <g id="deposito" class="room-group">
-              <rect class="room" x="245" y="380" width="70" height="50" />
-              <text x="55" y="64" class="room-label">DEPOSITO</text>
-            </g>
-            <g id="infermeria" class="room-group">
-              <rect class="room" x="315" y="380" width="25" height="50" />
-              <text x="55" y="64" class="room-label">INF.</text>
-            </g>
-            <g id="sala-stampa" class="room-group">
-              <rect class="room" x="370" y="380" width="95" height="50" />
-              <text x="55" y="64" class="room-label">SALA STAMPA</text>
-            </g>
-            <g id="centro-stella" class="room-group">
-              <rect class="room" x="535" y="380" width="95" height="50" />
-              <text x="55" y="64" class="room-label">CENTRO STELLA</text>
-            </g>
-            <g id="audiovisivi" class="room-group">
-              <rect class="room" x="660" y="380" width="95" height="50" />
-              <text x="55" y="64" class="room-label">AUDIOVISIVI</text>
-            </g>
+        <!-- ===== 1. BLOCCO NORD: RIGA INFERIORE ===== -->
+        <g id="deposito" class="room-group">
+            <rect class="room" x="1078.33" y="737.14" width="70" height="50" />
+            <text x="1113.33" y="762.14" class="room-label">DEPOSITO</text>
+        </g>
+        <g id="infermeria" class="room-group">
+            <rect class="room" x="1148.33" y="737.14" width="25" height="50" />
+            <text x="1160.83" y="762.14" class="room-label">INF.</text>
+        </g>
+        <g id="sala-stampa" class="room-group">
+            <rect class="room" x="1203.33" y="737.14" width="95" height="50" />
+            <text x="1250.83" y="762.14" class="room-label">SALA STAMPA</text>
+        </g>
+        <g id="centro-stella" class="room-group">
+            <rect class="room" x="1368.33" y="737.14" width="95" height="50" />
+            <text x="1415.83" y="762.14" class="room-label">CENTRO STELLA</text>
+        </g>
+        <g id="audiovisivi" class="room-group">
+            <rect class="room" x="1493.33" y="737.14" width="95" height="50" />
+            <text x="1540.83" y="762.14" class="room-label">AUDIOVISIVI</text>
+        </g>
 
-            <g id="lab-arti-plastiche" class="room-group">
-              <rect class="room" x="50" y="460" width="90" height="60" />
-              <text x="53" y="474" class="room-label">LAB ARTI PLASTICHE</text>
-            </g>
-            <g id="aula-4" class="room-group">
-              <rect class="room" x="140" y="460" width="70" height="60" />
-              <text x="158" y="474" class="room-label">4</text>
-            </g>
-            <g id="aula-3" class="room-group">
-              <rect class="room" x="210" y="460" width="70" height="60" />
-              <text x="223" y="474" class="room-label">3</text>
-            </g>
-            <g id="aula-2" class="room-group">
-              <rect class="room" x="280" y="460" width="70" height="60" />
-              <text x="288" y="474" class="room-label">2</text>
-            </g>
-            <g id="aula-1" class="room-group">
-              <rect class="room" x="350" y="460" width="70" height="60" />
-              <text x="353" y="474" class="room-label">1</text>
-            </g>
+        <g id="lab-arti-plastiche" class="room-group">
+            <rect class="room" x="883.33" y="817.14" width="90" height="60" />
+            <text x="886.33" y="831.14" class="room-label">LAB ARTI PLASTICHE</text>
+        </g>
+        <g id="aula-4" class="room-group">
+            <rect class="room" x="973.33" y="817.14" width="70" height="60" />
+            <text x="991.33" y="831.14" class="room-label">4</text>
+        </g>
+        <g id="aula-3" class="room-group">
+            <rect class="room" x="1043.33" y="817.14" width="70" height="60" />
+            <text x="1056.33" y="831.14" class="room-label">3</text>
+        </g>
+        <g id="aula-2" class="room-group">
+            <rect class="room" x="1113.33" y="817.14" width="70" height="60" />
+            <text x="1121.33" y="831.14" class="room-label">2</text>
+        </g>
+        <g id="aula-1" class="room-group">
+            <rect class="room" x="1183.33" y="817.14" width="70" height="60" />
+            <text x="1186.33" y="831.14" class="room-label">1</text>
+        </g>
 
-            <!-- PROSEGUIMENTO RIGA INFERIORE -->
-            <g id="lab-gerosa" class="room-group">
-              <rect class="room" x="580" y="460" width="140" height="60" />
-              <text x="593" y="474" class="room-label">LAB GEROSA</text>
-            </g>
-            <g id="aula-29" class="room-group">
-              <rect class="room" x="720" y="460" width="70" height="60" />
-              <text x="723" y="474" class="room-label">29</text>
-            </g>
-            <g id="aula-28" class="room-group">
-              <rect class="room" x="790" y="460" width="70" height="60" />
-              <text x="803" y="474" class="room-label">28</text>
-            </g>
-            <g id="aula-3-0" class="room-group">
-              <rect class="room" x="860" y="460" width="90" height="60" />
-              <text x="853" y="474" class="room-label">AULA 3.0</text>
-            </g>
+        <!-- PROSEGUIMENTO RIGA INFERIORE -->
+        <g id="lab-gerosa" class="room-group">
+            <rect class="room" x="1413.33" y="817.14" width="140" height="60" />
+            <text x="1426.33" y="831.14" class="room-label">LAB GEROSA</text>
+        </g>
+        <g id="aula-29" class="room-group">
+            <rect class="room" x="1553.33" y="817.14" width="70" height="60" />
+            <text x="1556.33" y="831.14" class="room-label">29</text>
+        </g>
+        <g id="aula-28" class="room-group">
+            <rect class="room" x="1623.33" y="817.14" width="70" height="60" />
+            <text x="1636.33" y="831.14" class="room-label">28</text>
+        </g>
+        <g id="aula-3-0" class="room-group">
+            <rect class="room" x="1693.33" y="817.14" width="90" height="60" />
+            <text x="1686.33" y="831.14" class="room-label">AULA 3.0</text>
+        </g>
 
-            <!-- 2. UFFICI CENTRALI -->
-            <g id="ufficio-segreteria" class="room-group">
-              <rect class="room" x="500" y="490" width="80" height="115" />
-              <text x="505" y="510" class="room-label">UFFICIO (S)</text>
-            </g>
-            <g id="ufficio-dsga" class="room-group">
-              <rect class="room" x="500" y="605" width="80" height="45" />
-              <text x="505" y="625" class="room-label">DSGA</text>
-            </g>
-            <!-- AREA INGRESSO PRINCIPALE -->
-            <g id="area-ingresso" class="room-group">
-              <rect
-                class="room"
-                x="460"
-                y="595"
-                width="80"
-                height="60"
-                rx="4"
-              />
-              <text
-                x="500"
-                y="625"
-                text-anchor="middle"
-                dominant-baseline="central"
-                class="room-label"
-              >
+        <!-- 2. UFFICI CENTRALI -->
+        <g id="ufficio-segreteria" class="room-group">
+            <rect class="room" x="1333.33" y="847.14" width="80" height="115" />
+            <text x="1338.33" y="867.14" class="room-label">UFFICIO (S)</text>
+        </g>
+        <g id="ufficio-dsga" class="room-group">
+            <rect class="room" x="1333.33" y="962.14" width="80" height="45" />
+            <text x="1338.33" y="982.14" class="room-label">DSGA</text>
+        </g>
+
+        <!-- AREA INGRESSO PRINCIPALE -->
+        <g id="area-ingresso" class="room-group">
+            <rect class="room" x="1293.33" y="952.14" width="80" height="60" rx="4" />
+            <text x="1333.33" y="982.14" text-anchor="middle" dominant-baseline="central" class="room-label">
                 INGRESSO
-              </text>
-            </g>
-            <g id="ufficio-tecnico" class="room-group">
-              <rect class="room" x="500" y="650" width="80" height="45" />
-              <text x="505" y="670" class="room-label">UFFICIO TECNICO</text>
-            </g>
-            <g id="aula-commissioni" class="room-group">
-              <rect class="room" x="500" y="695" width="80" height="35" />
-              <text x="505" y="715" class="room-label">COMMISSIONI</text>
-            </g>
-            <g id="aula-pcto" class="room-group">
-              <rect class="room" x="500" y="730" width="35" height="30" />
-              <text x="505" y="745" class="room-label">PCTO</text>
-            </g>
-            <g id="spogliatoio-ata" class="room-group">
-              <rect class="room" x="500" y="760" width="35" height="30" />
-              <text x="505" y="775" class="room-label">ATA</text>
-            </g>
+            </text>
+        </g>
+        <g id="ufficio-tecnico" class="room-group">
+            <rect class="room" x="1333.33" y="1007.14" width="80" height="45" />
+            <text x="1338.33" y="1027.14" class="room-label">UFFICIO TECNICO</text>
+        </g>
+        <g id="aula-commissioni" class="room-group">
+            <rect class="room" x="1333.33" y="1052.14" width="80" height="35" />
+            <text x="1338.33" y="1072.14" class="room-label">COMMISSIONI</text>
+        </g>
+        <g id="aula-pcto" class="room-group">
+            <rect class="room" x="1333.33" y="1087.14" width="35" height="30" />
+            <text x="1338.33" y="1102.14" class="room-label">PCTO</text>
+        </g>
+        <g id="spogliatoio-ata" class="room-group">
+            <rect class="room" x="1333.33" y="1117.14" width="35" height="30" />
+            <text x="1338.33" y="1132.14" class="room-label">ATA</text>
+        </g>
 
-            <!-- ===== 3. BLOCCO SUD: RIGA SUPERIORE ===== -->
-            <g id="ex-in-rete" class="room-group">
-              <rect class="room" x="50" y="730" width="90" height="60" />
-              <text x="53" y="744" class="room-label">EX IN RETE</text>
-            </g>
-            <g id="aula-51" class="room-group">
-              <rect class="room" x="140" y="730" width="70" height="60" />
-              <text x="158" y="744" class="room-label">51</text>
-            </g>
-            <g id="aula-52" class="room-group">
-              <rect class="room" x="210" y="730" width="70" height="60" />
-              <text x="223" y="744" class="room-label">52</text>
-            </g>
-            <g id="aula-53" class="room-group">
-              <rect class="room" x="280" y="730" width="70" height="60" />
-              <text x="288" y="744" class="room-label">53</text>
-            </g>
-            <g id="aula-54" class="room-group">
-              <rect class="room" x="350" y="730" width="70" height="60" />
-              <text x="353" y="744" class="room-label">54</text>
-            </g>
+        <!-- ===== 3. BLOCCO SUD: RIGA SUPERIORE ===== -->
+        <g id="ex-in-rete" class="room-group">
+            <rect class="room" x="883.33" y="1087.14" width="90" height="60" />
+            <text x="886.33" y="1101.14" class="room-label">EX IN RETE</text>
+        </g>
+        <g id="aula-51" class="room-group">
+            <rect class="room" x="973.33" y="1087.14" width="70" height="60" />
+            <text x="991.33" y="1101.14" class="room-label">51</text>
+        </g>
+        <g id="aula-52" class="room-group">
+            <rect class="room" x="1043.33" y="1087.14" width="70" height="60" />
+            <text x="1056.33" y="1101.14" class="room-label">52</text>
+        </g>
+        <g id="aula-53" class="room-group">
+            <rect class="room" x="1113.33" y="1087.14" width="70" height="60" />
+            <text x="1121.33" y="1101.14" class="room-label">53</text>
+        </g>
+        <g id="aula-54" class="room-group">
+            <rect class="room" x="1183.33" y="1087.14" width="70" height="60" />
+            <text x="1186.33" y="1101.14" class="room-label">54</text>
+        </g>
 
-            <g id="sala-professori" class="room-group">
-              <rect class="room" x="535" y="730" width="115" height="60" />
-              <text x="538" y="774" class="room-label">SALA DOCENTI</text>
-            </g>
-            <g id="aula-34" class="room-group">
-              <rect class="room" x="650" y="730" width="70" height="60" />
-              <text x="655" y="744" class="room-label">34</text>
-            </g>
-            <g id="aula-35" class="room-group">
-              <rect class="room" x="720" y="730" width="70" height="60" />
-              <text x="735" y="744" class="room-label">35</text>
-            </g>
-            <g id="aula-36" class="room-group">
-              <rect class="room" x="790" y="730" width="70" height="60" />
-              <text x="793" y="744" class="room-label">36</text>
-            </g>
-            <g id="lab-cisco" class="room-group">
-              <rect class="room" x="860" y="730" width="90" height="60" />
-              <text x="865" y="774" class="room-label">LAB CISCO</text>
-            </g>
+        <g id="sala-professori" class="room-group">
+            <rect class="room" x="1368.33" y="1087.14" width="115" height="60" />
+            <text x="1371.33" y="1131.14" class="room-label">SALA DOCENTI</text>
+        </g>
+        <g id="aula-34" class="room-group">
+            <rect class="room" x="1483.33" y="1087.14" width="70" height="60" />
+            <text x="1488.33" y="1101.14" class="room-label">34</text>
+        </g>
+        <g id="aula-35" class="room-group">
+            <rect class="room" x="1553.33" y="1087.14" width="70" height="60" />
+            <text x="1568.33" y="1101.14" class="room-label">35</text>
+        </g>
+        <g id="aula-36" class="room-group">
+            <rect class="room" x="1623.33" y="1087.14" width="70" height="60" />
+            <text x="1626.33" y="1101.14" class="room-label">36</text>
+        </g>
+        <g id="lab-cisco" class="room-group">
+            <rect class="room" x="1693.33" y="1087.14" width="90" height="60" />
+            <text x="1698.33" y="1131.14" class="room-label">LAB CISCO</text>
+        </g>
 
-            <!-- ===== 3. BLOCCO SUD: MANICA OVEST ===== -->
-            <g id="aula-design" class="room-group">
-              <rect class="room" x="50" y="820" width="70" height="100" />
-              <text x="54" y="858" class="room-label">AULA DESIGN</text>
-            </g>
-            <g id="lab-design" class="room-group">
-              <rect class="room" x="50" y="920" width="70" height="90" />
-              <text x="54" y="940" class="room-label">LAB DESIGN</text>
-            </g>
-            <g id="ele-tele" class="room-group">
-              <rect class="room" x="50" y="1010" width="70" height="80" />
-              <text x="54" y="1040" class="room-label">ELE-TELE</text>
-            </g>
-            <g id="aula-49" class="room-group">
-              <rect class="room" x="50" y="1090" width="35" height="110" />
-              <text x="54" y="1110" class="room-label">49</text>
-            </g>
+        <!-- ===== 3. BLOCCO SUD: MANICA OVEST ===== -->
+        <g id="aula-design" class="room-group">
+            <rect class="room" x="883.33" y="1177.14" width="70" height="100" />
+            <text x="887.33" y="1215.14" class="room-label">AULA DESIGN</text>
+        </g>
+        <g id="lab-design" class="room-group">
+            <rect class="room" x="883.33" y="1277.14" width="70" height="90" />
+            <text x="887.33" y="1297.14" class="room-label">LAB DESIGN</text>
+        </g>
+        <g id="ele-tele" class="room-group">
+            <rect class="room" x="883.33" y="1367.14" width="70" height="80" />
+            <text x="887.33" y="1397.14" class="room-label">ELE-TELE</text>
+        </g>
+        <g id="aula-49" class="room-group">
+            <rect class="room" x="883.33" y="1447.14" width="35" height="110" />
+            <text x="887.33" y="1467.14" class="room-label">49</text>
+        </g>
 
-            <!-- ===== 3. BLOCCO SUD: AULE SIMMETRICHE ===== -->
-            <g id="aula-32" class="room-group">
-              <rect class="room" x="535" y="820" width="95" height="50" />
-              <text x="538" y="830" class="room-label">32</text>
-            </g>
-            <g id="aula-33" class="room-group">
-              <rect class="room" x="660" y="820" width="95" height="50" />
-              <text x="663" y="830" class="room-label">33</text>
-            </g>
+        <!-- ===== 3. BLOCCO SUD: AULE SIMMETRICHE ===== -->
+        <g id="aula-32" class="room-group">
+            <rect class="room" x="1368.33" y="1177.14" width="95" height="50" />
+            <text x="1371.33" y="1187.14" class="room-label">32</text>
+        </g>
+        <g id="aula-33" class="room-group">
+            <rect class="room" x="1493.33" y="1177.14" width="95" height="50" />
+            <text x="1496.33" y="1187.14" class="room-label">33</text>
+        </g>
 
-            <!-- ===== 3. BLOCCO SUD: AULE ACCESORIE ===== -->
-            <g id="spazio-ristoro" class="room-group">
-              <rect class="room" x="245" y="820" width="95" height="50" />
-              <text x="248" y="830" class="room-label">SPAZIO RISTORO</text>
-            </g>
+        <!-- ===== 3. BLOCCO SUD: AULE ACCESORIE ===== -->
+        <g id="spazio-ristoro" class="room-group">
+            <rect class="room" x="1078.33" y="1177.14" width="95" height="50" />
+            <text x="1081.33" y="1187.14" class="room-label">SPAZIO RISTORO</text>
+        </g>
 
-            <g id="break-bagni" class="room-group">
-              <rect class="room" x="370" y="820" width="95" height="50" />
-              <text x="373" y="830" class="room-label">BREAK BAGNI</text>
-            </g>
+        <g id="break-bagni" class="room-group">
+            <rect class="room" x="1203.33" y="1177.14" width="95" height="50" />
+            <text x="1206.33" y="1187.14" class="room-label">BREAK BAGNI</text>
+        </g>
 
-            <!-- ===== 3. BLOCCO SUD: LABORATORI CENTRALI INFERIORI ===== -->
-            <g id="tpsee" class="room-group">
-              <rect class="room" x="150" y="1010" width="140" height="80" />
-              <text x="155" y="1040" class="room-label">LAB TPSEE</text>
-            </g>
-            <g id="centro-sistemi" class="room-group">
-              <rect class="room" x="290" y="1010" width="50" height="60" />
-              <text x="293" y="1043" class="room-label">CENTRO SIST.</text>
-            </g>
-            <g id="lab-microbiologia" class="room-group">
-              <rect class="room" x="370" y="1010" width="95" height="80" />
-              <text x="373" y="1043" class="room-label">LAB MICROBIOLOGIA</text>
-            </g>
-            <g id="lab-chimica-fisica" class="room-group">
-              <rect class="room" x="465" y="1010" width="90" height="80" />
-              <text x="473" y="1043" class="room-label">
+        <!-- ===== 3. BLOCCO SUD: LABORATORI CENTRALI INFERIORI ===== -->
+        <g id="tpsee" class="room-group">
+            <rect class="room" x="983.33" y="1367.14" width="140" height="80" />
+            <text x="988.33" y="1397.14" class="room-label">LAB TPSEE</text>
+        </g>
+        <g id="centro-sistemi" class="room-group">
+            <rect class="room" x="1123.33" y="1367.14" width="50" height="60" />
+            <text x="1126.33" y="1400.14" class="room-label">CENTRO SIST.</text>
+        </g>
+        <g id="lab-microbiologia" class="room-group">
+            <rect class="room" x="1203.33" y="1367.14" width="95" height="80" />
+            <text x="1206.33" y="1400.14" class="room-label">LAB MICROBIOLOGIA</text>
+        </g>
+        <g id="lab-chimica-fisica" class="room-group">
+            <rect class="room" x="1298.33" y="1367.14" width="90" height="80" />
+            <text x="1306.33" y="1400.14" class="room-label">
                 LAB CHIMICA FISICA
-              </text>
-            </g>
-            <g id="aula-46" class="room-group">
-              <rect class="room" x="555" y="1010" width="75" height="80" />
-              <text x="583" y="1043" class="room-label">46</text>
-            </g>
-            <g id="ufficio-magazzino" class="room-group">
-              <rect class="room" x="660" y="1010" width="40" height="40" />
-              <text x="663" y="1043" class="room-label"></text>
-            </g>
-            <g id="aula-41" class="room-group">
-              <rect class="room" x="700" y="1010" width="75" height="80" />
-              <text x="733" y="1043" class="room-label">41</text>
-            </g>
-            <g id="aula-40" class="room-group">
-              <rect class="room" x="775" y="1010" width="75" height="80" />
-              <text x="793" y="1043" class="room-label">40</text>
-            </g>
+            </text>
+        </g>
+        <g id="aula-46" class="room-group">
+            <rect class="room" x="1388.33" y="1367.14" width="75" height="80" />
+            <text x="1416.33" y="1400.14" class="room-label">46</text>
+        </g>
+        <g id="ufficio-magazzino" class="room-group">
+            <rect class="room" x="1493.33" y="1367.14" width="40" height="40" />
+            <text x="1496.33" y="1400.14" class="room-label"></text>
+        </g>
+        <g id="aula-41" class="room-group">
+            <rect class="room" x="1533.33" y="1367.14" width="75" height="80" />
+            <text x="1566.33" y="1400.14" class="room-label">41</text>
+        </g>
+        <g id="aula-40" class="room-group">
+            <rect class="room" x="1608.33" y="1367.14" width="75" height="80" />
+            <text x="1626.33" y="1400.14" class="room-label">40</text>
+        </g>
 
-            <!-- ===== 3. BLOCCO SUD: MANICA EST ===== -->
-            <g id="aula-37" class="room-group">
-              <rect class="room" x="880" y="820" width="70" height="50" />
-              <text x="883" y="858" class="room-label">37</text>
-            </g>
-            <g id="aula-38" class="room-group">
-              <rect class="room" x="880" y="870" width="70" height="70" />
-              <text x="883" y="870" class="room-label">38</text>
-            </g>
-            <g id="aula-39" class="room-group">
-              <rect class="room" x="880" y="940" width="70" height="70" />
-              <text x="883" y="960" class="room-label">39</text>
-            </g>
-            <g id="biblioteca" class="room-group">
-              <rect class="room" x="880" y="1010" width="70" height="60" />
-              <text x="883" y="1040" class="room-label">BIBL.</text>
-            </g>
-            <g id="ex-biblioteca" class="room-group">
-              <rect class="room" x="880" y="1070" width="70" height="50" />
-              <text x="883" y="1110" class="room-label">EX BIBL.</text>
-            </g>
+        <!-- ===== 3. BLOCCO SUD: MANICA EST ===== -->
+        <g id="aula-37" class="room-group">
+            <rect class="room" x="1713.33" y="1177.14" width="70" height="50" />
+            <text x="1716.33" y="1215.14" class="room-label">37</text>
+        </g>
+        <g id="aula-38" class="room-group">
+            <rect class="room" x="1713.33" y="1227.14" width="70" height="70" />
+            <text x="1716.33" y="1227.14" class="room-label">38</text>
+        </g>
+        <g id="aula-39" class="room-group">
+            <rect class="room" x="1713.33" y="1297.14" width="70" height="70" />
+            <text x="1716.33" y="1317.14" class="room-label">39</text>
+        </g>
+        <g id="biblioteca" class="room-group">
+            <rect class="room" x="1713.33" y="1367.14" width="70" height="60" />
+            <text x="1716.33" y="1397.14" class="room-label">BIBL.</text>
+        </g>
+        <g id="ex-biblioteca" class="room-group">
+            <rect class="room" x="1713.33" y="1427.14" width="70" height="50" />
+            <text x="1716.33" y="1467.14" class="room-label">EX BIBL.</text>
+        </g>
 
-            <!-- ===== 3. BLOCCO SUD: RIGA INFERIORE ===== -->
-            <g id="aula-48" class="room-group">
-              <rect class="room" x="85" y="1120" width="35" height="80" />
-              <text x="95" y="1154" class="room-label">48</text>
-            </g>
-            <g id="aula-47" class="room-group">
-              <rect class="room" x="120" y="1120" width="80" height="80" />
-              <text x="123" y="1154" class="room-label">47</text>
-            </g>
-            <g id="lab-sistemi-2" class="room-group">
-              <rect class="room" x="200" y="1120" width="130" height="80" />
-              <text x="205" y="1154" class="room-label">LAB SISTEMI 2</text>
-            </g>
-            <g id="lab-sistemi-1" class="room-group">
-              <rect class="room" x="330" y="1120" width="130" height="80" />
-              <text x="335" y="1154" class="room-label">LAB SISTEMI 1</text>
-            </g>
+        <!-- ===== 3. BLOCCO SUD: RIGA INFERIORE ===== -->
+        <g id="aula-48" class="room-group">
+            <rect class="room" x="918.33" y="1477.14" width="35" height="80" />
+            <text x="928.33" y="1511.14" class="room-label">48</text>
+        </g>
+        <g id="aula-47" class="room-group">
+            <rect class="room" x="953.33" y="1477.14" width="80" height="80" />
+            <text x="956.33" y="1511.14" class="room-label">47</text>
+        </g>
+        <g id="lab-sistemi-2" class="room-group">
+            <rect class="room" x="1033.33" y="1477.14" width="130" height="80" />
+            <text x="1038.33" y="1511.14" class="room-label">LAB SISTEMI 2</text>
+        </g>
+        <g id="lab-sistemi-1" class="room-group">
+            <rect class="room" x="1163.33" y="1477.14" width="130" height="80" />
+            <text x="1168.33" y="1511.14" class="room-label">LAB SISTEMI 1</text>
+        </g>
 
-            <!-- Blocco Destra dell'Ingresso -->
-            <g id="aula-45" class="room-group">
-              <rect class="room" x="540" y="1120" width="65" height="80" />
-              <text x="543" y="1154" class="room-label">45</text>
-            </g>
-            <g id="aula-44" class="room-group">
-              <rect class="room" x="605" y="1120" width="55" height="80" />
-              <text x="603" y="1154" class="room-label">44</text>
-            </g>
-            <g id="aula-43" class="room-group">
-              <rect class="room" x="660" y="1120" width="50" height="80" />
-              <text x="663" y="1154" class="room-label">43</text>
-            </g>
-            <g id="aula-42" class="room-group">
-              <rect class="room" x="710" y="1120" width="50" height="80" />
-              <text x="713" y="1154" class="room-label">42</text>
-            </g>
-            <g id="lab-informatica" class="room-group">
-              <rect class="room" x="760" y="1120" width="90" height="80" />
-              <text x="763" y="1154" class="room-label">LAB INFORM.</text>
-            </g>
-            <g id="aula-polifunzionale" class="room-group">
-              <rect class="room" x="850" y="1120" width="100" height="80" />
-              <text x="853" y="1154" class="room-label">AULA POLIFUNZ.</text>
-            </g>
-          </g>
-          <!-- Livello per il disegno della linea di navigazione -->
-            <path id="route-path" d="" fill="none" stroke="#2563eb" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 8" />
-       
-        </svg>
+        <!-- Blocco Destra dell'Ingresso -->
+        <g id="aula-45" class="room-group">
+            <rect class="room" x="1373.33" y="1477.14" width="65" height="80" />
+            <text x="1376.33" y="1511.14" class="room-label">45</text>
+        </g>
+        <g id="aula-44" class="room-group">
+            <rect class="room" x="1438.33" y="1477.14" width="55" height="80" />
+            <text x="1436.33" y="1511.14" class="room-label">44</text>
+        </g>
+        <g id="aula-43" class="room-group">
+            <rect class="room" x="1493.33" y="1477.14" width="50" height="80" />
+            <text x="1496.33" y="1511.14" class="room-label">43</text>
+        </g>
+        <g id="aula-42" class="room-group">
+            <rect class="room" x="1543.33" y="1477.14" width="50" height="80" />
+            <text x="1546.33" y="1511.14" class="room-label">42</text>
+        </g>
+        <g id="lab-informatica" class="room-group">
+            <rect class="room" x="1593.33" y="1477.14" width="90" height="80" />
+            <text x="1596.33" y="1511.14" class="room-label">LAB INFORM.</text>
+        </g>
+        <g id="aula-polifunzionale" class="room-group">
+            <rect class="room" x="1683.33" y="1477.14" width="100" height="80" />
+            <text x="1686.33" y="1511.14" class="room-label">AULA POLIFUNZ.</text>
+        </g>
+    </g>
+
+</svg>

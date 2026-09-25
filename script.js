@@ -1,8 +1,12 @@
 /* ==========================================================================
-   CONFIGURAZIONE STANZE EDIFICIO (AULE + LAB + UFFICI)
+   CONFIGURAZIONE E VARIABILI GLOBALI
    ========================================================================== */
 
-// Lista aule dismesse o sostituite (inclusa la vecchia aula-30 per evitare doppioni)
+let partenzaId = "area-ingresso";
+let destinazioneId = null;
+let initialViewBox = "0 0 2142.86 2500";
+
+// Lista aule dismesse o sostituite
 const auleRimosse = [
   "aula-5",
   "aula-11",
@@ -54,7 +58,7 @@ const stanzeConfig = {
     "lab-design": { titolo: "Lab. Computer Grafica" },
   },
   "Aule Didattiche": {
-    "aula-3-0": { titolo: "Aula 3.0" }, // <--- ID allineato con l'HTML (aula-3-0)
+    "aula-3-0": { titolo: "Aula 3.0" },
     "aula-polifunzionale": { titolo: "Aula Polifunzionale" },
     biblioteca: { titolo: "Biblioteca" },
     ...auleDidattiche,
@@ -67,139 +71,6 @@ const stanzeConfig = {
     "bagno-1S": { titolo: "Bagni Blocco Sud" },
   },
 };
-
-/* ==========================================================================
-   SISTEMA DI NAVIGAZIONE E ROUTING (ALLINEAMENTO CORRIDOI)
-   ========================================================================== */
-
-const nodiMappa = {
-  // --- PORTE E INGRESSI ---
-  "area-ingresso": { x: 480, y: 500 },
-
-  // --- CORRIDOIO VERTICALE CENTRALE (Asse X = 500) ---
-  "node-corrid-centrale": { x: 500, y: 500 },
-  "node-incrocio-t-nord": { x: 500, y: 320 },     // Snodo principale nel corridoio orizzontale
-
-  // --- CORRIDOIO ORIZZONTALE NORD-EST (Asse Y = 320, passa sopra Lab Gerosa e sotto i Bagni) ---
-  "node-corrid-nord-est": { x: 880, y: 320 },     // Punto di svolta davanti all'Aula 3.0
-
-  // --- ANCORAGGI PERCORSO (Ingresso nelle stanze) ---
-  "aula-3-0": { x: 880, y: 450 },
-  "centro-sistemi": { x: 485, y: 840 }
-};
-
-const grafoCorridoi = {
-  // 1. Dall'ingresso ci si immette al centro del corridoio verticale
-  "area-ingresso": {
-    "node-corrid-centrale": 20
-  },
-  "node-corrid-centrale": {
-    "area-ingresso": 20,
-    "node-incrocio-t-nord": 180
-  },
-
-  // 2. Dal corridoio verticale si sale fino allo snodo e si svolta a destra nel corridoio orizzontale
-  "node-incrocio-t-nord": {
-    "node-corrid-centrale": 180,
-    "node-corrid-nord-est": 380
-  },
-
-  // 3. Dal corridoio orizzontale si scende ortogonalmente dentro l'Aula 3.0
-  "node-corrid-nord-est": {
-    "node-incrocio-t-nord": 380,
-    "aula-3-0": 130
-  },
-  "aula-3-0": {
-    "node-corrid-nord-est": 130
-  }
-};
-
-/* Calcolo del percorso minimo tra due nodi (Dijkstra) */
-function calcolaPercorsoBreve(startNode, endNode) {
-  if (!nodiMappa[startNode] || !nodiMappa[endNode]) return [];
-
-  const distanze = {};
-  const precedenti = {};
-  const nodiDaVisitare = new Set(Object.keys(nodiMappa));
-
-  Object.keys(nodiMappa).forEach((nodo) => {
-    distanze[nodo] = Infinity;
-    precedenti[nodo] = null;
-  });
-  distanze[startNode] = 0;
-
-  while (nodiDaVisitare.size > 0) {
-    // Trova il nodo non visitato con la distanza minore
-    let nodoCorrente = null;
-    nodiDaVisitare.forEach((nodo) => {
-      if (nodoCorrente === null || distanze[nodo] < distanze[nodoCorrente]) {
-        nodoCorrente = nodo;
-      }
-    });
-
-    if (distanze[nodoCorrente] === Infinity || nodoCorrente === endNode) {
-      break;
-    }
-
-    nodiDaVisitare.delete(nodoCorrente);
-
-    // Controlla i vicini collegati nel grafo
-    const vicini = grafoCorridoi[nodoCorrente] || {};
-    Object.entries(vicini).forEach(([vicino, peso]) => {
-      if (nodiDaVisitare.has(vicino)) {
-        const nuovaDistanza = distanze[nodoCorrente] + peso;
-        if (nuovaDistanza < distanze[vicino]) {
-          distanze[vicino] = nuovaDistanza;
-          precedenti[vicino] = nodoCorrente;
-        }
-      }
-    });
-  }
-
-  // Ricostruisci il percorso al contrario
-  const percorso = [];
-  let at = endNode;
-  while (at !== null) {
-    percorso.push(at);
-    at = precedenti[at];
-  }
-
-  return percorso.reverse()[0] === startNode ? percorso : [];
-}
-
-/* Disegna la linea del percorso sull'SVG */
-function mostraPercorsoMappa() {
-  const pathEl = document.getElementById("route-path");
-  if (!pathEl) return;
-
-  if (!partenzaId || !destinazioneId || partenzaId === destinazioneId) {
-    pathEl.setAttribute("d", "");
-    return;
-  }
-
-  const sequenzaNodi = calcolaPercorsoBreve(partenzaId, destinazioneId);
-
-  if (sequenzaNodi.length < 2) {
-    pathEl.setAttribute("d", "");
-    return;
-  }
-
-  // Costruisci il comando SVG 'd' (M x y L x y ...)
-  const pathData = sequenzaNodi.reduce((acc, nodeId, index) => {
-    const coords = nodiMappa[nodeId];
-    if (!coords) return acc;
-    return index === 0
-      ? `M ${coords.x} ${coords.y}`
-      : `${acc} L ${coords.x} ${coords.y}`;
-  }, "");
-
-  pathEl.setAttribute("d", pathData);
-}
-
-/* Stato della navigazione */
-let partenzaId = "area-ingresso";
-let destinazioneId = "";
-let initialViewBox = "0 0 1000 800"; // Memorizza le dimensioni originali dell'SVG
 
 /* ==========================================================================
    INIZIALIZZAZIONE SELETTORI (DROPDOWN & SWAP)
@@ -220,7 +91,6 @@ function popolaDropdowns() {
     let groupTo = `<optgroup label="${categoria}">`;
 
     Object.entries(stanze).forEach(([id, info]) => {
-      // Filtro di sicurezza aggiuntivo per escludere qualsiasi aula rimossa
       if (!auleRimosse.includes(id)) {
         groupFrom += `<option value="${id}">${info.titolo}</option>`;
         groupTo += `<option value="${id}">${info.titolo}</option>`;
@@ -239,7 +109,6 @@ function popolaDropdowns() {
 
   selectFrom.value = partenzaId;
 
-  // Listener cambio selezione da menu a tendina
   selectFrom.addEventListener("change", (e) => {
     partenzaId = e.target.value;
     aggiornaMappa(true);
@@ -250,11 +119,9 @@ function popolaDropdowns() {
     aggiornaMappa(true);
   });
 
-  // Event Listener per il pulsante d'inversione DA ⇄ A
   btnSwap?.addEventListener("click", scambiaOrigineDestinazione);
 }
 
-/* Funzione per invertire Origine e Destinazione */
 function scambiaOrigineDestinazione() {
   const temp = partenzaId;
   partenzaId = destinazioneId;
@@ -273,26 +140,25 @@ function aggiornaMappa(focusActive = false) {
   if (selectFrom) selectFrom.value = partenzaId;
   if (selectTo) selectTo.value = destinazioneId;
 
-  // Ripristina tutte le stanze allo stato neutro
   document.querySelectorAll(".room").forEach((r) => {
     r.classList.remove("state-from", "state-to");
   });
 
-  // Evidenzia Partenza (Arancione)
   if (partenzaId) {
     evidenziaElemento(partenzaId, "state-from");
   }
 
-  // Evidenzia Destinazione (Blu)
   if (destinazioneId) {
     evidenziaElemento(destinazioneId, "state-to");
   }
 
-  // Inquadra sia la partenza che la destinazione contemporaneamente
   if (focusActive) {
     autoFitCamera();
   }
-  mostraPercorsoMappa();
+
+  if (typeof mostraPercorsoMappa === "function") {
+    mostraPercorsoMappa();
+  }
 }
 
 function evidenziaElemento(id, cssClass) {
@@ -300,13 +166,12 @@ function evidenziaElemento(id, cssClass) {
   if (group) {
     const rect = group.querySelector(".room");
     if (rect) {
-      group.parentElement.appendChild(group); // Porta in primo piano il livello
+      group.parentElement.appendChild(group);
       rect.classList.add(cssClass);
     }
   }
 }
 
-/* Inquadra la partenza, la destinazione E il percorso calcolato in modo dinamico */
 function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
@@ -314,7 +179,6 @@ function autoFitCamera() {
   const elFrom = document.getElementById(partenzaId);
   const elTo = document.getElementById(destinazioneId);
 
-  // Se nessuna delle due è selezionata, ripristina la vista completa originale
   if (!elFrom && !elTo) {
     svg.setAttribute("viewBox", initialViewBox);
     return;
@@ -323,15 +187,14 @@ function autoFitCamera() {
   let minX = Infinity, minY = Infinity;
   let maxX = -Infinity, maxY = -Infinity;
 
-  // 1. Considera le coordinate dei rettangoli delle stanze selezionate
   [elFrom, elTo].forEach((el) => {
     if (el) {
       const rect = el.querySelector("rect");
       if (rect) {
-        const rx = parseFloat(rect.getAttribute("x"));
-        const ry = parseFloat(rect.getAttribute("y"));
-        const rw = parseFloat(rect.getAttribute("width"));
-        const rh = parseFloat(rect.getAttribute("height"));
+        const rx = parseFloat(rect.getAttribute("x")) || 0;
+        const ry = parseFloat(rect.getAttribute("y")) || 0;
+        const rw = parseFloat(rect.getAttribute("width")) || 0;
+        const rh = parseFloat(rect.getAttribute("height")) || 0;
 
         minX = Math.min(minX, rx);
         minY = Math.min(minY, ry);
@@ -341,8 +204,7 @@ function autoFitCamera() {
     }
   });
 
-  // 2. Considera anche tutti i nodi del percorso per non tagliare la linea blu
-  if (partenzaId && destinazioneId) {
+  if (typeof calcolaPercorsoBreve === "function" && typeof nodiMappa !== "undefined" && partenzaId && destinazioneId) {
     const sequenzaNodi = calcolaPercorsoBreve(partenzaId, destinazioneId);
     sequenzaNodi.forEach((nodeId) => {
       const coords = nodiMappa[nodeId];
@@ -360,11 +222,9 @@ function autoFitCamera() {
     return;
   }
 
- // Calcolo margini d'inquadratura (padding più ampio)
   const contentWidth = maxX - minX;
   const contentHeight = maxY - minY;
 
-  // Aumentiamo il padding minimo a 250px per un panorama più largo
   const paddingX = Math.max(250, contentWidth * 0.4);
   const paddingY = Math.max(250, contentHeight * 0.4);
 
@@ -373,11 +233,9 @@ function autoFitCamera() {
   let vW = contentWidth + paddingX * 2;
   let vH = contentHeight + paddingY * 2;
 
-  // Garantisce un'area visiva minima per non stringere mai troppo
   vW = Math.max(vW, 700);
   vH = Math.max(vH, 600);
 
-  // Impedisce di uscire dalle coordinate dell'SVG
   vX = Math.max(0, vX);
   vY = Math.max(0, vY);
 
@@ -394,10 +252,8 @@ function setupMapClicks() {
       e.stopPropagation();
       const clickedId = group.getAttribute("id");
 
-      // Se clicchi sulla partenza attuale, ignora
       if (clickedId === partenzaId) return;
 
-      // Imposta come nuova destinazione e inquadra
       destinazioneId = clickedId;
       aggiornaMappa(true);
     });
@@ -414,29 +270,31 @@ function autoFitSvgLabels() {
     const textEl = group.querySelector("text");
 
     if (rect && textEl) {
-      const x = parseFloat(rect.getAttribute("x"));
-      const y = parseFloat(rect.getAttribute("y"));
-      const width = parseFloat(rect.getAttribute("width"));
-      const height = parseFloat(rect.getAttribute("height"));
+      const x = parseFloat(rect.getAttribute("x")) || 0;
+      const y = parseFloat(rect.getAttribute("y")) || 0;
+      const width = parseFloat(rect.getAttribute("width")) || 0;
+      const height = parseFloat(rect.getAttribute("height")) || 0;
       const labelText = textEl.textContent.trim();
 
-      const foreignObj = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "foreignObject",
-      );
-      foreignObj.setAttribute("x", x);
-      foreignObj.setAttribute("y", y);
-      foreignObj.setAttribute("width", width);
-      foreignObj.setAttribute("height", height);
+      if (width > 0 && height > 0) {
+        const foreignObj = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "foreignObject"
+        );
+        foreignObj.setAttribute("x", x);
+        foreignObj.setAttribute("y", y);
+        foreignObj.setAttribute("width", width);
+        foreignObj.setAttribute("height", height);
 
-      foreignObj.innerHTML = `
-        <div class="room-label-container">
-          <span class="room-label-text">${labelText}</span>
-        </div>
-      `;
+        foreignObj.innerHTML = `
+          <div class="room-label-container">
+            <span class="room-label-text">${labelText}</span>
+          </div>
+        `;
 
-      textEl.remove();
-      group.appendChild(foreignObj);
+        textEl.remove();
+        group.appendChild(foreignObj);
+      }
     }
   });
 }
@@ -450,17 +308,13 @@ async function caricaMappaSVG() {
   if (!container) return;
 
   try {
-    // 1. Scarica il file SVG esterno
     const response = await fetch("mappa.svg");
     if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
 
     const svgText = await response.text();
-
-    // 2. Inserisce il contenuto SVG nell'HTML
     container.innerHTML = svgText;
 
-    // 3. Inizializza la mappa e i listener solo DOPO che l'SVG è presente nel DOM
-    const svg = document.getElementById("school-map");
+    const svg = document.getElementById("school-map") || container.querySelector("svg");
     if (svg && svg.getAttribute("viewBox")) {
       initialViewBox = svg.getAttribute("viewBox");
     }
@@ -476,10 +330,8 @@ async function caricaMappaSVG() {
   }
 }
 
-// Avvio dell'app al caricamento della pagina
 document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 
-/* Registrazione Service Worker per supporto Offline (PWA) */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
