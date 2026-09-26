@@ -11,29 +11,47 @@
                 stroke-width: 5;
                 rx: 30;
             }
+
             .blocco {
                 fill-opacity: 0;
                 stroke: slategray;
                 stroke-width: 7;
             }
+
+            .edificio-esterno {
+                fill: whitesmoke;
+                stroke: slategray;
+                stroke-width: 3;
+            }
+
+            .campo-sportivo {
+                fill: whitesmoke;
+                stroke: slategray;
+                stroke-width: 3;
+                rx: 180;
+            }
+
             .corridoio {
                 fill: lightgray;
                 stroke: lightgray;
                 stroke-width: 0;
                 pointer-events: none;
             }
+
             .ingresso {
                 fill: lightblue;
                 stroke: steelblue;
                 stroke-width: 1.5;
                 pointer-events: none;
             }
+
             .bagno {
                 fill: lavender;
                 stroke: black;
                 stroke-width: 1.5;
                 pointer-events: none;
             }
+
             .room {
                 fill: #ffffff !important;
                 stroke: #475569 !important;
@@ -41,12 +59,14 @@
                 transition: all 0.25s ease;
                 cursor: pointer;
             }
+
             text {
                 fill: #1e293b;
                 font-family: sans-serif;
             }
         </style>
     </defs>
+
 
     <!-- ARCHITETTURA DI BASE -->
     <g id="architecture-base">
@@ -56,21 +76,33 @@
         <rect id="blocco-sud" x="883.33" y="1087.14" width="900" height="470" class="blocco" />
     </g>
 
+    <!-- PARCHEGGIO NORD -->
+    <g id="parcheggio-nord">
+        <polygon points="700,367.14 1800,367.14 1800,290 800,20" class="corridoio" />
+        <text x="1200" y="300" text-anchor="middle" dominant-baseline="central" class="room-label">Parcheggio
+            Nord</text>
+
+    </g>
+
     <!-- CORRIDOI -->
     <g id="corridors">
+        <!-- Corridoi Esterni -->
+        <rect id="corridoio-vert-principale" x="753.33" y="367.14" width="60" height="2121" class="corridoio" />
+        <rect id="corridoio-oriz-principale" x="10" y="2020" width="745" height="60" class="corridoio" />
+        <rect id="corridoio-oriz-uscita-sud" x="753.33" y="1600.14" width="1380" height="30" class="corridoio" />
+
         <!-- Blocco Nord -->
         <rect id="corridoio-nord-orizzontale" x="883.33" y="487.14" width="900" height="30" class="corridoio" />
         <rect id="corridoio-vert-1" x="953.33" y="487.14" width="30" height="330" class="corridoio" />
         <rect id="corridoio-vert-2" x="1173.33" y="487.14" width="30" height="330" class="corridoio" />
         <rect id="corridoio-vert-3" x="1463.33" y="487.14" width="30" height="330" class="corridoio" />
         <rect id="corridoio-vert-4" x="1683.33" y="487.14" width="30" height="330" class="corridoio" />
-        <rect id="corridoio-centrale-nord" x="883.33" y="787.14" width="900" height="30" class="corridoio" />
+        <rect id="corridoio-centrale-nord" x="753.33" y="787.14" width="1030" height="30" class="corridoio" />
         <!-- Corridoio Centrale Nord-Sud (Ingresso I.I.S / Uffici) -->
         <rect id="corridoio-centrale-nord-sud" x="1293.33" y="787.14" width="40" height="385" class="corridoio" />
-        <!-- Corridoio Esterno di Ingresso I.I.S / Uffici (ALLARGATO) -->
+        <!-- Corridoio Esterno di Ingresso I.I.S / Uffici  -->
         <g id="ingresso-itis-group">
-            <rect id="corridoio-ingresso-principale" x="873.33" y="952.14" width="415" height="60" stroke="#0f172a"
-                class="corridoio" />
+            <rect id="corridoio-ingresso-principale" x="753.33" y="952.14" width="535" height="60" class="corridoio" />
 
             <!-- BADGE "ENTRATA QUI" INGRANDITO AD ALTO CONTRASTO -->
             <rect x="1063.33" y="957.14" width="215" height="50" rx="8" ry="8" fill="#16a34a" stroke="#ffffff"
@@ -83,13 +115,31 @@
             </text>
         </g>
         <!-- Blocco Sud Corridoi  -->
-        <rect id="corridoio-centrale-sud" x="883.33" y="1147.14" width="900" height="30" class="corridoio" />
+        <rect id="corridoio-centrale-sud" x="753.33" y="1147.14" width="1030" height="30" class="corridoio" />
         <rect id="corridoio-sud-vert-1" x="953.33" y="1172.14" width="30" height="310" class="corridoio" />
         <rect id="corridoio-sud-vert-2" x="1173.33" y="1172.14" width="30" height="310" class="corridoio" />
         <rect id="corridoio-sud-vert-3" x="1463.33" y="1172.14" width="30" height="310" class="corridoio" />
         <rect id="corridoio-sud-vert-4" x="1683.33" y="1172.14" width="30" height="310" class="corridoio" />
         <rect id="corridoio-sud-orizzontale" x="883.33" y="1447.14" width="900" height="30" class="corridoio" />
     </g>
+
+    <!-- ================= EDIFICI ESTERNI =================== -->
+    <rect id="nuova-palazzina" x="240" y="500" width="490" height="280" class="edificio-esterno" />
+    <rect id="floriani-1" x="580" y="900" width="150" height="150" class="edificio-esterno" />
+    <rect id="floriani-2" x="580" y="1080" width="150" height="150" class="edificio-esterno" />
+    <rect id="floriani-3" x="580" y="1260" width="150" height="150" class="edificio-esterno" />
+    <rect id="floriani-palestra" x="410" y="1290" width="150" height="150" class="edificio-esterno" />
+    <rect id="floriani-4" x="240" y="1290" width="150" height="150" class="edificio-esterno" />
+    <rect id="floriani-5" x="240" y="1090" width="150" height="150" class="edificio-esterno" />
+    <rect id="floriani-6" x="410" y="1570" width="320" height="140" class="edificio-esterno" />
+    <rect id="palazzina-distaccata" x="410" y="1840" width="320" height="140" class="edificio-esterno" />
+    <rect id="blocco-palestre" x="883.33" y="1700" width="500" height="720" class="edificio-esterno" />
+    <rect id="tensostruttura" x="1500" y="1900" width="160" height="400" class="edificio-esterno" />
+    <rect id="blocco-atletica" x="1700" y="1700" width="400" height="720"  class="campo-sportivo" />
+    <rect id="palazzina-amfiteatro" x="40" y="1570" width="320" height="410" class="edificio-esterno" />
+    <rect id="palazzina-banfi" x="40" y="2120" width="680" height="310" class="edificio-esterno" />
+
+
 
     <!-- ==================== INGRESSI ==================== -->
     <g id="ingressi">
@@ -219,7 +269,7 @@
             <title>Aula 13</title>
         </g>
         <g id="area-ingresso-nord">
-            <rect class="corridoio" x="1293.33" y="400.14" width="80" height="65" />
+            <rect class="corridoio" x="1293.33" y="350.14" width="80" height="115" />
             <text x="1238.33" y="421.14" class="room-label">13</text>
             <title>Aula 13</title>
         </g>
@@ -414,14 +464,14 @@
             <text x="1186.33" y="831.14" class="room-label">1</text>
             <title>Aula 1</title>
         </g>
-        <g id="area-break-Nord" >
+        <g id="area-break-Nord">
             <rect class="corridoio" x="1253.33" y="817.14" width="70" height="60" />
             <text x="1256.33" y="861.14" class="room-label">Break</text>
             <title>Area Break Nord</title>
         </g>
 
         <!-- PROSEGUIMENTO RIGA INFERIORE -->
-        <g id="area-inclusione" >
+        <g id="area-inclusione">
             <rect class="corridoio" x="1323.33" y="817.14" width="90" height="60" />
             <text x="1366.33" y="841.14" class="room-label">Tavoli</text>
             <title>Area con Tavoli</title>
@@ -519,7 +569,7 @@
             <text x="1186.33" y="1105.14" class="room-label">54</text>
             <title>Aula 54</title>
         </g>
-        <g id="area-break-sud-54" >
+        <g id="area-break-sud-54">
             <rect class="corridoio" x="1253.33" y="1087.14" width="70" height="60" />
             <text x="1256.33" y="1105.14" class="room-label">BREAK</text>
             <title>Area Break Sud</title>
@@ -609,7 +659,7 @@
             <text x="1126.33" y="1407.14" class="room-label">C. SIST.</text>
             <title>Centro Sistemi</title>
         </g>
-         <g id="filler-centro-sistemi" >
+        <g id="filler-centro-sistemi">
             <rect class="corridoio" x="1123.33" y="1427.14" width="50" height="60" />
         </g>
         <g id="lab-microbiologia" class="room-group">
@@ -696,8 +746,8 @@
             <text x="1168.33" y="1520.14" class="room-label">LAB SISTEMI 1</text>
             <title>Lab Sistemi 1</title>
         </g>
-        <g id="area-ingresso-sud" >
-            <rect class="corridoio" x="1293.33" y="1497.14" width="80" height="65" />
+        <g id="area-ingresso-sud">
+            <rect class="corridoio" x="1293.33" y="1497.14" width="80" height="125" />
             <title>Area Ingresso Sud</title>
         </g>
 
