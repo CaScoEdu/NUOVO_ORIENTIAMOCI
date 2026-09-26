@@ -12,16 +12,47 @@
                 rx: 30;
             }
 
+            /* CSS per il rettangolo di evacuazione */
+            .evacuazione {
+                fill: #008B59;
+                /* Verde Sicurezza ISO */
+                stroke: #FFFFFF;
+                /* Bordo Bianco di Contrasto */
+                stroke-width: 4px;
+                /* Spessore leggibile sul canvas 2133px */
+                stroke-linejoin: round;
+                /* Rende gli angoli del bordo morbidi */
+
+                /* Ombra leggera opzionale per staccare dal fondo della mappa */
+                filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
+            }
+
+            .evacuazione-text {
+                fill: #FFFFFF;
+                font-size: 64px;
+                font-weight: bold;
+                text-anchor: middle;
+                dominant-baseline: central;
+            }
+
+            .evacuazione-text-small {
+                fill: #FFFFFF;
+                font-size: 32px;
+                font-weight: bold;
+                text-anchor: middle;
+                dominant-baseline: central;
+            }
+
             .blocco {
                 fill-opacity: 0;
                 stroke: slategray;
-                stroke-width: 7;
+                stroke-width: 10;
             }
 
             .edificio-esterno {
                 fill: whitesmoke;
                 stroke: slategray;
-                stroke-width: 3;
+                stroke-width: 1;
             }
 
             .campo-sportivo {
@@ -128,52 +159,136 @@
     <rect id="floriani-1" x="580" y="900" width="150" height="150" class="edificio-esterno" />
     <rect id="floriani-2" x="580" y="1080" width="150" height="150" class="edificio-esterno" />
     <rect id="floriani-3" x="580" y="1260" width="150" height="150" class="edificio-esterno" />
-    <rect id="floriani-palestra" x="410" y="1290" width="150" height="150" class="edificio-esterno" />
+    <g id="palestra-M-group" class="room-group">
+        <rect id="palestra-M-blocco" x="410" y="1290" width="150" height="150" class="blocco" />
+        <rect id="palestra-M" x="410" y="1290" width="150" height="150" class="room" />
+        <text x="440" y="1350" class="room-label">PALESTRA M</text>
+        <title>Palestra M</title>
+    </g>
     <rect id="floriani-4" x="240" y="1290" width="150" height="150" class="edificio-esterno" />
     <rect id="floriani-5" x="240" y="1090" width="150" height="150" class="edificio-esterno" />
     <rect id="floriani-6" x="410" y="1570" width="320" height="140" class="edificio-esterno" />
-    <rect id="palazzina-distaccata" x="410" y="1840" width="320" height="140" class="edificio-esterno" />
-    <rect id="blocco-palestre" x="883.33" y="1700" width="500" height="720" class="edificio-esterno" />
-    <rect id="tensostruttura" x="1500" y="1900" width="160" height="400" class="edificio-esterno" />
-    <rect id="blocco-atletica" x="1700" y="1700" width="400" height="720"  class="campo-sportivo" />
+    <g id="palazzina-ex-vanoni" class="room-group">
+        <rect id="palazzina-distaccata-blocco" x="410" y="1840" width="320" height="140" class="blocco" />
+        <rect id="palazzina-distaccata" x="410" y="1840" width="320" height="140" class="room" />
+        <text x="440" y="1890" class="room-label">PALAZZINA EX VANONI.</text>
+        <title>Palazzina ex Vanoni</title>
+    </g>
+    <g id="blocco-palestre-group" class="room-group">
+        <rect id="blocco-palestre-blocco" x="883.33" y="1700" width="500" height="720" class="blocco" />
+        <rect id="blocco-palestre" x="883.33" y="1700" width="500" height="720" class="room" />
+        <text x="1000" y="1950" class="room-label">PALESTRE A B C D E</text>
+        <title>Palestre A B C D E</title>
+    </g>
+    <g id="blocco-tensostruttura-group" class="room-group">
+        <rect id="blocco-tensostruttura-blocco" x="1500" y="1900" width="160" height="400" class="blocco" />
+        <rect id="blocco-tensostruttura" x="1500" y="1900" width="160" height="400" class="room" />
+        <text x="1520" y="2100" class="room-label">PALLONE</text>
+        <title>Tensostruttura</title>
+    </g>
+    <rect id="blocco-atletica" x="1700" y="1700" width="400" height="720" class="campo-sportivo" />
     <rect id="palazzina-amfiteatro" x="40" y="1570" width="320" height="410" class="edificio-esterno" />
     <rect id="palazzina-banfi" x="40" y="2120" width="680" height="310" class="edificio-esterno" />
 
+    <!-- ================= SICUREZZA =================== -->
+    <g id="gruppo-punto-raccolta-A">
+        <rect id="punto-raccolta-A" class="evacuazione" x="850" y="250" width="120" height="80" />
+        <text x="910" y="290" class="evacuazione-text">A</text>
+        <title>Punto di Raccolta A</title>
+    </g>
+    <g id="gruppo-punto-raccolta-B">
+        <rect id="punto-raccolta-B" class="evacuazione" x="1400" y="150" width="120" height="80" />
+        <text x="1460" y="190" class="evacuazione-text">B</text>
+        <title>Punto di Raccolta B</title>
+    </g>
+    <g id="gruppo-punto-raccolta-C">
+        <rect id="punto-raccolta-C" class="evacuazione" x="1550" y="150" width="120" height="80" />
+        <text x="1610" y="190" class="evacuazione-text">C</text>
+        <title>Punto di Raccolta C</title>
+    </g>
+    <g id="gruppo-punto-raccolta-D">
+        <rect id="punto-raccolta-D" class="evacuazione" x="2000" y="760" width="120" height="80" />
+        <text x="2060" y="800" class="evacuazione-text">D</text>
+        <title>Punto di Raccolta D</title>
+    </g>
+    <g id="gruppo-punto-raccolta-E">
+        <rect id="punto-raccolta-E" class="evacuazione" x="550" y="250" width="120" height="80" />
+        <text x="610" y="290" class="evacuazione-text">E</text>
+        <title>Punto di Raccolta E</title>
+    </g>
+    <g id="gruppo-punto-raccolta-F">
+        <rect id="punto-raccolta-F" class="evacuazione" x="2000" y="1120" width="120" height="80" />
+        <text x="2060" y="1160" class="evacuazione-text">F</text>
+        <title>Punto di Raccolta F</title>
+    </g>
+    <g id="gruppo-punto-raccolta-G">
+        <rect id="punto-raccolta-G" class="evacuazione" x="2000" y="1700" width="120" height="80" />
+        <text x="2060" y="1740" class="evacuazione-text">G</text>
+        <title>Punto di Raccolta G</title>
+    </g>
+    <g id="gruppo-punto-raccolta-H">
+        <rect id="punto-raccolta-H" class="evacuazione" x="1850" y="1700" width="120" height="80" />
+        <text x="1910" y="1740" class="evacuazione-text">H</text>
+        <title>Punto di Raccolta H</title>
+    </g>
+    <g id="gruppo-punto-raccolta-I">
+        <rect id="punto-raccolta-I" class="evacuazione" x="1700" y="1700" width="120" height="80" />
+        <text x="1760" y="1740" class="evacuazione-text">I</text>
+        <title>Punto di Raccolta I</title>
+    </g>
+    <g id="gruppo-punto-raccolta-L">
+        <rect id="punto-raccolta-L" class="evacuazione" x="1500" y="1700" width="120" height="80" />
+        <text x="1560" y="1740" class="evacuazione-text">L</text>
+        <title>Punto di Raccolta L</title>
+    </g>
+    <g id="gruppo-punto-raccolta-M">
+        <rect id="punto-raccolta-M" class="evacuazione" x="620" y="1730" width="120" height="80" />
+        <text x="680" y="1770" class="evacuazione-text">M</text>
+        <title>Punto di Raccolta M</title>
+    </g>
 
-
-    <!-- ==================== INGRESSI ==================== -->
+    <!-- ==================== INGRESSI / USCITE SICUREZZA ==================== -->
     <g id="ingressi">
         <g id="ingresso-nord">
-            <rect id="ingresso-nord-porta" x="1293.33" y="467.14" width="80" height="20" class="ingresso" />
-            <text x="1333.33" y="477.14" text-anchor="middle" dominant-baseline="central" class="room-label">
-                ING.NORD
+            <rect id="ingresso-nord-porta" x="1293.33" y="467.14" width="80" height="20" class="evacuazione" />
+            <text x="1333.33" y="477.14" text-anchor="middle" dominant-baseline="central"
+                class="evacuazione-text-small">
+                B C
             </text>
-            <title>Ingresso Nord</title>
+            <title>Ingresso Nord - Uscite di Sicurezza B e C</title>
         </g>
         <g id="ingresso-nord-ovest">
-            <rect id="ingresso-nord-ovest-porta" x="883.33" y="787.14" width="10" height="30" class="ingresso" />
-            <text x="888.33" y="802.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+            <rect id="ingresso-nord-ovest-porta" x="883.33" y="787.14" width="30" height="30" class="evacuazione" />
+            <text x="900" y="802.14" text-anchor="middle" dominant-baseline="central"
+                class="evacuazione-text-small">A</text>
+            <title>Uscita di Sicurezza A</title>
+
         </g>
         <g id="ingresso-nord-est">
-            <rect id="ingresso-nord-est-porta" x="1773.33" y="787.14" width="10" height="30" class="ingresso" />
-            <text x="1778.33" y="802.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+            <rect id="ingresso-nord-est-porta" x="1773.33" y="787.14" width="10" height="30" class="evacuazione" />
+            <text x="1778.33" y="802.14" text-anchor="middle" dominant-baseline="central"
+                class="evacuazione-text-small"></text>
         </g>
         <g id="ingresso-centrale-itis">
-            <rect id="ingresso-centrale-itis-porta" x="1288.33" y="962.14" width="10" height="40" class="ingresso" />
-            <text x="1293.33" y="982.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+            <rect id="ingresso-centrale-itis-porta" x="1288.33" y="962.14" width="10" height="40" class="evacuazione" />
+            <text x="1293.33" y="982.14" text-anchor="middle" dominant-baseline="central"
+                class="evacuazione-text-small"></text>
         </g>
         <g id="ingresso-sud-ovest">
-            <rect id="ingresso-sud-ovest-porta" x="883.33" y="1147.14" width="10" height="30" class="ingresso" />
-            <text x="888.33" y="1162.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+            <rect id="ingresso-sud-ovest-porta" x="883.33" y="1147.14" width="10" height="30" class="evacuazione" />
+            <text x="888.33" y="1162.14" text-anchor="middle" dominant-baseline="central"
+                class="evacuazione-text-small"></text>
         </g>
         <g id="ingresso-sud-est">
-            <rect id="ingresso-sud-est-porta" x="1773.33" y="1147.14" width="10" height="30" class="ingresso" />
-            <text x="1778.33" y="1162.14" text-anchor="middle" dominant-baseline="central" class="room-label"></text>
+            <rect id="ingresso-sud-est-porta" x="1773.33" y="1147.14" width="10" height="30" class="evacuazione" />
+            <text x="1778.33" y="1162.14" text-anchor="middle" dominant-baseline="central"
+                class="evacuazione-text-small"></text>
         </g>
 
         <g id="ingresso-sud">
-            <rect id="ingresso-sud-porta" x="1293.33" y="1476.14" width="80" height="20" class="ingresso" />
-            <text x="1333.33" y="1486.14" text-anchor="middle" dominant-baseline="central" class="room-label">
+            <rect id="ingresso-sud-porta" x="1293.33" y="1476.14" width="80" height="20" class="evacuazione" />
+            <text x="1333.33" y="1486.14" text-anchor="middle" dominant-baseline="central"
+                class="evacuazione-text-small    ">
                 ING.SUD
             </text>
             <title>Ingresso Sud</title>
