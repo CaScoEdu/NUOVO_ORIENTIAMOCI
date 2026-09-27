@@ -47,7 +47,9 @@ const stanzeConfig = {
     "ele-tele": { titolo: "Lab. Elettronica" },
     "centro-sistemi": { titolo: "Centro Sistemi" },
     "lab-chimica": { titolo: "Lab. Chimica" },
-    "lab-chimica-org": { titolo: "Lab. Chimica Org." },
+    "lab-preparazione": { titolo: "Prep." },
+
+    "lab-chimica-organica": { titolo: "Lab Chimica Organica" },
     "lab-strumentale": { titolo: "Lab. Analisi Strum." },
     "lab-fisica": { titolo: "Lab. Fisica" },
     "lab-biologia": { titolo: "Lab. Biologia" },
@@ -184,8 +186,10 @@ function autoFitCamera() {
     return;
   }
 
-  let minX = Infinity, minY = Infinity;
-  let maxX = -Infinity, maxY = -Infinity;
+  let minX = Infinity,
+    minY = Infinity;
+  let maxX = -Infinity,
+    maxY = -Infinity;
 
   [elFrom, elTo].forEach((el) => {
     if (el) {
@@ -204,7 +208,12 @@ function autoFitCamera() {
     }
   });
 
-  if (typeof calcolaPercorsoBreve === "function" && typeof nodiMappa !== "undefined" && partenzaId && destinazioneId) {
+  if (
+    typeof calcolaPercorsoBreve === "function" &&
+    typeof nodiMappa !== "undefined" &&
+    partenzaId &&
+    destinazioneId
+  ) {
     const sequenzaNodi = calcolaPercorsoBreve(partenzaId, destinazioneId);
     sequenzaNodi.forEach((nodeId) => {
       const coords = nodiMappa[nodeId];
@@ -266,34 +275,62 @@ function setupMapClicks() {
 
 function autoFitSvgLabels() {
   document.querySelectorAll(".room-group").forEach((group) => {
+    const id = group.getAttribute("id");
     const rect = group.querySelector("rect");
-    const textEl = group.querySelector("text");
 
-    if (rect && textEl) {
-      const x = parseFloat(rect.getAttribute("x")) || 0;
-      const y = parseFloat(rect.getAttribute("y")) || 0;
-      const width = parseFloat(rect.getAttribute("width")) || 0;
-      const height = parseFloat(rect.getAttribute("height")) || 0;
-      const labelText = textEl.textContent.trim();
+    // 1. Trova il titolo nell'oggetto stanzeConfig
+    let labelText = "";
+    Object.values(stanzeConfig).forEach((cat) => {
+      if (cat[id]) labelText = cat[id].titolo;
+    });
 
-      if (width > 0 && height > 0) {
-        const foreignObj = document.createElementNS(
+    // Fallback: se non c'è in config, prova a leggerlo dal <text> esistente
+    if (!labelText) {
+      const textEl = group.querySelector("text");
+      if (textEl) labelText = textEl.textContent.trim();
+    }
+
+    if (labelText) {
+      // 2. Genera o aggiorna il tag <title> per i suggerimenti hover
+      let titleEl = group.querySelector("title");
+      if (!titleEl) {
+        titleEl = document.createElementNS(
           "http://www.w3.org/2000/svg",
-          "foreignObject"
+          "title",
         );
-        foreignObj.setAttribute("x", x);
-        foreignObj.setAttribute("y", y);
-        foreignObj.setAttribute("width", width);
-        foreignObj.setAttribute("height", height);
+        group.appendChild(titleEl);
+      }
+      titleEl.textContent = labelText;
 
-        foreignObj.innerHTML = `
-          <div class="room-label-container">
-            <span class="room-label-text">${labelText}</span>
-          </div>
-        `;
+      // 3. Genera il foreignObject per il testo centrato
+      if (rect) {
+        const x = parseFloat(rect.getAttribute("x")) || 0;
+        const y = parseFloat(rect.getAttribute("y")) || 0;
+        const width = parseFloat(rect.getAttribute("width")) || 0;
+        const height = parseFloat(rect.getAttribute("height")) || 0;
 
-        textEl.remove();
-        group.appendChild(foreignObj);
+        if (width > 0 && height > 0) {
+          const foreignObj = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "foreignObject",
+          );
+          foreignObj.setAttribute("x", x);
+          foreignObj.setAttribute("y", y);
+          foreignObj.setAttribute("width", width);
+          foreignObj.setAttribute("height", height);
+
+          foreignObj.innerHTML = `
+            <div class="room-label-container">
+              <span class="room-label-text">${labelText}</span>
+            </div>
+          `;
+
+          // Rimuove l'eventuale <text> statico legacy se presente nell'SVG
+          const textEl = group.querySelector("text");
+          if (textEl) textEl.remove();
+
+          group.appendChild(foreignObj);
+        }
       }
     }
   });
@@ -314,7 +351,8 @@ async function caricaMappaSVG() {
     const svgText = await response.text();
     container.innerHTML = svgText;
 
-    const svg = document.getElementById("school-map") || container.querySelector("svg");
+    const svg =
+      document.getElementById("school-map") || container.querySelector("svg");
     if (svg && svg.getAttribute("viewBox")) {
       initialViewBox = svg.getAttribute("viewBox");
     }
