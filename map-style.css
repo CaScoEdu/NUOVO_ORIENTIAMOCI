@@ -7,6 +7,12 @@
   rx: 30px;
 }
 
+.corridoio {
+  fill: #d3d3d3;
+  stroke: none;
+  pointer-events: none;
+}
+
 .edificio-esterno {
   fill: #f5f5f5;
   stroke: #708090;
@@ -19,6 +25,13 @@
   stroke-width: 10px;
 }
 
+.blocco-arrotondato {
+  fill-opacity: 0;
+  stroke: #708090;
+  stroke-width: 10px;
+  rx: 180px;
+}
+
 .campo-sportivo {
   fill: #f5f5f5;
   stroke: #708090;
@@ -26,7 +39,7 @@
   rx: 180px;
 }
 
-.corridoio {
+.parcheggio {
   fill: #d3d3d3;
   stroke: none;
   pointer-events: none;

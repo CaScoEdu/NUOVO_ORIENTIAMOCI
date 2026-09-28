@@ -1,10 +1,13 @@
 /* ==========================================================================
-   CONFIGURAZIONE E VARIABILI GLOBALI
+   IMPORTAZIONE DATI E CONFIGURAZIONE GLOBALE
    ========================================================================== */
+import { mapData, GRID } from "./map-data.js";
 
 let partenzaId = "area-ingresso";
 let destinazioneId = null;
-let initialViewBox = "0 0 2142.86 2500";
+
+// Costruzione automatica e dinamica della ViewBox di partenza da GRID
+let initialViewBox = `${GRID.VIEWBOX_ORIGIN_X} ${GRID.VIEWBOX_ORIGIN_Y} ${GRID.VIEWBOX_WIDTH} ${GRID.VIEWBOX_HEIGHT}`;
 
 // Lista aule dismesse o sostituite
 const auleRimosse = [
@@ -48,7 +51,6 @@ const stanzeConfig = {
     "centro-sistemi": { titolo: "Centro Sistemi" },
     "lab-chimica": { titolo: "Lab. Chimica" },
     "lab-preparazione": { titolo: "Prep." },
-
     "lab-chimica-organica": { titolo: "Lab Chimica Organica" },
     "lab-strumentale": { titolo: "Lab. Analisi Strum." },
     "lab-fisica": { titolo: "Lab. Fisica" },
@@ -73,6 +75,241 @@ const stanzeConfig = {
     "bagno-1S": { titolo: "Bagni Blocco Sud" },
   },
 };
+
+/* ==========================================================================
+   FUNZIONI HELPER PER LA CREAZIONE DEGLI ELEMENTI SVG
+   ========================================================================== */
+
+function creaGruppoSVG(id) {
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  g.setAttribute("id", id);
+  return g;
+}
+
+function creaRettangoloSVG(id, className, x, y, w, h) {
+  const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  if (id) rect.setAttribute("id", id);
+  if (className) rect.setAttribute("class", className);
+  rect.setAttribute("x", Math.round(x));
+  rect.setAttribute("y", Math.round(y));
+  rect.setAttribute("width", Math.round(w));
+  rect.setAttribute("height", Math.round(h));
+  return rect;
+}
+
+function getTitoloStanza(id) {
+  let titolo = "";
+  Object.values(stanzeConfig).forEach((categoria) => {
+    if (categoria[id]) titolo = categoria[id].titolo;
+  });
+  return titolo;
+}
+
+/* ==========================================================================
+   GENERATORE DINAMICO MAPPA (SISTEMA A LAYER Z-INDEX)
+   ========================================================================== */
+
+function generaMappaDinamica() {
+  const container = document.getElementById("map-container");
+  if (!container) return;
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("id", "school-map");
+  svg.setAttribute("viewBox", initialViewBox);
+
+  // 1. Layer Outdoor / Terreno
+  const layerOutdoor = creaGruppoSVG("layer-outdoor");
+  mapData.baseLayout?.forEach((item) => {
+    layerOutdoor.appendChild(
+      creaRettangoloSVG(item.id, item.type, item.x, item.y, item.w, item.h),
+    );
+  });
+  svg.appendChild(layerOutdoor);
+
+  // 2. Layer Elementi Esterni / Forme Generiche (Parcheggi, Poligoni)
+  const layerEsterni = creaGruppoSVG("layer-esterni");
+  mapData.elementiEsterni?.forEach((item) => {
+    const g = creaGruppoSVG(item.id);
+    let shape;
+
+    if (item.type === "polygon") {
+      shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      shape.setAttribute("points", item.points);
+    } else if (item.type === "rect") {
+      shape = creaRettangoloSVG(null, null, item.x, item.y, item.w, item.h);
+    }
+
+    if (shape) {
+      if (item.className) shape.setAttribute("class", item.className);
+      g.appendChild(shape);
+    }
+
+    if (item.label && item.textX && item.textY) {
+      const text = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "text",
+      );
+      text.setAttribute("x", item.textX);
+      text.setAttribute("y", item.textY);
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("dominant-baseline", "central");
+      text.setAttribute("class", "room-label");
+      text.textContent = item.label;
+      g.appendChild(text);
+    }
+
+    layerEsterni.appendChild(g);
+  });
+  svg.appendChild(layerEsterni);
+
+  // --------------------------------------------------------------------------
+// Layer 3 (o 4): Struttura Muraria ed Edificio (layer-edificio)
+// --------------------------------------------------------------------------
+const layerEdificio = creaGruppoSVG("layer-edificio");
+mapData.edifici?.forEach((item) => {
+  const g = creaGruppoSVG(item.id);
+  let shape;
+
+  if (item.type === "polygon") {
+    shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    shape.setAttribute("points", item.points);
+  } else {
+    // Default a rettangolo
+    shape = creaRettangoloSVG(null, null, item.x, item.y, item.w, item.h);
+  }
+
+  // Classe CSS per lo stile dei muri/sagoma (es. bordo spesso, sfondo struttura)
+  shape.setAttribute("class", item.className || "struttura-edificio");
+  g.appendChild(shape);
+
+  layerEdificio.appendChild(g);
+});
+svg.appendChild(layerEdificio);
+
+  // 3. Layer Punti di Raccolta Esterni
+  const layerPuntiRaccolta = creaGruppoSVG("layer-punti-raccolta");
+  mapData.puntiRaccolta?.forEach((item) => {
+    const g = creaGruppoSVG(item.id);
+    const rect = creaRettangoloSVG(
+      null,
+      "evacuazione",
+      item.x,
+      item.y,
+      item.w,
+      item.h,
+    );
+    rect.setAttribute("rx", "8");
+
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", item.x + item.w / 2);
+    text.setAttribute("y", item.y + item.h / 2);
+    text.setAttribute("class", "evacuazione-text");
+    text.textContent = item.codice;
+
+    const title = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "title",
+    );
+    title.textContent = item.label;
+
+    g.appendChild(rect);
+    g.appendChild(text);
+    g.appendChild(title);
+    layerPuntiRaccolta.appendChild(g);
+  });
+  svg.appendChild(layerPuntiRaccolta);
+
+  // 4. Layer Corridoi
+  const layerCorridoi = creaGruppoSVG("layer-corridoi");
+  mapData.corridoi?.forEach((item) => {
+    layerCorridoi.appendChild(
+      creaRettangoloSVG(item.id, "corridoio", item.x, item.y, item.w, item.h),
+    );
+  });
+  svg.appendChild(layerCorridoi);
+
+  // 5. Layer Stanze e Aule
+  const layerStanze = creaGruppoSVG("layer-stanze");
+  mapData.stanze?.forEach((room) => {
+    const rect = creaRettangoloSVG(
+      room.id,
+      "room",
+      room.x,
+      room.y,
+      room.w,
+      room.h,
+    );
+    const labelText = getTitoloStanza(room.id);
+
+    if (labelText) {
+      const title = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "title",
+      );
+      title.textContent = labelText;
+      rect.appendChild(title);
+    }
+
+    layerStanze.appendChild(rect);
+  });
+  svg.appendChild(layerStanze);
+
+  // 6. Layer Uscite di Sicurezza
+  const layerUscite = creaGruppoSVG("layer-uscite-sicurezza");
+  mapData.usciteSicurezza?.forEach((item) => {
+    const rect = creaRettangoloSVG(
+      item.id,
+      "evacuazione",
+      item.x,
+      item.y,
+      item.w,
+      item.h,
+    );
+    rect.setAttribute("rx", "2");
+
+    const title = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "title",
+    );
+    title.textContent = item.label || "Uscita di Sicurezza";
+    rect.appendChild(title);
+
+    layerUscite.appendChild(rect);
+  });
+  svg.appendChild(layerUscite);
+
+  // 7. Layer Etichette Responsive (ForeignObject)
+  const layerLabels = creaGruppoSVG("layer-labels");
+  mapData.stanze?.forEach((room) => {
+    const labelText = getTitoloStanza(room.id);
+    if (labelText) {
+      const foreignObj = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "foreignObject",
+      );
+      foreignObj.setAttribute("x", Math.round(room.x));
+      foreignObj.setAttribute("y", Math.round(room.y));
+      foreignObj.setAttribute("width", Math.round(room.w));
+      foreignObj.setAttribute("height", Math.round(room.h));
+
+      foreignObj.innerHTML = `
+        <div class="room-label-container">
+          <span class="room-label-text">${labelText}</span>
+        </div>
+      `;
+      layerLabels.appendChild(foreignObj);
+    }
+  });
+  svg.appendChild(layerLabels);
+
+  // 8. Layer Overlay Percorsi Navigazione
+  const layerNavigation = creaGruppoSVG("layer-navigation");
+  svg.appendChild(layerNavigation);
+
+  // Inserimento finale nel DOM
+  container.innerHTML = "";
+  container.appendChild(svg);
+}
 
 /* ==========================================================================
    INIZIALIZZAZIONE SELETTORI (DROPDOWN & SWAP)
@@ -164,13 +401,11 @@ function aggiornaMappa(focusActive = false) {
 }
 
 function evidenziaElemento(id, cssClass) {
-  const group = document.getElementById(id);
-  if (group) {
-    const rect = group.querySelector(".room");
-    if (rect) {
-      group.parentElement.appendChild(group);
-      rect.classList.add(cssClass);
-    }
+  const rect = document.getElementById(id);
+  if (rect) {
+    // Porta l'elemento in cima al suo layer per non coprire gli stili di selezione
+    rect.parentElement.appendChild(rect);
+    rect.classList.add(cssClass);
   }
 }
 
@@ -191,20 +426,17 @@ function autoFitCamera() {
   let maxX = -Infinity,
     maxY = -Infinity;
 
-  [elFrom, elTo].forEach((el) => {
-    if (el) {
-      const rect = el.querySelector("rect");
-      if (rect) {
-        const rx = parseFloat(rect.getAttribute("x")) || 0;
-        const ry = parseFloat(rect.getAttribute("y")) || 0;
-        const rw = parseFloat(rect.getAttribute("width")) || 0;
-        const rh = parseFloat(rect.getAttribute("height")) || 0;
+  [elFrom, elTo].forEach((rect) => {
+    if (rect) {
+      const rx = parseFloat(rect.getAttribute("x")) || 0;
+      const ry = parseFloat(rect.getAttribute("y")) || 0;
+      const rw = parseFloat(rect.getAttribute("width")) || 0;
+      const rh = parseFloat(rect.getAttribute("height")) || 0;
 
-        minX = Math.min(minX, rx);
-        minY = Math.min(minY, ry);
-        maxX = Math.max(maxX, rx + rw);
-        maxY = Math.max(maxY, ry + rh);
-      }
+      minX = Math.min(minX, rx);
+      minY = Math.min(minY, ry);
+      maxX = Math.max(maxX, rx + rw);
+      maxY = Math.max(maxY, ry + rh);
     }
   });
 
@@ -256,10 +488,10 @@ function autoFitCamera() {
    ========================================================================== */
 
 function setupMapClicks() {
-  document.querySelectorAll(".room-group").forEach((group) => {
-    group.addEventListener("click", (e) => {
+  document.querySelectorAll(".room").forEach((rect) => {
+    rect.addEventListener("click", (e) => {
       e.stopPropagation();
-      const clickedId = group.getAttribute("id");
+      const clickedId = rect.getAttribute("id");
 
       if (clickedId === partenzaId) return;
 
@@ -270,105 +502,17 @@ function setupMapClicks() {
 }
 
 /* ==========================================================================
-   CONVERSIONE TESTI SVG IN FOREIGN OBJECT (RESPONSIVE LABELS)
+   INIZIALIZZAZIONE APPLICAZIONE
    ========================================================================== */
 
-function autoFitSvgLabels() {
-  document.querySelectorAll(".room-group").forEach((group) => {
-    const id = group.getAttribute("id");
-    const rect = group.querySelector("rect");
-
-    // 1. Trova il titolo nell'oggetto stanzeConfig
-    let labelText = "";
-    Object.values(stanzeConfig).forEach((cat) => {
-      if (cat[id]) labelText = cat[id].titolo;
-    });
-
-    // Fallback: se non c'è in config, prova a leggerlo dal <text> esistente
-    if (!labelText) {
-      const textEl = group.querySelector("text");
-      if (textEl) labelText = textEl.textContent.trim();
-    }
-
-    if (labelText) {
-      // 2. Genera o aggiorna il tag <title> per i suggerimenti hover
-      let titleEl = group.querySelector("title");
-      if (!titleEl) {
-        titleEl = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "title",
-        );
-        group.appendChild(titleEl);
-      }
-      titleEl.textContent = labelText;
-
-      // 3. Genera il foreignObject per il testo centrato
-      if (rect) {
-        const x = parseFloat(rect.getAttribute("x")) || 0;
-        const y = parseFloat(rect.getAttribute("y")) || 0;
-        const width = parseFloat(rect.getAttribute("width")) || 0;
-        const height = parseFloat(rect.getAttribute("height")) || 0;
-
-        if (width > 0 && height > 0) {
-          const foreignObj = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "foreignObject",
-          );
-          foreignObj.setAttribute("x", x);
-          foreignObj.setAttribute("y", y);
-          foreignObj.setAttribute("width", width);
-          foreignObj.setAttribute("height", height);
-
-          foreignObj.innerHTML = `
-            <div class="room-label-container">
-              <span class="room-label-text">${labelText}</span>
-            </div>
-          `;
-
-          // Rimuove l'eventuale <text> statico legacy se presente nell'SVG
-          const textEl = group.querySelector("text");
-          if (textEl) textEl.remove();
-
-          group.appendChild(foreignObj);
-        }
-      }
-    }
-  });
+function inizializzaApplicazione() {
+  generaMappaDinamica();
+  popolaDropdowns();
+  setupMapClicks();
+  aggiornaMappa(false);
 }
 
-/* ==========================================================================
-   CARICAMENTO SVG ESTERNO ED INIZIALIZZAZIONE APPLICAZIONE
-   ========================================================================== */
-
-async function caricaMappaSVG() {
-  const container = document.getElementById("map-container");
-  if (!container) return;
-
-  try {
-    const response = await fetch("mappa.svg");
-    if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
-
-    const svgText = await response.text();
-    container.innerHTML = svgText;
-
-    const svg =
-      document.getElementById("school-map") || container.querySelector("svg");
-    if (svg && svg.getAttribute("viewBox")) {
-      initialViewBox = svg.getAttribute("viewBox");
-    }
-
-    autoFitSvgLabels();
-    popolaDropdowns();
-    setupMapClicks();
-    aggiornaMappa(false);
-  } catch (error) {
-    console.error("Errore durante il caricamento della mappa:", error);
-    container.innerHTML =
-      "<p>Errore nel caricamento della mappa dell'istituto.</p>";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", caricaMappaSVG);
+document.addEventListener("DOMContentLoaded", inizializzaApplicazione);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
