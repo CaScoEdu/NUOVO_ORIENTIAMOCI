@@ -1,8 +1,126 @@
-<?xml-stylesheet type="text/css" href="map-style.css"?>
+<?xml-stylesheet type="text/css" ?>
 
 <svg viewBox="0 0 2143 2500" xmlns="http://www.w3.org/2000/svg" id="school-map">
     <defs>
-        
+        <style>
+            /* 1. STRUTTURA E AMBIENTE */
+            .terreno {
+                fill: #bbf7d0;
+                fill-opacity: 0.4;
+                stroke: #16a34a;
+                stroke-width: 5px;
+                rx: 30px;
+            }
+
+            .edificio-esterno {
+                fill: #f5f5f5;
+                stroke: #708090;
+                stroke-width: 1px;
+            }
+
+            .blocco {
+                fill-opacity: 0;
+                stroke: #708090;
+                stroke-width: 10px;
+            }
+
+            .campo-sportivo {
+                fill: #f5f5f5;
+                stroke: #708090;
+                stroke-width: 3px;
+                rx: 180px;
+            }
+
+            .corridoio {
+                fill: #d3d3d3;
+                stroke: none;
+                pointer-events: none;
+            }
+
+            .parcheggio {
+                fill: #d3d3d3;
+                stroke: none;
+                pointer-events: none;
+            }
+
+            /* 2. AMBIENTI INTERNI E AULE */
+            .room {
+                fill: #ffffff;
+                stroke: #475569;
+                stroke-width: 1.5px;
+                transition:
+                    fill 0.2s ease,
+                    stroke 0.2s ease;
+                cursor: pointer;
+            }
+
+            .room:hover {
+                fill: #f1f5f9;
+                stroke: #0284c7;
+                stroke-width: 2px;
+            }
+
+            .ingresso {
+                fill: #e0f2fe;
+                stroke: #4682b4;
+                stroke-width: 1.5px;
+                pointer-events: none;
+            }
+
+            .bagno {
+                fill: #e6e6fa;
+                stroke: #000000;
+                stroke-width: 1.5px;
+                pointer-events: none;
+            }
+
+            /* 3. TIPOGRAFIA MAPPA */
+            text {
+                fill: #1e293b;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    "Segoe UI",
+                    Roboto,
+                    sans-serif;
+                user-select: none;
+            }
+
+            .room-label {
+                font-size: 11px;
+                font-weight: bold;
+                fill: #0f172a;
+                text-anchor: middle;
+                dominant-baseline: central;
+                pointer-events: none;
+            }
+
+            .room-label-topleft {
+                font-size: 11px;
+                font-weight: bold;
+                fill: #0f172a;
+                text-anchor: start;
+                pointer-events: none;
+            }
+
+            /* 4. SEGNALETICA DI SICUREZZA (ISO 7010) */
+
+            .evacuazione-text {
+                fill: #ffffff;
+                font-size: 64px;
+                font-weight: bold;
+                text-anchor: middle;
+                dominant-baseline: central;
+            }
+
+            .evacuazione-text-small {
+                fill: #ffffff;
+                font-size: 26px;
+                font-weight: bold;
+                text-anchor: middle;
+                dominant-baseline: central;
+            }
+        </style>
         <!-- Definizione delle icone master -->
         <!-- ICONA: PUNTO DI RACCOLTA (Assembly Point) -->
         <g id="master-punto-raccolta" class="sign-assembly">
@@ -59,7 +177,29 @@
             <title>bagno</title>
         </g>
     </defs>
+    
+<!-- Ordine Sequenziale dei Layer (dal Fondo al Primo Piano)
+Layer 1: Terreno & Ambiente Esterno (layer-outdoor)
+Prati, confine dell'istituto, strada.
 
+Layer 2: Elementi Esterni & Infrastrutture (layer-esterni)
+Parcheggi (poligoni), campi sportivi, cortili, ingressi pedonali.
+
+Layer 3: Struttura Muraria ed Edificio Esterno (layer-edificio)
+Sagoma esterna degli edifici, muri perimetrali principali.
+
+Layer 4: Corridoi & Connessioni (layer-corridoi)
+Corridoi interni, atri, spazi di transito (sovrapposti alla base dell'edificio).
+
+Layer 5: Stanze, Aule & Servizi (layer-stanze)
+Rettangoli delle aule, laboratori, uffici, bagni.
+
+Layer 6: Etichette Testuali (ForeignObjects / Text) (layer-labels)
+I testi e le sigle per garantire che siano sempre ben visibili e sopra qualsiasi colore di sfondo.
+
+Layer 7: Overlay Percorsi & Pathfinding (layer-navigation)
+Linee del percorso da seguire, frecce direzionali, marker di partenza e arrivo (devono stare sopra a tutto).
+-->
     <!-- ARCHITETTURA DI BASE -->
     <rect class="terreno" id="terreno" x="10" y="10" width="2133" height="2480" />
     <g id="blocchi-edificio-einstein">
@@ -70,7 +210,7 @@
 
     <!-- PARCHEGGIO NORD -->
     <g id="parcheggio-nord">
-        <polygon points="700,367.14 1800,367.14 1800,290 800,20" class="corridoio" />
+        <polygon points="700,367.14 1800,367.14 1800,290 800,20" class="parcheggio" />
         <text x="1200" y="300" text-anchor="middle" dominant-baseline="central" class="room-label">Parcheggio
             Nord</text>
     </g>
