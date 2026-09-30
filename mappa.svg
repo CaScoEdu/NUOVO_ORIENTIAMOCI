@@ -166,8 +166,7 @@
         <rect id="terreno" class="terreno" x="10" y="10" width="2122" height="2480" />
 
         <!-- parcheggio -->
-        <polygon id="parcheggio-nord" class="parcheggio" points="700,367 1800,367 1800,290 800,20"
-            data-label="Parcheggio Nord" />
+        <polygon id="parcheggio-nord" class="parcheggio" points="700,367 1800,367 1800,290 800,20" />
 
         <!-- campo sportivo -->
         <rect id="campo-sportivo" x="1700" y="1700" width="400" height="720" class="campo-sportivo" />
@@ -385,62 +384,63 @@
 
         <!-- ===== USCITE DI SICUREZZA ===== -->
         <use id="uscita-sicurezza-a" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(915, 787) scale(-0.7, 0.7)" data-label="A" />
+            transform="translate(915, 787) scale(-0.7, 0.7)" />
         <use id="uscita-sicurezza-b" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1296, 458) rotate(-90)" data-label="B" />
+            transform="translate(1296, 458) rotate(-90)" />
         <use id="uscita-sicurezza-c" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1336, 458) rotate(-90)" data-label="C" />
+            transform="translate(1336, 458) rotate(-90)" />
         <use id="uscita-sicurezza-d" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1750, 787) scale(0.7, 0.7)" data-label="D" />
+            transform="translate(1750, 787) scale(0.7, 0.7)" />
         <use id="uscita-sicurezza-e" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1285, 968) scale(-1, 1)" data-label="E" />
+            transform="translate(1285, 968) scale(-1, 1)" />
         <use id="uscita-sicurezza-f" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1750, 1150) scale(0.7, 0.7)" data-label="F" />
+            transform="translate(1750, 1150) scale(0.7, 0.7)" />
         <use id="uscita-sicurezza-i" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(915, 1148) scale(-0.7, 0.7)" data-label="I" />
+            transform="translate(915, 1148) scale(-0.7, 0.7)" />
         <use id="uscita-sicurezza-h" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1335, 1510) rotate(90)" data-label="H" />
+            transform="translate(1335, 1510) rotate(90)" />
         <use id="uscita-sicurezza-g" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1370, 1510) rotate(90)" data-label="G" />
+            transform="translate(1370, 1510) rotate(90)" />
 
         <!-- ===== PUNTI DI RACCOLTA ===== -->
         <use id="punto-raccolta-a" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(850, 250)" data-label="A" />
+            transform="translate(850, 250)" />
         <use id="punto-raccolta-b" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1300, 150)" data-label="B" />
+            transform="translate(1300, 150)" />
         <use id="punto-raccolta-c" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1500, 150)" data-label="C" />
+            transform="translate(1500, 150)" />
         <use id="punto-raccolta-d" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1950, 760)" data-label="D" />
+            transform="translate(1950, 760)" />
         <use id="punto-raccolta-e" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(550, 250)" data-label="E" />
+            transform="translate(550, 250)" />
         <use id="punto-raccolta-f" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1950, 1120)" data-label="F" />
+            transform="translate(1950, 1120)" />
         <use id="punto-raccolta-g" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1950, 1700)" data-label="G" />
+            transform="translate(1950, 1700)" />
         <use id="punto-raccolta-h" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1800, 1700)" data-label="H" />
+            transform="translate(1800, 1700)" />
         <use id="punto-raccolta-i" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1650, 1700)" data-label="I" />
+            transform="translate(1650, 1700)" />
         <use id="punto-raccolta-l" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1500, 1700)" data-label="L" />
+            transform="translate(1500, 1700)" />
         <use id="punto-raccolta-m" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(620, 1730)" data-label="M" />
+            transform="translate(620, 1730)" />
     </g>
 
- 
-  <!-- ==========================================
+
+    <!-- ==========================================
        3. LAYER SEGNALETICA & OVERLAY INFORMATIVI
        ========================================== -->
-  <g id="layer-segnaletica">
-    <text id="ingresso-einstein" class="room-label" x="1090" y="982" fill="#ffffff" font-size="18" font-weight="900" letter-spacing="1" text-anchor="middle" dominant-baseline="central" data-label="ENTRATA QUI ➔">ENTRATA QUI ➔</text>
-  </g>
+    <g id="layer-segnaletica">
+        <text id="ingresso-einstein" class="room-label" x="1090" y="982" fill="#ffffff" font-size="18" font-weight="900"
+            letter-spacing="1" text-anchor="middle" dominant-baseline="central">ENTRATA QUI ➔</text>
+    </g>
 
 
-  <!-- ==========================================
+    <!-- ==========================================
        4. LAYER EVACUAZIONE & SICUREZZA (Livello Superiore)
        ========================================== -->
-  <g id="layer-evacuazione">
+    <g id="layer-evacuazione">
     </g>
 
     <!-- CORRIDOI -->
