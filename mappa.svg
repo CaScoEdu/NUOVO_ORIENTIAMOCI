@@ -1,6 +1,11 @@
 <?xml-stylesheet type="text/css" ?>
 
 <svg viewBox="0 0 2143 2500" xmlns="http://www.w3.org/2000/svg" id="school-map">
+
+    <!-- ==========================================
+       1. DEFS (DEFINIZIONI REUTILIZZABILI)
+       ========================================== -->
+
     <defs>
         <style>
             /* Stili di base per la visualizzazione standalone ed Inkscape */
@@ -48,8 +53,6 @@
                 stroke: none;
                 pointer-events: none;
             }
-
-
 
             .room {
                 fill: #ffffff;
@@ -117,7 +120,25 @@
                 }
             }
         </style>
-        <!-- Simboli e Icone ISO 7010 / Elementi riutilizzabili -->
+
+        <!-- Master Bagno (Rettangolo base) -->
+        <rect id="struttura-bagno" class="bagno" width="95" height="50" />
+
+        <!-- Master Uscita di Sicurezza (Grafica omino + porta) -->
+        <g id="master-uscita-sicurezza-small">
+            <rect x="0" y="0" width="100" height="36" rx="4" fill="#008B59" stroke="#FFFFFF" stroke-width="2.5" />
+            <rect x="41" y="7" width="12" height="22" fill="#FFFFFF" />
+            <rect x="43" y="9" width="8" height="18" fill="#008B59" />
+            <circle cx="19" cy="12" r="2" fill="#FFFFFF" />
+            <path d="M18 15 L23 17 L20 22 L25 27 M20 22 L15 26" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" fill="none" />
+            <path d="M20 17 L15 16 M20 17 L25 15" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" fill="none" />
+            <path d="M29 18 H36 M33 14 L37 18 L33 22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" fill="none" />
+        </g>
+
+        <!-- Master Punto di Raccolta -->
         <g id="master-punto-raccolta" class="sign-assembly">
             <rect x="0" y="0" width="140" height="80" rx="8" fill="#008B59" stroke="#FFFFFF" stroke-width="4" />
             <circle cx="34" cy="36" r="4" fill="#FFFFFF" />
@@ -134,65 +155,35 @@
                 stroke-linejoin="round" fill="none" />
         </g>
 
-        <g id="master-uscita-sicurezza-small">
-            <rect x="0" y="0" width="100" height="36" rx="4" fill="#008B59" stroke="#FFFFFF" stroke-width="2.5" />
-            <rect x="41" y="7" width="12" height="22" fill="#FFFFFF" />
-            <rect x="43" y="9" width="8" height="18" fill="#008B59" />
-            <circle cx="19" cy="12" r="2" fill="#FFFFFF" />
-            <path d="M18 15 L23 17 L20 22 L25 27 M20 22 L15 26" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-            <path d="M20 17 L15 16 M20 17 L25 15" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-            <path d="M29 18 H36 M33 14 L37 18 L33 22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-        </g>
-
-        <g id="struttura-bagno">
-            <rect class="bagno" x="0" y="0" width="95" height="50" />
-            <text x="48" y="27" text-anchor="middle" dominant-baseline="central" class="room-label">BAGNO</text>
-            <title>bagno</title>
-        </g>
     </defs>
 
-    <!-- ========================================================================
-       LAYER 1: Terreno & Ambiente Esterno (layer-outdoor)
-       Prati, confini dell'istituto, perimetro della strada.
-       ======================================================================== -->
-    <!-- prati, giardini -->
-    <g id="layer-outdoor">
-        <rect class="terreno" id="terreno" x="10" y="10" width="2133" height="2480" />
-    </g>
+    <!-- ==========================================
+       2. LAYER STRUTTURA & EDIFICI (Sfondo)
+       ========================================== -->
+    <g id="layer-struttura">
 
-    <!-- ========================================================================
-       LAYER 2: Elementi Esterni & Infrastrutture (layer-esterni)
-       Parcheggi (poligoni), campi sportivi, cortili, ingressi pedonali.
-       ======================================================================== -->
-    <g id="layer-esterni">
+        <!-- terreno -->
+        <rect id="terreno" class="terreno" x="10" y="10" width="2122" height="2480" />
+
         <!-- parcheggio -->
-        <g id="parcheggio-nord">
-            <polygon points="700,367 1800,367 1800,290 800,20" class="parcheggio" />
-            <text x="1200" y="300" text-anchor="middle" dominant-baseline="central" class="room-label">Parcheggio
-                Nord</text>
-        </g>
+        <polygon id="parcheggio-nord" class="parcheggio" points="700,367 1800,367 1800,290 800,20"
+            data-label="Parcheggio Nord" />
+
         <!-- campo sportivo -->
         <rect id="campo-sportivo" x="1700" y="1700" width="400" height="720" class="campo-sportivo" />
+
         <!-- ingressi pedonali -->
         <rect id="corridoio-vert-principale" x="753" y="367" width="60" height="2121" class="ingresso-pedonale" />
         <rect id="corridoio-oriz-principale" x="10" y="2020" width="745" height="60" class="ingresso-pedonale" />
         <rect id="corridoio-oriz-uscita-sud" x="753" y="1600" width="1380" height="30" class="ingresso-pedonale" />
-    </g>
 
-    <!-- ========================================================================
-       LAYER 3: Struttura Muraria ed Edificio Esterno (layer-edificio)
-       Sagoma esterna degli edifici, muri perimetrali principali.
-       ======================================================================== -->
-    <g id="layer-edificio">
         <!-- EDIFICIO PRINCIPALE EINSTEIN -->
         <g id="blocchi-edificio-einstein">
             <rect id="blocco-nord" x="883" y="407" width="900" height="470" class="blocco" />
             <rect id="blocco-centrale" x="1293" y="877" width="120" height="210" class="blocco" />
             <rect id="blocco-sud" x="883" y="1087" width="900" height="470" class="blocco" />
         </g>
+
         <!-- ================= EDIFICI ESTERNI =================== -->
         <rect id="nuova-palazzina" x="240" y="500" width="490" height="280" class="edificio-esterno" />
         <rect id="floriani-1" x="580" y="900" width="150" height="150" class="edificio-esterno" />
@@ -207,13 +198,9 @@
         <rect id="blocco-tensostruttura-blocco" x="1500" y="1900" width="160" height="400" class="blocco" />
         <rect id="palazzina-amfiteatro" x="40" y="1570" width="320" height="410" class="edificio-esterno" />
         <rect id="palazzina-banfi" x="40" y="2120" width="680" height="310" class="edificio-esterno" />
-    </g>
 
-    <!-- ========================================================================
-       LAYER 4: Corridoi & Connessioni (layer-corridoi)
-       Corridoi interni, atri, spazi di transito (sovrapposti all'edificio).
-       ======================================================================== -->
-    <g id="layer-corridoi">
+        <!-- ================= Corridoi =================== -->
+
         <!-- Blocco Nord -->
         <rect id="area-ingresso-nord" class="corridoio" x="1293" y="350" width="80" height="140" />
         <rect id="corridoio-nord-orizzontale" x="883" y="487" width="900" height="30" class="corridoio" />
@@ -225,10 +212,13 @@
 
         <rect id="area-break-Nord" class="corridoio" x="1253.33" y="817.14" width="70" height="60" />
         <rect id="area-inclusione" class="corridoio" x="1323" y="817" width="90" height="60" />
+
         <!-- Corridoio Centrale Nord-Sud (Ingresso I.I.S / Uffici) -->
         <rect id="corridoio-centrale-nord-sud" x="1293" y="787" width="40" height="385" class="corridoio" />
+
         <!-- Corridoio Esterno di Ingresso I.I.S / Uffici  -->
         <rect id="corridoio-ingresso-principale" x="753" y="952" width="535" height="60" class="corridoio" />
+
         <!-- Blocco Sud Corridoi  -->
         <rect id="area-break-sud" class="corridoio" x="1253" y="1087" width="70" height="60" />
         <rect id="corridoio-centrale-sud" x="753" y="1147" width="1030" height="30" class="corridoio" />
@@ -241,14 +231,11 @@
         <rect id="filler-ufficio-magazzino" class="corridoio" x="1493" y="1407" width="40" height="40" />
         <rect id="corridoio-sud-orizzontale" x="883" y="1447" width="900" height="30" class="corridoio" />
         <rect id="area ingresso sud" class="corridoio" x="1293" y="1447" width="80" height="155" />
-    </g>
 
-    <!-- ========================================================================
-       LAYER 5: Stanze, Aule & Servizi (layer-stanze)
+        <!-- ========================================================================
+       Stanze, Aule & Servizi
        Rettangoli delle aule, laboratori, uffici, bagni, icone di sicurezza.
        ======================================================================== -->
-    <g id="layer-stanze">
-        <!-- Inserisci qui le aule, i laboratori e le istanze dei simboli <use> -->
         <!-- Aule e Palestre esterne usate dall'Einstein -->
         <rect id="palestra-M" x="410" y="1290" width="150" height="150" class="room" />
         <rect id="aule-palazzina-distaccata" x="410" y="1840" width="320" height="140" class="room" />
@@ -269,14 +256,20 @@
         <rect id="lab-arti-pittoriche" class="room" x="1583" y="407" width="75" height="80" />
         <rect id="lab-biologia" class="room" x="1658" y="407" width="125" height="80" />
 
-        <!-- ===== 1. BLOCCO NORD: MANICA OVEST ===== -->
+        <!-- ===== BLOCCO NORD: MANICA OVEST ===== -->
         <rect id="aula-10" class="room" x="883" y="487" width="70" height="60" />
         <rect id="aula-9" class="room" x="883" y="547" width="70" height="60" />
         <rect id="aula-8" class="room" x="883" y="607" width="70" height="60" />
         <rect id="aula-7" class="room" x="883" y="667" width="70" height="60" />
         <rect id="aula-6" class="room" x="883" y="727" width="70" height="60" />
+        <!-- ===== BLOCCO NORD: MANICA EST ===== -->
+        <rect id="aula-23" class="room" x="1713" y="487" width="70" height="60" />
+        <rect id="aula-24" class="room" x="1713" y="547" width="70" height="60" />
+        <rect id="aula-25" class="room" x="1713" y="607" width="70" height="60" />
+        <rect id="aula-26" class="room" x="1713" y="667" width="70" height="60" />
+        <rect id="aula-27" class="room" x="1713" y="727" width="70" height="60" />
 
-        <!-- ===== 1. BLOCCO NORD: RIGA CENTRALE ===== -->
+        <!-- ===== BLOCCO NORD: RIGA CENTRALE ===== -->
         <rect id="vicepresidenza" class="room" x="983" y="517" width="75" height="60" />
         <rect id="presidenza" class="room" x="1058" y="517" width="80" height="60" />
         <rect id="ufficio-protocollo" class="room" x="1138" y="517" width="35" height="60" />
@@ -291,32 +284,27 @@
         <rect id="lab-disegno-1" class="room" x="1533" y="517" width="95" height="60" />
         <rect id="aula-22" class="room" x="1628" y="517" width="55" height="60" />
 
-        <!-- ===== 1. BLOCCO NORD: MANICA EST ===== -->
-        <rect id="aula-23" class="room" x="1713" y="487" width="70" height="60" />
-        <rect id="aula-24" class="room" x="1713" y="547" width="70" height="60" />
-        <rect id="aula-25" class="room" x="1713" y="607" width="70" height="60" />
-        <rect id="aula-26" class="room" x="1713" y="667" width="70" height="60" />
-        <rect id="aula-27" class="room" x="1713" y="727" width="70" height="60" />
-        <!-- ===== 1. BLOCCO NORD: RIGA INFERIORE (Uffici & Servizi) ===== -->
+        <!-- ===== BLOCCO NORD: RIGA INFERIORE (Uffici & Servizi) ===== -->
         <rect id="deposito" class="room" x="1078" y="737" width="70" height="50" />
         <rect id="infermeria" class="room" x="1148" y="737" width="25" height="50" />
         <rect id="sala-stampa" class="room" x="1203" y="737" width="95" height="50" />
         <rect id="centro-stella" class="room" x="1368" y="737" width="95" height="50" />
         <rect id="audiovisivi" class="room" x="1493" y="737" width="95" height="50" />
 
-        <!-- ===== 1. BLOCCO NORD: RIGA INFERIORE (Aule & Break) ===== -->
+        <!-- ===== BLOCCO NORD: RIGA INFERIORE (Aule & Break) ===== -->
         <rect id="lab-arti-plastiche" class="room" x="883" y="817" width="90" height="60" />
         <rect id="aula-4" class="room" x="973" y="817" width="70" height="60" />
         <rect id="aula-3" class="room" x="1043" y="817" width="70" height="60" />
         <rect id="aula-2" class="room" x="1113" y="817" width="70" height="60" />
         <rect id="aula-1" class="room" x="1183" y="817" width="70" height="60" />
-        <!-- ===== 1. BLOCCO NORD: PROSEGUIMENTO RIGA INFERIORE ===== -->
+
+        <!-- ===== BLOCCO NORD: PROSEGUIMENTO RIGA INFERIORE ===== -->
         <rect id="lab-gerosa" class="room" x="1413" y="817" width="140" height="60" />
         <rect id="aula-29" class="room" x="1553" y="817" width="70" height="60" />
         <rect id="aula-28" class="room" x="1623" y="817" width="70" height="60" />
         <rect id="aula-3-0" class="room" x="1693" y="817" width="90" height="60" />
 
-        <!-- ===== 2. UFFICI CENTRALI ===== -->
+        <!-- ===== UFFICI CENTRALI ===== -->
         <rect id="ufficio-segreteria" class="room" x="1333" y="847" width="80" height="115" />
         <rect id="ufficio-dsga" class="room" x="1333" y="962" width="80" height="45" />
         <rect id="ufficio-tecnico" class="room" x="1333" y="1007" width="80" height="45" />
@@ -324,7 +312,7 @@
         <rect id="aula-pcto" class="room" x="1333" y="1087" width="35" height="30" />
         <rect id="spogliatoio-ata" class="room" x="1333" y="1117" width="35" height="30" />
 
-        <!-- ===== 3. BLOCCO SUD: RIGA SUPERIORE ===== -->
+        <!-- ===== BLOCCO SUD: RIGA SUPERIORE ===== -->
         <rect id="ex-in-rete-2" class="room" x="883" y="1087" width="45" height="60" />
         <rect id="ex-in-rete-1" class="room" x="928" y="1087" width="45" height="60" />
         <rect id="aula-51" class="room" x="973" y="1087" width="70" height="60" />
@@ -338,28 +326,28 @@
         <rect id="aula-36" class="room" x="1623" y="1087" width="70" height="60" />
         <rect id="lab-cisco" class="room" x="1693" y="1087" width="90" height="60" />
 
-        <!-- ===== 3. BLOCCO SUD: MANICA OVEST ===== -->
+        <!-- ===== BLOCCO SUD: MANICA OVEST ===== -->
         <rect id="aula-design" class="room" x="883" y="1177" width="70" height="100" />
         <rect id="lab-design" class="room" x="883" y="1277" width="70" height="90" />
         <rect id="ele-tele" class="room" x="883" y="1367" width="70" height="80" />
         <rect id="aula-49" class="room" x="883" y="1447" width="35" height="110" />
 
-        <!-- ===== 3. BLOCCO SUD: MANICA EST ===== -->
+        <!-- ===== BLOCCO SUD: MANICA EST ===== -->
         <rect id="aula-37" class="room" x="1713" y="1177" width="70" height="50" />
         <rect id="aula-38" class="room" x="1713" y="1227" width="70" height="70" />
         <rect id="aula-39" class="room" x="1713" y="1297" width="70" height="70" />
         <rect id="biblioteca" class="room" x="1713" y="1367" width="70" height="60" />
         <rect id="ex-biblioteca" class="room" x="1713" y="1427" width="70" height="50" />
 
-        <!-- ===== 3. BLOCCO SUD: AULE SIMMETRICHE ===== -->
+        <!-- ===== BLOCCO SUD: AULE SIMMETRICHE ===== -->
         <rect id="aula-32" class="room" x="1368" y="1177" width="95" height="50" />
         <rect id="aula-33" class="room" x="1493" y="1177" width="95" height="50" />
 
-        <!-- ===== 3. BLOCCO SUD: AULE ACCESSORIE ===== -->
+        <!-- ===== BLOCCO SUD: AULE ACCESSORIE ===== -->
         <rect id="spazio-ristoro" class="room" x="1078" y="1177" width="95" height="50" />
         <rect id="break-bagni" class="room" x="1203" y="1177" width="95" height="50" />
 
-        <!-- ===== 3. BLOCCO SUD: LABORATORI CENTRALI INFERIORI ===== -->
+        <!-- ===== BLOCCO SUD: LABORATORI CENTRALI INFERIORI ===== -->
         <rect id="tpsee" class="room" x="983" y="1367" width="140" height="80" />
         <rect id="centro-sistemi" class="room" x="1123" y="1367" width="50" height="60" />
         <rect id="lab-microbiologia" class="room" x="1203" y="1367" width="95" height="80" />
@@ -368,58 +356,92 @@
         <rect id="ufficio-magazzino" class="room" x="1493" y="1367" width="40" height="40" />
         <rect id="aula-41" class="room" x="1533" y="1367" width="75" height="80" />
         <rect id="aula-40" class="room" x="1608" y="1367" width="75" height="80" />
-        <!-- ===== 3. BLOCCO SUD: RIGA INFERIORE ===== -->
+
+        <!-- ===== BLOCCO SUD: RIGA INFERIORE ===== -->
         <rect id="aula-48" class="room" x="918" y="1477" width="35" height="80" />
         <rect id="aula-47" class="room" x="953" y="1477" width="80" height="80" />
         <rect id="lab-sistemi-2" class="room" x="1033" y="1477" width="130" height="80" />
         <rect id="lab-sistemi-1" class="room" x="1163" y="1477" width="130" height="80" />
 
-        <!-- Blocco Destra dell'Ingresso -->
+        <!-- Blocco a Destra dell'Ingresso -->
         <rect id="aula-45" class="room" x="1373" y="1477" width="65" height="80" />
         <rect id="aula-44" class="room" x="1438" y="1477" width="55" height="80" />
         <rect id="aula-43" class="room" x="1493" y="1477" width="50" height="80" />
         <rect id="aula-42" class="room" x="1543" y="1477" width="50" height="80" />
         <rect id="lab-informatica" class="room" x="1593" y="1477" width="90" height="80" />
         <rect id="aula-polifunzionale" class="room" x="1683" y="1477" width="100" height="80" />
-        
-        <!-- ===== 1. BAGNI BLOCCO NORD ===== -->
+
+        <!-- ===== BAGNI BLOCCO NORD ===== -->
         <use id="bagno-1n" href="#struttura-bagno" x="1078" y="687" />
         <use id="bagno-2n" href="#struttura-bagno" x="1203" y="687" />
         <use id="bagno-3n" href="#struttura-bagno" x="1368" y="687" />
         <use id="bagno-4n" href="#struttura-bagno" x="1493" y="687" />
 
-        <!-- ===== 2. BAGNI BLOCCO SUD ===== -->
+        <!-- ===== BAGNI BLOCCO SUD ===== -->
         <use id="bagno-1s" href="#struttura-bagno" x="1078" y="1227" />
         <use id="bagno-2s" href="#struttura-bagno" x="1203" y="1227" />
         <use id="bagno-3s" href="#struttura-bagno" x="1368" y="1227" />
         <use id="bagno-4s" href="#struttura-bagno" x="1493" y="1227" />
+
+        <!-- ===== USCITE DI SICUREZZA ===== -->
+        <use id="uscita-sicurezza-a" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(915, 787) scale(-0.7, 0.7)" data-label="A" />
+        <use id="uscita-sicurezza-b" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(1296, 458) rotate(-90)" data-label="B" />
+        <use id="uscita-sicurezza-c" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(1336, 458) rotate(-90)" data-label="C" />
+        <use id="uscita-sicurezza-d" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(1750, 787) scale(0.7, 0.7)" data-label="D" />
+        <use id="uscita-sicurezza-e" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(1285, 968) scale(-1, 1)" data-label="E" />
+        <use id="uscita-sicurezza-f" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(1750, 1150) scale(0.7, 0.7)" data-label="F" />
+        <use id="uscita-sicurezza-i" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(915, 1148) scale(-0.7, 0.7)" data-label="I" />
+        <use id="uscita-sicurezza-h" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(1335, 1510) rotate(90)" data-label="H" />
+        <use id="uscita-sicurezza-g" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
+            transform="translate(1370, 1510) rotate(90)" data-label="G" />
+
+        <!-- ===== PUNTI DI RACCOLTA ===== -->
+        <use id="punto-raccolta-a" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(850, 250)" data-label="A" />
+        <use id="punto-raccolta-b" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1300, 150)" data-label="B" />
+        <use id="punto-raccolta-c" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1500, 150)" data-label="C" />
+        <use id="punto-raccolta-d" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1950, 760)" data-label="D" />
+        <use id="punto-raccolta-e" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(550, 250)" data-label="E" />
+        <use id="punto-raccolta-f" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1950, 1120)" data-label="F" />
+        <use id="punto-raccolta-g" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1950, 1700)" data-label="G" />
+        <use id="punto-raccolta-h" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1800, 1700)" data-label="H" />
+        <use id="punto-raccolta-i" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1650, 1700)" data-label="I" />
+        <use id="punto-raccolta-l" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(1500, 1700)" data-label="L" />
+        <use id="punto-raccolta-m" class="evacuazione-icon" href="#master-punto-raccolta"
+            transform="translate(620, 1730)" data-label="M" />
     </g>
 
-    <!-- ========================================================================
-       LAYER 5: Stanze, Aule & Servizi (layer-stanze)
-       Rettangoli delle aule, laboratori, uffici, bagni, icone di sicurezza.
-       ======================================================================== -->
-  <g id="layer-stanze">
-    <!-- Inserisci qui le aule, i laboratori e le istanze dei simboli <use> -->
-  </g>
-
-  <!-- ========================================================================
-       LAYER 6: Etichette Testuali (layer-labels)
-       I testi e i ForeignObjects per garantire visibilità sopra gli sfondi.
-       ======================================================================== -->
-  <g id="layer-labels">
-    <!-- Verrà popolato dinamicamente via JS o con ForeignObjects manuali -->
-  </g>
-
-  <!-- ========================================================================
-       LAYER 7: Overlay Percorsi & Pathfinding (layer-navigation)
-       Linee del percorso, frecce direzionali, marker di partenza e arrivo.
-       ======================================================================== -->
-  <g id="layer-navigation">
-    <!-- Verrà gestito da JavaScript per il calcolo delle rotte/evacuazione -->
+ 
+  <!-- ==========================================
+       3. LAYER SEGNALETICA & OVERLAY INFORMATIVI
+       ========================================== -->
+  <g id="layer-segnaletica">
+    <text id="ingresso-einstein" class="room-label" x="1090" y="982" fill="#ffffff" font-size="18" font-weight="900" letter-spacing="1" text-anchor="middle" dominant-baseline="central" data-label="ENTRATA QUI ➔">ENTRATA QUI ➔</text>
   </g>
 
 
+  <!-- ==========================================
+       4. LAYER EVACUAZIONE & SICUREZZA (Livello Superiore)
+       ========================================== -->
+  <g id="layer-evacuazione">
+    </g>
 
     <!-- CORRIDOI -->
     <g id="corridors">
@@ -432,109 +454,9 @@
     </g>
 
     <!-- ============ SICUREZZA PUNTI DI RACCOLTA =================== -->
-    <g id="gruppo-punto-raccolta-A" transform="translate(850, 250)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">A</text>
-        <title>Punto di Raccolta A</title>
-    </g>
-    <g id="gruppo-punto-raccolta-B" transform="translate(1300, 150)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">B</text>
-        <title>Punto di Raccolta B</title>
-    </g>
-    <g id="gruppo-punto-raccolta-C" transform="translate(1500, 150)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">C</text>
-        <title>Punto di Raccolta C</title>
-    </g>
-    <g id="gruppo-punto-raccolta-D" transform="translate(1950, 760)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">D</text>
-        <title>Punto di Raccolta D</title>
-    </g>
-    <g id="gruppo-punto-raccolta-E" transform="translate(550, 250)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">E</text>
-        <title>Punto di Raccolta E</title>
-    </g>
-    <g id="gruppo-punto-raccolta-F" transform="translate(1950, 1120)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">F</text>
-        <title>Punto di Raccolta F</title>
-    </g>
-    <g id="gruppo-punto-raccolta-G" transform="translate(1950, 1700)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">G</text>
-        <title>Punto di Raccolta G</title>
-    </g>
-    <g id="gruppo-punto-raccolta-H" transform="translate(1800, 1700)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">H</text>
-        <title>Punto di Raccolta H</title>
-    </g>
-    <g id="gruppo-punto-raccolta-I" transform="translate(1650, 1700)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">I</text>
-        <title>Punto di Raccolta I</title>
-    </g>
-    <g id="gruppo-punto-raccolta-L" transform="translate(1500, 1700)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">L</text>
-        <title>Punto di Raccolta L</title>
-    </g>
-    <g id="gruppo-punto-raccolta-M" transform="translate(620, 1730)">
-        <use href="#master-punto-raccolta" />
-        <text x="100" y="40" class="evacuazione-text">M</text>
-        <title>Punto di Raccolta M</title>
-    </g>
+
     <!-- ==================== INGRESSI / USCITE SICUREZZA ==================== -->
-    <g id="ingressi-uscite-sicurezza">
-        <g id="ingresso-nord-ovest-A" transform="translate(915,787.14) scale(-0.7,0.7)">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">A</text>
-            <title>Uscita di Sicurezza A</title>
-        </g>
-        <g id="ingresso-nord-B" transform="translate(1296,458) scale(1,1) rotate(-90)">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">B</text>
-            <title>Uscita di Sicurezza B</title>
-        </g>
-        <g id="ingresso-nord-C" transform="translate(1336,458) scale(1,1) rotate(-90)">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">C</text>
-            <title>Uscita di Sicurezza C</title>
-        </g>
-        <g id="ingresso-nord-est-D" transform="translate(1750,787) scale(0.7,0.7) ">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">D</text>
-            <title>Uscita di Sicurezza D</title>
-        </g>
-        <g id="ingresso-centrale-itis-E" transform="translate(1285,968) scale(-1,1)">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">∃</text>
-            <title>Uscita di Sicurezza E</title>
-        </g>
-        <g id="ingresso-sud-est-F" transform="translate(1750,1150) scale(0.7,0.7) ">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">F</text>
-            <title>Uscita di Sicurezza F</title>
-        </g>
-        <g id="ingresso-sud-ovest-I" transform="translate(915,1148.14) scale(-0.7,0.7)">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">I</text>
-            <title>Uscita di Sicurezza I</title>
-        </g>
-        <g id="ingresso-sud-H" transform="translate(1335,1510) scale(1,1) rotate(90)">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">H</text>
-            <title>Uscita di Sicurezza H</title>
-        </g>
-        <g id="ingresso-sud-G" transform="translate(1370,1510) scale(1,1) rotate(90)">
-            <use href="#master-uscita-sicurezza-small" />
-            <text x="75" y="19" text-anchor="middle" dominant-baseline="central" class="evacuazione-text-small">G</text>
-            <title>Uscita di Sicurezza G</title>
-        </g>
-    </g>
+
 
     <!-- ==================== BAGNI ==================== -->
     <g id="bagni">
