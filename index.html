@@ -3,15 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mappa Istituto</title>
+    <title>Mappa Istituto Einstein</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- Collegamento al Manifest della PWA -->
     <link rel="manifest" href="manifest.json" />
 
-    <!-- Colore della barra di stato del telefono -->
     <meta name="theme-color" content="#0f172a" />
-
-    <!-- Configurazione specifica per iOS / Safari -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
@@ -36,7 +32,7 @@
             ></select>
           </div>
 
-          <!-- Pulsante Swap Interattivo con Icona SVG Orizzontale -->
+          <!-- Pulsante Swap Interattivo -->
           <button
             id="btn-swap"
             class="btn-swap"
@@ -67,9 +63,23 @@
       </aside>
 
       <main class="map-wrapper">
-        <!-- Contenitore in cui verrà caricato dinamicamente l'SVG esterno -->
         <div id="map-container"></div>
       </main>
+    </div>
+
+    <!-- Pop-up Dettagli Stanza / Stand -->
+    <div id="room-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="modal-close" class="modal-close-btn">&times;</button>
+        <span id="modal-category" class="modal-badge"></span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-description"></p>
+        <div class="modal-actions">
+          <button id="btn-set-destination" class="btn-primary">
+            Imposta come Destinazione
+          </button>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>

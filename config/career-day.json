@@ -1,0 +1,25 @@
+{
+  "titoloEvento": "Career Day 2026",
+  "stanze": {
+    "ingresso-principale": {
+      "etichetta": "📍 INGRESSO",
+      "categoria": "Generale",
+      "descrizione": "Punto di accoglienza e registrazione dei partecipanti."
+    },
+    "aula-3-0": {
+      "etichetta": "Stand Ferrari",
+      "categoria": "Automazione",
+      "descrizione": "Incontro con i recruiter di Ferrari S.p.A. per le posizioni in automazione e meccanica."
+    },
+    "lab-informatica": {
+      "etichetta": "Stand Cisco",
+      "categoria": "Informatica",
+      "descrizione": "Dimostrazioni di sicurezza di rete e opportunità di stage nell'ambito Cloud & Networking."
+    },
+    "biblioteca": {
+      "etichetta": "Desk Orientamento",
+      "categoria": "Liceo Scientifico Scienze Applicate",
+      "descrizione": "Presentazione dell'offerta formativa e percorsi universitari post-diploma."
+    }
+  }
+}

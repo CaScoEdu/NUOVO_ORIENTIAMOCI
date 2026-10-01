@@ -2,77 +2,99 @@
    CONFIGURAZIONE E VARIABILI GLOBALI
    ========================================================================== */
 
-let partenzaId = "area-ingresso";
-let destinazioneId = null;
-let initialViewBox = "0 0 2142.86 2500";
+let partenzaId = "ingresso-principale";
+let destinazioneId = "evacuazione";
+let initialViewBox = "0 0 2143 2500";
+let configurazioneAttiva = null; // Memorizza i dati caricati dal file JSON esterno
 
-// Lista aule dismesse o sostituite
-const auleRimosse = [
-  "aula-5",
-  "aula-11",
-  "aula-22",
-  "aula-30",
-  "aula-31",
-  "aula-50",
-];
+// Mappatura Nomi Amichevoli per gli elementi selezionabili (Fallback Standard)
+const etichetteStanze = {
+  // Punti di Accesso / Ingressi
+  "ingresso-principale": "📍 INGRESSO",
 
-// Mappatura automatica per le Aule Didattiche (escludendo le aule dismesse)
-const auleDidattiche = {};
-for (let i = 1; i <= 54; i++) {
-  const idAula = `aula-${i}`;
-  if (!auleRimosse.includes(idAula)) {
-    auleDidattiche[idAula] = { titolo: `Aula ${i}` };
+  // Uffici & Direzione
+  presidenza: "Presidenza",
+  vicepresidenza: "Vicepresidenza",
+  "ufficio-protocollo": "Ufficio Protocollo",
+  "ufficio-segreteria": "Segreteria",
+  "ufficio-dsga": "Ufficio DSGA",
+  "ufficio-tecnico": "Ufficio Tecnico",
+  "aula-commissioni": "Sala Commissioni",
+  "sala-docenti": "Sala Docenti",
+  "spogliatoio-ata": "Spogliatoio ATA",
+
+  // Laboratori
+  "lab-informatica": "Lab. Informatica",
+  "lab-sistemi-1": "Lab. Sistemi 1",
+  "lab-sistemi-2": "Lab. Sistemi 2",
+  "lab-cisco": "Lab. Cisco",
+  tpsee: "Lab. TPSEE",
+  "ele-tele": "Lab. Elettronica",
+  "centro-sistemi": "Centro Sistemi",
+  "lab-chimica": "Lab. Chimica",
+  "lab-preparazione": "Prep. Chimica",
+  "lab-chimica-organica": "Lab. Chimica Organica",
+  "lab-chimica-fisica": "Lab. Chimica Fisica",
+  "lab-strumentale": "Lab. Analisi Strum.",
+  "lab-fisica": "Lab. Fisica",
+  "lab-biologia": "Lab. Biologia",
+  "lab-microbiologia": "Lab. Microbiologia",
+  "lab-disegno-1": "Lab. Disegno Tecnico",
+  "lab-arti-pittoriche": "Lab. Arti Pittoriche",
+  "lab-arti-plastiche": "Lab. Arti Plastiche",
+  "lab-design": "Lab. Design",
+  "lab-gerosa": "Lab. Gerosa",
+  "lab-cic": "Sportello CIC",
+
+  // Aule Didattiche & Speciali
+  "aula-3-0": "Aula 3.0",
+  "aula-polifunzionale": "Aula Polifunzionale",
+  "aula-pcto": "Aula PCTO",
+  biblioteca: "Biblioteca",
+  "ex-biblioteca": "Ex Biblioteca",
+  "aula-design": "Aula Design",
+  "ex-in-rete-1": "Ex In Rete 1",
+  "ex-in-rete-2": "Ex In Rete 2",
+  "palestra-M": "Palestra M",
+  "aule-palazzina-distaccata": "Palazzina Distaccata",
+  "palestre-ABCDE": "Palestre A-B-C-D-E",
+  tensostruttura: "Tensostruttura",
+
+  // Servizi
+  "spazio-ristoro": "Spazio Ristoro",
+  "break-bagni": "Area Break",
+  infermeria: "Infermeria",
+  "sala-stampa": "Sala Stampa",
+  "centro-stella": "Centro Stella",
+  audiovisivi: "Audiovisivi",
+  deposito: "Deposito",
+  "ufficio-magazzino": "Magazzino",
+};
+
+/* ==========================================================================
+   CARICAMENTO CONFIGURAZIONI ED EVENTI SPECIALI (URL PARAM & JSON)
+   ========================================================================== */
+
+async function caricaConfigurazioneDaURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  // Se non specificato nell'URL, usa la configurazione standard 'school-day'
+  const configFile = urlParams.get("config") || "school-day";
+
+  try {
+    const response = await fetch(`config/${configFile}.json`);
+    if (!response.ok) throw new Error(`Impossibile caricare config/${configFile}.json`);
+
+    configurazioneAttiva = await response.json();
+
+    // Sostituisce il titolo principale dell'app se specificato nel file JSON
+    if (configurazioneAttiva.titoloEvento) {
+      const headerTitle = document.querySelector(".app-header h1");
+      if (headerTitle) headerTitle.textContent = configurazioneAttiva.titoloEvento;
+    }
+  } catch (err) {
+    console.error(`Errore nel caricamento del file di configurazione 'config/${configFile}.json'`, err);
   }
 }
-
-const stanzeConfig = {
-  "Punti di Accesso": {
-    "area-ingresso": { titolo: "📍 Ingresso Principale" },
-  },
-  "Uffici & Direzione": {
-    presidenza: { titolo: "Presidenza" },
-    vicepresidenza: { titolo: "Vicepresidenza" },
-    "ufficio-segreteria": { titolo: "Segreteria" },
-    "ufficio-dsga": { titolo: "Ufficio DSGA" },
-    "ufficio-tecnico": { titolo: "Ufficio Tecnico" },
-    "aula-commissioni": { titolo: "Sala Commissioni" },
-    "sala-professori": { titolo: "Sala Docenti" },
-  },
-  Laboratori: {
-    "lab-informatica": { titolo: "Lab. Informatica" },
-    "lab-sistemi-1": { titolo: "Lab. Sistemi 1" },
-    "lab-sistemi-2": { titolo: "Lab. Sistemi 2" },
-    "lab-cisco": { titolo: "Lab. Cisco" },
-    tpsee: { titolo: "Lab. TPSEE" },
-    "ele-tele": { titolo: "Lab. Elettronica" },
-    "centro-sistemi": { titolo: "Centro Sistemi" },
-    "lab-chimica": { titolo: "Lab. Chimica" },
-    "lab-preparazione": { titolo: "Prep." },
-
-    "lab-chimica-organica": { titolo: "Lab Chimica Organica" },
-    "lab-strumentale": { titolo: "Lab. Analisi Strum." },
-    "lab-fisica": { titolo: "Lab. Fisica" },
-    "lab-biologia": { titolo: "Lab. Biologia" },
-    "lab-microbiologia": { titolo: "Lab. Microbiologia" },
-    "lab-disegno": { titolo: "Lab. Disegno Tecnico" },
-    "lab-arti-pittoriche": { titolo: "Lab. Arti Pittoriche" },
-    "lab-arti-plastiche": { titolo: "Lab. Scultura" },
-    "lab-design": { titolo: "Lab. Computer Grafica" },
-  },
-  "Aule Didattiche": {
-    "aula-3-0": { titolo: "Aula 3.0" },
-    "aula-polifunzionale": { titolo: "Aula Polifunzionale" },
-    biblioteca: { titolo: "Biblioteca" },
-    ...auleDidattiche,
-  },
-  "Servizi & Bagni": {
-    "spazio-ristoro": { titolo: "Spazio Ristoro" },
-    infermeria: { titolo: "Infermeria" },
-    "sala-stampa": { titolo: "Sala Stampa" },
-    "bagno-1N": { titolo: "Bagni Blocco Nord" },
-    "bagno-1S": { titolo: "Bagni Blocco Sud" },
-  },
-};
 
 /* ==========================================================================
    INIZIALIZZAZIONE SELETTORI (DROPDOWN & SWAP)
@@ -85,32 +107,88 @@ function popolaDropdowns() {
 
   if (!selectFrom || !selectTo) return;
 
-  let optionsFrom = "";
-  let optionsTo = `<option value="">-- Seleziona Arrivo --</option>`;
+  const elementiSelezionabili = Array.from(
+    document.querySelectorAll(".room, #ingresso-principale")
+  );
 
-  Object.entries(stanzeConfig).forEach(([categoria, stanze]) => {
-    let groupFrom = `<optgroup label="${categoria}">`;
-    let groupTo = `<optgroup label="${categoria}">`;
+  let listaOpzioni = [];
 
-    Object.entries(stanze).forEach(([id, info]) => {
-      if (!auleRimosse.includes(id)) {
-        groupFrom += `<option value="${id}">${info.titolo}</option>`;
-        groupTo += `<option value="${id}">${info.titolo}</option>`;
+  elementiSelezionabili.forEach((el) => {
+    const id = el.getAttribute("id");
+    if (!id) return;
+
+    // Se c'è un evento attivo, considera solo le stanze incluse nel file JSON
+    if (configurazioneAttiva && configurazioneAttiva.stanze && !configurazioneAttiva.stanze[id]) {
+      return;
+    }
+
+    let titolo = "";
+    if (configurazioneAttiva && configurazioneAttiva.stanze[id]) {
+      titolo = configurazioneAttiva.stanze[id].etichetta;
+    } else {
+      titolo = etichetteStanze[id];
+      if (!titolo) {
+        if (id.startsWith("aula-")) {
+          const num = id.replace("aula-", "");
+          titolo = `Aula ${num}`;
+        } else {
+          titolo = id.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+        }
       }
-    });
+    }
 
-    groupFrom += `</optgroup>`;
-    groupTo += `</optgroup>`;
-
-    optionsFrom += groupFrom;
-    optionsTo += groupTo;
+    listaOpzioni.push({ id, titolo });
   });
 
-  selectFrom.innerHTML = optionsFrom;
-  selectTo.innerHTML = optionsTo;
+  // Ordina le opzioni per le aule in sequenza numerica e alfabeticamente per gli altri locali
+  listaOpzioni.sort((a, b) => {
+    // L'INGRESSO rimane sempre in prima posizione
+    if (a.id === "ingresso-principale") return -1;
+    if (b.id === "ingresso-principale") return 1;
+
+    // Se sono entrambe aule, estrae i numeri/stringhe e applica l'ordinamento numerico
+    const isAulaA = a.id.startsWith("aula-");
+    const isAulaB = b.id.startsWith("aula-");
+
+    if (isAulaA && isAulaB) {
+      return a.titolo.localeCompare(b.titolo, "it", {
+        numeric: true,
+        sensitivity: "base",
+      });
+    }
+
+    // Le aule vengono mostrate prioritariamente subito dopo l'ingresso
+    if (isAulaA && !isAulaB) return -1;
+    if (!isAulaA && isAulaB) return 1;
+
+    // Ordinamento alfabetico standard per tutti gli altri locali
+    return a.titolo.localeCompare(b.titolo, "it");
+  });
+
+  // 1. Genera le opzioni per "DA:"
+  let optionsFromHTML = "";
+  listaOpzioni.forEach((opt) => {
+    optionsFromHTML += `<option value="${opt.id}">${opt.titolo}</option>`;
+  });
+
+  // 2. Genera le opzioni per "A:"
+  let optionsToHTML = `<option value="evacuazione" style="background-color: #ef4444; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
+  optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
+  optionsToHTML += `<option disabled>──────────────────</option>`;
+
+  listaOpzioni.forEach((opt) => {
+    if (opt.id !== "ingresso-principale") {
+      optionsToHTML += `<option value="${opt.id}">${opt.titolo}</option>`;
+    }
+  });
+
+  selectFrom.innerHTML = optionsFromHTML;
+  selectTo.innerHTML = optionsToHTML;
 
   selectFrom.value = partenzaId;
+  selectTo.value = destinazioneId;
 
+  // Event Listeners
   selectFrom.addEventListener("change", (e) => {
     partenzaId = e.target.value;
     aggiornaMappa(true);
@@ -118,13 +196,29 @@ function popolaDropdowns() {
 
   selectTo.addEventListener("change", (e) => {
     destinazioneId = e.target.value;
+    gestisciStileSelettoreArrivo();
     aggiornaMappa(true);
   });
 
   btnSwap?.addEventListener("click", scambiaOrigineDestinazione);
+
+  gestisciStileSelettoreArrivo();
+}
+
+function gestisciStileSelettoreArrivo() {
+  const selectTo = document.getElementById("select-to");
+  if (!selectTo) return;
+
+  if (destinazioneId === "evacuazione") {
+    selectTo.classList.add("mode-evacuazione");
+  } else {
+    selectTo.classList.remove("mode-evacuazione");
+  }
 }
 
 function scambiaOrigineDestinazione() {
+  if (destinazioneId === "evacuazione") return;
+
   const temp = partenzaId;
   partenzaId = destinazioneId;
   destinazioneId = temp;
@@ -133,7 +227,7 @@ function scambiaOrigineDestinazione() {
 }
 
 /* ==========================================================================
-   AGGIORNAMENTO MAPPA E GESTIONE FOCUS
+   AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
    ========================================================================== */
 
 function aggiornaMappa(focusActive = false) {
@@ -142,49 +236,65 @@ function aggiornaMappa(focusActive = false) {
   if (selectFrom) selectFrom.value = partenzaId;
   if (selectTo) selectTo.value = destinazioneId;
 
-  document.querySelectorAll(".room").forEach((r) => {
-    r.classList.remove("state-from", "state-to");
-  });
+  document
+    .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
+    .forEach((r) => {
+      r.classList.remove("state-from", "state-to");
+    });
 
   if (partenzaId) {
     evidenziaElemento(partenzaId, "state-from");
   }
 
-  if (destinazioneId) {
+  if (destinazioneId && destinazioneId !== "evacuazione") {
     evidenziaElemento(destinazioneId, "state-to");
+  } else if (destinazioneId === "evacuazione") {
+    mostraPianoEvacuazione();
   }
 
   if (focusActive) {
     autoFitCamera();
   }
-
-  if (typeof mostraPercorsoMappa === "function") {
-    mostraPercorsoMappa();
-  }
 }
 
 function evidenziaElemento(id, cssClass) {
-  const group = document.getElementById(id);
-  if (group) {
-    const rect = group.querySelector(".room");
-    if (rect) {
-      group.parentElement.appendChild(group);
-      rect.classList.add(cssClass);
+  const el = document.getElementById(id);
+  if (el) {
+    const parent = el.parentElement;
+
+    parent.appendChild(el);
+    el.classList.add(cssClass);
+
+    const textEl = document.getElementById(`label-${id}`);
+    if (textEl) {
+      textEl.classList.add(cssClass);
+      parent.appendChild(textEl);
     }
   }
 }
+
+function mostraPianoEvacuazione() {
+  const layerEvacuazione = document.getElementById("layer-evacuazione");
+  if (layerEvacuazione) {
+    layerEvacuazione.style.display = "block";
+  }
+}
+
+/* ==========================================================================
+   GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
+   ========================================================================== */
 
 function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
 
-  const elFrom = document.getElementById(partenzaId);
-  const elTo = document.getElementById(destinazioneId);
-
-  if (!elFrom && !elTo) {
+  if (destinazioneId === "evacuazione" || (!partenzaId && !destinazioneId)) {
     svg.setAttribute("viewBox", initialViewBox);
     return;
   }
+
+  const elFrom = document.getElementById(partenzaId);
+  const elTo = document.getElementById(destinazioneId);
 
   let minX = Infinity,
     minY = Infinity;
@@ -193,38 +303,17 @@ function autoFitCamera() {
 
   [elFrom, elTo].forEach((el) => {
     if (el) {
-      const rect = el.querySelector("rect");
-      if (rect) {
-        const rx = parseFloat(rect.getAttribute("x")) || 0;
-        const ry = parseFloat(rect.getAttribute("y")) || 0;
-        const rw = parseFloat(rect.getAttribute("width")) || 0;
-        const rh = parseFloat(rect.getAttribute("height")) || 0;
+      const rx = parseFloat(el.getAttribute("x")) || 0;
+      const ry = parseFloat(el.getAttribute("y")) || 0;
+      const rw = parseFloat(el.getAttribute("width")) || 0;
+      const rh = parseFloat(el.getAttribute("height")) || 0;
 
-        minX = Math.min(minX, rx);
-        minY = Math.min(minY, ry);
-        maxX = Math.max(maxX, rx + rw);
-        maxY = Math.max(maxY, ry + rh);
-      }
+      minX = Math.min(minX, rx);
+      minY = Math.min(minY, ry);
+      maxX = Math.max(maxX, rx + rw);
+      maxY = Math.max(maxY, ry + rh);
     }
   });
-
-  if (
-    typeof calcolaPercorsoBreve === "function" &&
-    typeof nodiMappa !== "undefined" &&
-    partenzaId &&
-    destinazioneId
-  ) {
-    const sequenzaNodi = calcolaPercorsoBreve(partenzaId, destinazioneId);
-    sequenzaNodi.forEach((nodeId) => {
-      const coords = nodiMappa[nodeId];
-      if (coords) {
-        minX = Math.min(minX, coords.x);
-        minY = Math.min(minY, coords.y);
-        maxX = Math.max(maxX, coords.x);
-        maxY = Math.max(maxY, coords.y);
-      }
-    });
-  }
 
   if (minX === Infinity) {
     svg.setAttribute("viewBox", initialViewBox);
@@ -234,16 +323,13 @@ function autoFitCamera() {
   const contentWidth = maxX - minX;
   const contentHeight = maxY - minY;
 
-  const paddingX = Math.max(250, contentWidth * 0.4);
-  const paddingY = Math.max(250, contentHeight * 0.4);
+  const paddingX = Math.max(80, contentWidth * 0.15);
+  const paddingY = Math.max(80, contentHeight * 0.15);
 
   let vX = minX - paddingX;
   let vY = minY - paddingY;
   let vW = contentWidth + paddingX * 2;
   let vH = contentHeight + paddingY * 2;
-
-  vW = Math.max(vW, 700);
-  vH = Math.max(vH, 600);
 
   vX = Math.max(0, vX);
   vY = Math.max(0, vY);
@@ -252,92 +338,187 @@ function autoFitCamera() {
 }
 
 /* ==========================================================================
-   INTERAZIONE CLICK DIRETTO SULLE STANZE DELLA MAPPA
+   INTERAZIONE CLICK DIRETTO E POP-UP MODAL
    ========================================================================== */
 
 function setupMapClicks() {
-  document.querySelectorAll(".room-group").forEach((group) => {
-    group.addEventListener("click", (e) => {
+  document.querySelectorAll(".room, #ingresso-principale").forEach((roomEl) => {
+    roomEl.addEventListener("click", (e) => {
       e.stopPropagation();
-      const clickedId = group.getAttribute("id");
+      const clickedId = roomEl.getAttribute("id");
+      if (!clickedId) return;
 
-      if (clickedId === partenzaId) return;
+      // Se c'è una configurazione speciale e la stanza non è abilitata, ignorala
+      if (configurazioneAttiva && configurazioneAttiva.stanze && !configurazioneAttiva.stanze[clickedId]) {
+        return;
+      }
 
-      destinazioneId = clickedId;
-      aggiornaMappa(true);
+      mostraPopUpStanza(clickedId);
     });
+  });
+
+  // Gestione chiusura della finestra modale
+  document.getElementById("modal-close")?.addEventListener("click", chiudiPopUp);
+  document.getElementById("room-modal")?.addEventListener("click", (e) => {
+    if (e.target.id === "room-modal") chiudiPopUp();
   });
 }
 
+function mostraPopUpStanza(id) {
+  const modal = document.getElementById("room-modal");
+  const modalTitle = document.getElementById("modal-title");
+  const modalCategory = document.getElementById("modal-category");
+  const modalDesc = document.getElementById("modal-description");
+  const btnSetDest = document.getElementById("btn-set-destination");
+
+  if (!modal) return;
+
+  let info = {
+    titolo: etichetteStanze[id] || id.replace(/-/g, " "),
+    categoria: "Generale",
+    descrizione: "Nessuna descrizione aggiuntiva per questo locale."
+  };
+
+  // Se c'è una configurazione attiva, recupera le informazioni estese dal JSON
+  if (configurazioneAttiva && configurazioneAttiva.stanze[id]) {
+    const data = configurazioneAttiva.stanze[id];
+    info.titolo = data.etichetta || info.titolo;
+    info.categoria = data.categoria || "Generale";
+    info.descrizione = data.descrizione || "";
+  }
+
+  if (modalTitle) modalTitle.textContent = info.titolo;
+  if (modalCategory) modalCategory.textContent = info.categoria;
+  if (modalDesc) modalDesc.textContent = info.descrizione;
+
+  if (btnSetDest) {
+    btnSetDest.onclick = () => {
+      destinazioneId = id;
+      gestisciStileSelettoreArrivo();
+      aggiornaMappa(true);
+      chiudiPopUp();
+    };
+  }
+
+  modal.classList.remove("hidden");
+}
+
+function chiudiPopUp() {
+  const modal = document.getElementById("room-modal");
+  if (modal) modal.classList.add("hidden");
+}
+
 /* ==========================================================================
-   CONVERSIONE TESTI SVG IN FOREIGN OBJECT (RESPONSIVE LABELS)
+   GENERA ETICHETTE DINAMICHE / VISIBILI SULLA MAPPA (MULTIRIGA)
    ========================================================================== */
 
-function autoFitSvgLabels() {
-  document.querySelectorAll(".room-group").forEach((group) => {
-    const id = group.getAttribute("id");
-    const rect = group.querySelector("rect");
+function applicaEtichetteMappa() {
+  const elementi = document.querySelectorAll(".room, #ingresso-principale");
 
-    // 1. Trova il titolo nell'oggetto stanzeConfig
-    let labelText = "";
-    Object.values(stanzeConfig).forEach((cat) => {
-      if (cat[id]) labelText = cat[id].titolo;
-    });
+  elementi.forEach((el) => {
+    const id = el.getAttribute("id");
+    if (!id) return;
 
-    // Fallback: se non c'è in config, prova a leggerlo dal <text> esistente
-    if (!labelText) {
-      const textEl = group.querySelector("text");
-      if (textEl) labelText = textEl.textContent.trim();
-    }
-
-    if (labelText) {
-      // 2. Genera o aggiorna il tag <title> per i suggerimenti hover
-      let titleEl = group.querySelector("title");
-      if (!titleEl) {
-        titleEl = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "title",
-        );
-        group.appendChild(titleEl);
-      }
-      titleEl.textContent = labelText;
-
-      // 3. Genera il foreignObject per il testo centrato
-      if (rect) {
-        const x = parseFloat(rect.getAttribute("x")) || 0;
-        const y = parseFloat(rect.getAttribute("y")) || 0;
-        const width = parseFloat(rect.getAttribute("width")) || 0;
-        const height = parseFloat(rect.getAttribute("height")) || 0;
-
-        if (width > 0 && height > 0) {
-          const foreignObj = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "foreignObject",
-          );
-          foreignObj.setAttribute("x", x);
-          foreignObj.setAttribute("y", y);
-          foreignObj.setAttribute("width", width);
-          foreignObj.setAttribute("height", height);
-
-          foreignObj.innerHTML = `
-            <div class="room-label-container">
-              <span class="room-label-text">${labelText}</span>
-            </div>
-          `;
-
-          // Rimuove l'eventuale <text> statico legacy se presente nell'SVG
-          const textEl = group.querySelector("text");
-          if (textEl) textEl.remove();
-
-          group.appendChild(foreignObj);
-        }
+    // Se c'è una configurazione attiva, marca e disabilita le stanze non presenti
+    if (configurazioneAttiva && configurazioneAttiva.stanze) {
+      if (!configurazioneAttiva.stanze[id]) {
+        el.classList.add("room-disabled");
+        el.classList.remove("room-enabled");
+        return;
       }
     }
+
+    el.classList.add("room-enabled");
+    el.classList.remove("room-disabled");
+
+    let testoVisibile = "";
+
+    if (configurazioneAttiva && configurazioneAttiva.stanze[id]) {
+      testoVisibile = configurazioneAttiva.stanze[id].etichetta;
+    } else if (id.startsWith("aula-")) {
+      testoVisibile = id.replace("aula-", "").replace(/-/g, ".");
+    } else if (id === "ingresso-principale") {
+      testoVisibile = "INGRESSO";
+    } else {
+      const nomeCompleto = etichetteStanze[id] || id.replace(/-/g, " ");
+      testoVisibile = abbreviaNomeStanza(nomeCompleto);
+    }
+
+    const x = parseFloat(el.getAttribute("x")) || 0;
+    const y = parseFloat(el.getAttribute("y")) || 0;
+    const width = parseFloat(el.getAttribute("width")) || 0;
+    const height = parseFloat(el.getAttribute("height")) || 0;
+
+    const centerX = x + width / 2;
+    const centerY = y + height / 2;
+
+    let titleEl = el.querySelector("title");
+    if (!titleEl) {
+      titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      el.appendChild(titleEl);
+    }
+    titleEl.textContent = etichetteStanze[id] || testoVisibile;
+
+    let textEl = document.getElementById(`label-${id}`);
+    if (!textEl) {
+      textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      textEl.setAttribute("id", `label-${id}`);
+      textEl.setAttribute("class", "room-label");
+      el.parentElement.appendChild(textEl);
+    }
+
+    textEl.setAttribute("x", centerX);
+    textEl.setAttribute("y", centerY);
+
+    creaTestoMultiriga(textEl, testoVisibile, centerX, centerY);
   });
 }
 
+function creaTestoMultiriga(textEl, testo, centerX, centerY) {
+  textEl.innerHTML = "";
+
+  const parole = testo.split(" ");
+
+  if (parole.length === 1) {
+    textEl.textContent = testo;
+    return;
+  }
+
+  const lineHeight = 13;
+  const totalLines = parole.length;
+  const startY = centerY - ((totalLines - 1) * lineHeight) / 2;
+
+  parole.forEach((parola, index) => {
+    const tspan = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "tspan"
+    );
+    tspan.setAttribute("x", centerX);
+
+    if (index === 0) {
+      tspan.setAttribute("y", startY);
+    } else {
+      tspan.setAttribute("dy", `${lineHeight}px`);
+    }
+
+    tspan.textContent = parola;
+    textEl.appendChild(tspan);
+  });
+}
+
+function abbreviaNomeStanza(nome) {
+  return nome
+    .replace("Lab. ", "L. ")
+    .replace("Ufficio ", "Uff. ")
+    .replace("Presidenza", "PRES.")
+    .replace("Vicepresidenza", "VICEPR.")
+    .replace("Biblioteca", "BIBL")
+    .replace("Spazio Ristoro", "Ristoro")
+    .replace("📍 ", "");
+}
+
 /* ==========================================================================
-   CARICAMENTO SVG ESTERNO ED INIZIALIZZAZIONE APPLICAZIONE
+   CARICAMENTO SVG ESTERNO ED INIZIALIZZAZIONE
    ========================================================================== */
 
 async function caricaMappaSVG() {
@@ -345,6 +526,9 @@ async function caricaMappaSVG() {
   if (!container) return;
 
   try {
+    // 1. Legge eventuale ?config= dall'URL prima di configurare la mappa
+    await caricaConfigurazioneDaURL();
+
     const response = await fetch("mappa.svg");
     if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
 
@@ -357,19 +541,20 @@ async function caricaMappaSVG() {
       initialViewBox = svg.getAttribute("viewBox");
     }
 
-    autoFitSvgLabels();
+    applicaEtichetteMappa();
     popolaDropdowns();
     setupMapClicks();
     aggiornaMappa(false);
   } catch (error) {
     console.error("Errore durante il caricamento della mappa:", error);
     container.innerHTML =
-      "<p>Errore nel caricamento della mappa dell'istituto.</p>";
+      "<p style='color: white; padding: 20px;'>Errore nel caricamento della mappa dell'istituto.</p>";
   }
 }
 
 document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 
+// Registrazione Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
