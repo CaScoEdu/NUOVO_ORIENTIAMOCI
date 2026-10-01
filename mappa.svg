@@ -1,12 +1,11 @@
 <?xml-stylesheet type="text/css" ?>
-
 <svg viewBox="0 0 2143 2500" xmlns="http://www.w3.org/2000/svg" id="school-map">
 
     <!-- ==========================================
        1. DEFS (DEFINIZIONI REUTILIZZABILI)
        ========================================== -->
-
     <defs>
+
         <style>
             /* Stili di base per la visualizzazione standalone ed Inkscape */
             .terreno {
@@ -58,30 +57,8 @@
                 fill: #ffffff;
                 stroke: #475569;
                 stroke-width: 1.5px;
-                transition:
-                    fill 0.2s ease,
-                    stroke 0.2s ease;
+                transition: fill 0.2s ease, stroke 0.2s ease;
                 cursor: pointer;
-            }
-
-            .room:hover {
-                fill: #f1f5f9;
-                stroke: #0284c7;
-                stroke-width: 2px;
-            }
-
-            .ingresso {
-                fill: #e0f2fe;
-                stroke: #4682b4;
-                stroke-width: 1.5px;
-                pointer-events: none;
-            }
-
-            .bagno {
-                fill: #e6e6fa;
-                stroke: #000000;
-                stroke-width: 1.5px;
-                pointer-events: none;
             }
 
             .room-label {
@@ -90,6 +67,24 @@
                 fill: #0f172a;
                 text-anchor: middle;
                 dominant-baseline: central;
+                pointer-events: none;
+            }
+
+            .room:hover {
+                fill: #f1f5f9;
+                stroke: #0284c7;
+                stroke-width: 2px;
+            }
+
+            .area-aperta {
+                fill: rgba(255, 255, 255, 0.15);
+                stroke: none;
+            }
+
+            .bagno {
+                fill: #e6e6fa;
+                stroke: #000000;
+                stroke-width: 1.5px;
                 pointer-events: none;
             }
 
@@ -107,17 +102,12 @@
                 font-weight: bold;
                 text-anchor: middle;
                 dominant-baseline: central;
+            }
 
-                text {
-                    fill: #1e293b;
-                    font-family:
-                        system-ui,
-                        -apple-system,
-                        "Segoe UI",
-                        Roboto,
-                        sans-serif;
-                    user-select: none;
-                }
+            .evacuazione-text-small text {
+                fill: #1e293b;
+                font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+                user-select: none;
             }
         </style>
 
@@ -130,12 +120,9 @@
             <rect x="41" y="7" width="12" height="22" fill="#FFFFFF" />
             <rect x="43" y="9" width="8" height="18" fill="#008B59" />
             <circle cx="19" cy="12" r="2" fill="#FFFFFF" />
-            <path d="M18 15 L23 17 L20 22 L25 27 M20 22 L15 26" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-            <path d="M20 17 L15 16 M20 17 L25 15" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-            <path d="M29 18 H36 M33 14 L37 18 L33 22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
+            <path d="M18 15 L23 17 L20 22 L25 27 M20 22 L15 26" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <path d="M20 17 L15 16 M20 17 L25 15" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <path d="M29 18 H36 M33 14 L37 18 L33 22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
         </g>
 
         <!-- Master Punto di Raccolta -->
@@ -145,14 +132,10 @@
             <path d="M30 44 h8 v14 h-3 v-8 h-2 v8 h-3 Z" fill="#FFFFFF" />
             <circle cx="46" cy="36" r="4" fill="#FFFFFF" />
             <path d="M42 44 h8 v14 h-3 v-8 h-2 v8 h-3 Z" fill="#FFFFFF" />
-            <path d="M12 12 L26 26 M26 26 H18 M26 26 V18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-            <path d="M68 12 L54 26 M54 26 H62 M54 26 V18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-            <path d="M12 68 L26 54 M26 54 H18 M26 54 V62" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
-            <path d="M68 68 L54 54 M54 54 H62 M54 54 V62" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"
-                stroke-linejoin="round" fill="none" />
+            <path d="M12 12 L26 26 M26 26 H18 M26 26 V18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <path d="M68 12 L54 26 M54 26 H62 M54 26 V18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <path d="M12 68 L26 54 M26 54 H18 M26 54 V62" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <path d="M68 68 L54 54 M54 54 H62 M54 54 V62" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
         </g>
 
     </defs>
@@ -177,11 +160,9 @@
         <rect id="corridoio-oriz-uscita-sud" x="753" y="1600" width="1380" height="30" class="ingresso-pedonale" />
 
         <!-- EDIFICIO PRINCIPALE EINSTEIN -->
-        <g id="blocchi-edificio-einstein">
-            <rect id="blocco-nord" x="883" y="407" width="900" height="470" class="blocco" />
-            <rect id="blocco-centrale" x="1293" y="877" width="120" height="210" class="blocco" />
-            <rect id="blocco-sud" x="883" y="1087" width="900" height="470" class="blocco" />
-        </g>
+        <rect id="blocco-nord" x="883" y="407" width="900" height="470" class="blocco" />
+        <rect id="blocco-centrale" x="1293" y="877" width="120" height="210" class="blocco" />
+        <rect id="blocco-sud" x="883" y="1087" width="900" height="470" class="blocco" />
 
         <!-- ================= EDIFICI ESTERNI =================== -->
         <rect id="nuova-palazzina" x="240" y="500" width="490" height="280" class="edificio-esterno" />
@@ -209,7 +190,7 @@
         <rect id="corridoio-vert-4" x="1683" y="487" width="30" height="330" class="corridoio" />
         <rect id="corridoio-centrale-nord" x="753" y="787" width="1030" height="30" class="corridoio" />
 
-        <rect id="area-break-Nord" class="corridoio" x="1253.33" y="817.14" width="70" height="60" />
+        <rect id="area-break-nord" class="corridoio" x="1253.33" y="817.14" width="70" height="60" />
         <rect id="area-inclusione" class="corridoio" x="1323" y="817" width="90" height="60" />
 
         <!-- Corridoio Centrale Nord-Sud (Ingresso I.I.S / Uffici) -->
@@ -229,7 +210,7 @@
         <rect id="filler-centro-sistemi" class="corridoio" x="1123" y="1427" width="50" height="60" />
         <rect id="filler-ufficio-magazzino" class="corridoio" x="1493" y="1407" width="40" height="40" />
         <rect id="corridoio-sud-orizzontale" x="883" y="1447" width="900" height="30" class="corridoio" />
-        <rect id="area ingresso sud" class="corridoio" x="1293" y="1447" width="80" height="155" />
+        <rect id="area-ingresso-sud" class="corridoio" x="1293" y="1447" width="80" height="155" />
 
         <!-- ========================================================================
        Stanze, Aule & Servizi
@@ -244,7 +225,7 @@
         <!-- ===== Stanze, Aule e Servizi interni all'Eistein ===== -->
         <!-- ===== BLOCCO NORD: RIGA SUPERIORE ===== -->
         <rect id="lab-chimica" class="room" x="883" y="407" width="120" height="80" />
-        <rect id="lab-preparazione" class=" room" x="1003" y="407" width="40" height="80" />
+        <rect id="lab-preparazione" class="room" x="1003" y="407" width="40" height="80" />
         <rect id="lab-chimica-organica" class="room" x="1043" y="407" width="65" height="80" />
         <rect id="lab-strumentale" class="room" x="1108" y="407" width="65" height="80" />
         <rect id="aula-12" class="room" x="1173" y="407" width="60" height="80" />
@@ -310,6 +291,9 @@
         <rect id="aula-commissioni" class="room" x="1333" y="1052" width="80" height="35" />
         <rect id="aula-pcto" class="room" x="1333" y="1087" width="35" height="30" />
         <rect id="spogliatoio-ata" class="room" x="1333" y="1117" width="35" height="30" />
+
+        <!-- AREA INGRESSO PRINCIPALE (Zona aperta senza muri) -->
+        <rect id="ingresso-principale" class="area-aperta" x="1295" y="952" width="80" height="60" rx="4" />
 
         <!-- ===== BLOCCO SUD: RIGA SUPERIORE ===== -->
         <rect id="ex-in-rete-2" class="room" x="883" y="1087" width="45" height="60" />
@@ -382,98 +366,42 @@
         <use id="bagno-3s" href="#struttura-bagno" x="1368" y="1227" />
         <use id="bagno-4s" href="#struttura-bagno" x="1493" y="1227" />
 
-        <!-- ===== USCITE DI SICUREZZA ===== -->
-        <use id="uscita-sicurezza-a" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(915, 787) scale(-0.7, 0.7)" />
-        <use id="uscita-sicurezza-b" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1296, 458) rotate(-90)" />
-        <use id="uscita-sicurezza-c" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1336, 458) rotate(-90)" />
-        <use id="uscita-sicurezza-d" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1750, 787) scale(0.7, 0.7)" />
-        <use id="uscita-sicurezza-e" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1285, 968) scale(-1, 1)" />
-        <use id="uscita-sicurezza-f" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1750, 1150) scale(0.7, 0.7)" />
-        <use id="uscita-sicurezza-i" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(915, 1148) scale(-0.7, 0.7)" />
-        <use id="uscita-sicurezza-h" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1335, 1510) rotate(90)" />
-        <use id="uscita-sicurezza-g" class="evacuazione-icon" href="#master-uscita-sicurezza-small"
-            transform="translate(1370, 1510) rotate(90)" />
-
-        <!-- ===== PUNTI DI RACCOLTA ===== -->
-        <use id="punto-raccolta-a" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(850, 250)" />
-        <use id="punto-raccolta-b" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1300, 150)" />
-        <use id="punto-raccolta-c" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1500, 150)" />
-        <use id="punto-raccolta-d" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1950, 760)" />
-        <use id="punto-raccolta-e" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(550, 250)" />
-        <use id="punto-raccolta-f" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1950, 1120)" />
-        <use id="punto-raccolta-g" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1950, 1700)" />
-        <use id="punto-raccolta-h" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1800, 1700)" />
-        <use id="punto-raccolta-i" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1650, 1700)" />
-        <use id="punto-raccolta-l" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(1500, 1700)" />
-        <use id="punto-raccolta-m" class="evacuazione-icon" href="#master-punto-raccolta"
-            transform="translate(620, 1730)" />
     </g>
-
 
     <!-- ==========================================
-       3. LAYER SEGNALETICA & OVERLAY INFORMATIVI
-       ========================================== -->
+     3. LAYER SEGNALETICA & OVERLAY INFORMATIVI
+     ========================================== -->
     <g id="layer-segnaletica">
-        <text id="ingresso-einstein" class="room-label" x="1090" y="982" fill="#ffffff" font-size="18" font-weight="900"
-            letter-spacing="1" text-anchor="middle" dominant-baseline="central">ENTRATA QUI ➔</text>
+        <text id="ingresso-einstein" class="room-label" x="1090" y="982" fill="#ffffff" font-size="18" font-weight="900" letter-spacing="1" text-anchor="middle" dominant-baseline="central">ENTRATA QUI ➔</text>
     </g>
-
 
     <!-- ==========================================
        4. LAYER EVACUAZIONE & SICUREZZA (Livello Superiore)
        ========================================== -->
     <g id="layer-evacuazione">
-    </g>
+        <!-- ===== USCITE DI SICUREZZA ===== -->
+        <use id="uscita-sicurezza-a" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(915, 787) scale(-0.7, 0.7)" />
+        <use id="uscita-sicurezza-b" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(1296, 458) rotate(-90)" />
+        <use id="uscita-sicurezza-c" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(1336, 458) rotate(-90)" />
+        <use id="uscita-sicurezza-d" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(1750, 787) scale(0.7, 0.7)" />
+        <use id="uscita-sicurezza-e" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(1285, 968) scale(-1, 1)" />
+        <use id="uscita-sicurezza-f" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(1750, 1150) scale(0.7, 0.7)" />
+        <use id="uscita-sicurezza-i" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(915, 1148) scale(-0.7, 0.7)" />
+        <use id="uscita-sicurezza-h" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(1335, 1510) rotate(90)" />
+        <use id="uscita-sicurezza-g" class="evacuazione-icon" href="#master-uscita-sicurezza-small" transform="translate(1370, 1510) rotate(90)" />
 
-    <!-- CORRIDOI -->
-    <g id="corridors">
-        <g id="ingresso-einstein-group">
-            <text x="1090" y="982.14" fill="#ffffff" font-size="18" font-weight="900" letter-spacing="1"
-                text-anchor="middle" dominant-baseline="central">
-                ENTRATA QUI ➔
-            </text>
-        </g>
-    </g>
-
-    <!-- ============ SICUREZZA PUNTI DI RACCOLTA =================== -->
-
-    <!-- ==================== INGRESSI / USCITE SICUREZZA ==================== -->
-
-
-    <!-- ==================== BAGNI ==================== -->
-    <g id="bagni">
-
-    </g>
-
-    <!-- ==================== STRUTTURA AULE E UFFICI ==================== -->
-    <g id="rooms">
-        <!-- AREA INGRESSO PRINCIPALE -->
-        <g id="area-ingresso" class="room-group">
-            <rect class="room" x="1295" y="952.14" width="80" height="60" rx="4" />
-            <text x="1340" y="982.14" text-anchor="middle" dominant-baseline="central" class="room-label">
-                INGRESSO
-            </text>
-            <title>Ingresso Principale</title>
-        </g>
-
+        <!-- ===== PUNTI DI RACCOLTA ===== -->
+        <use id="punto-raccolta-a" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(850, 250)" />
+        <use id="punto-raccolta-b" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1300, 150)" />
+        <use id="punto-raccolta-c" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1500, 150)" />
+        <use id="punto-raccolta-d" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1950, 760)" />
+        <use id="punto-raccolta-e" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(550, 250)" />
+        <use id="punto-raccolta-f" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1950, 1120)" />
+        <use id="punto-raccolta-g" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1950, 1700)" />
+        <use id="punto-raccolta-h" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1800, 1700)" />
+        <use id="punto-raccolta-i" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1650, 1700)" />
+        <use id="punto-raccolta-l" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(1500, 1700)" />
+        <use id="punto-raccolta-m" class="evacuazione-icon" href="#master-punto-raccolta" transform="translate(620, 1730)" />
     </g>
 
 </svg>
