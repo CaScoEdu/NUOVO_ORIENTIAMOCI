@@ -5,106 +5,103 @@
 let partenzaId = "ingresso-principale";
 let destinazioneId = "evacuazione";
 let initialViewBox = "0 0 2143 2500";
-let configurazioneAttiva = null; // Memorizza i dati caricati dal file JSON esterno
 
-// Mappatura Nomi Amichevoli per gli elementi selezionabili (Fallback Standard)
-const etichetteStanze = {
-  // Punti di Accesso / Ingressi
-  "ingresso-principale": "📍 INGRESSO",
-
-  // Uffici & Direzione
-  presidenza: "Presidenza",
-  vicepresidenza: "Vicepresidenza",
-  "ufficio-protocollo": "Ufficio Protocollo",
-  "ufficio-segreteria": "Segreteria",
-  "ufficio-dsga": "Ufficio DSGA",
-  "ufficio-tecnico": "Ufficio Tecnico",
-  "aula-commissioni": "Sala Commissioni",
-  "sala-docenti": "Sala Docenti",
-  "spogliatoio-ata": "Spogliatoio ATA",
-
-  // Laboratori
-  "lab-informatica": "Lab. Informatica",
-  "lab-sistemi-1": "Lab. Sistemi 1",
-  "lab-sistemi-2": "Lab. Sistemi 2",
-  "lab-cisco": "Lab. Cisco",
-  tpsee: "Lab. TPSEE",
-  "ele-tele": "Lab. Elettronica",
-  "centro-sistemi": "Centro Sistemi",
-  "lab-chimica": "Lab. Chimica",
-  "lab-preparazione": "Prep. Chimica",
-  "lab-chimica-organica": "Lab. Chimica Organica",
-  "lab-chimica-fisica": "Lab. Chimica Fisica",
-  "lab-strumentale": "Lab. Analisi Strum.",
-  "lab-fisica": "Lab. Fisica",
-  "lab-biologia": "Lab. Biologia",
-  "lab-microbiologia": "Lab. Microbiologia",
-  "lab-disegno-1": "Lab. Disegno Tecnico",
-  "lab-arti-pittoriche": "Lab. Arti Pittoriche",
-  "lab-arti-plastiche": "Lab. Arti Plastiche",
-  "lab-design": "Lab. Design",
-  "lab-gerosa": "Lab. Gerosa",
-  "lab-cic": "Sportello CIC",
-
-  // Aule Didattiche & Speciali
-  "aula-3-0": "Aula 3.0",
-  "aula-polifunzionale": "Aula Polifunzionale",
-  "aula-pcto": "Aula PCTO",
-  biblioteca: "Biblioteca",
-  "ex-biblioteca": "Ex Biblioteca",
-  "aula-design": "Aula Design",
-  "ex-in-rete-1": "Ex In Rete 1",
-  "ex-in-rete-2": "Ex In Rete 2",
-  "palestra-M": "Palestra M",
-  "aule-palazzina-distaccata": "Palazzina Distaccata",
-  "palestre-ABCDE": "Palestre A-B-C-D-E",
-  tensostruttura: "Tensostruttura",
-
-  // Servizi
-  "spazio-ristoro": "Spazio Ristoro",
-  "break-bagni": "Area Break",
-  infermeria: "Infermeria",
-  "sala-stampa": "Sala Stampa",
-  "centro-stella": "Centro Stella",
-  audiovisivi: "Audiovisivi",
-  deposito: "Deposito",
-  "ufficio-magazzino": "Magazzino",
-};
+let configurazioneBase = {}; // Dati fisici da config/school-day.json
+let configurazioneAttiva = {}; // Eventuale evento unito a school-day.json
 
 /* ==========================================================================
-   CARICAMENTO CONFIGURAZIONI ED EVENTI SPECIALI (URL PARAM & JSON)
+   CARICAMENTO CONFIGURAZIONI ED EVENTI
    ========================================================================== */
 
 async function caricaConfigurazioneDaURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  // Se non specificato nell'URL, usa la configurazione standard 'school-day'
-  const configFile = urlParams.get("config") || "school-day";
+  const configFile = urlParams.get("config");
 
   try {
-    const response = await fetch(`config/${configFile}.json`);
-    if (!response.ok) throw new Error(`Impossibile caricare config/${configFile}.json`);
+    // 1. Carica SEMPRE la mappa base dell'istituto
+    const resBase = await fetch("config/school-day.json");
+    if (!resBase.ok) throw new Error("Impossibile caricare school-day.json");
+    configurazioneBase = await resBase.json();
 
-    configurazioneAttiva = await response.json();
+    if (!configFile || configFile === "school-day") {
+      configurazioneAttiva = configurazioneBase;
+    } else {
+      // 2. Carica il file dell'evento (es. career-day.json)
+      const resEvento = await fetch(`config/${configFile}.json`);
+      if (!resEvento.ok) throw new Error(`Impossibile caricare config/${configFile}.json`);
+      const configurazioneEvento = await resEvento.json();
 
-    // Sostituisce il titolo principale dell'app se specificato nel file JSON
+      configurazioneAttiva = {
+        titoloEvento: configurazioneEvento.titoloEvento || configurazioneBase.titoloEvento,
+        stanze: {}
+      };
+
+      // Mappa di supporto per identificare le aule usate nell'evento
+      const mappaEventoPerAula = {};
+      if (configurazioneEvento.stanze) {
+        Object.entries(configurazioneEvento.stanze).forEach(([key, item]) => {
+          const aulaTargetId = item.aula || item.id || key;
+          mappaEventoPerAula[aulaTargetId] = item;
+        });
+      }
+
+      // 3. Fonde TUTTE le stanze di base mantenendo la visibilità, ma contrassegna quelle dell'evento
+      Object.keys(configurazioneBase.stanze).forEach((roomId) => {
+        const stanzaBase = configurazioneBase.stanze[roomId];
+        const stanzaEvento = mappaEventoPerAula[roomId];
+
+        if (stanzaEvento) {
+          configurazioneAttiva.stanze[roomId] = {
+            ...stanzaEvento,
+            etichetta: stanzaEvento.etichetta || stanzaEvento.nome || stanzaBase.etichetta,
+            aulaOriginale: stanzaBase.etichetta,
+            attivaInEvento: true // Cliccabile ed elencabile
+          };
+        } else {
+          // Stanza base mantenuta per la mappa, ma disabilitata durante l'evento
+          configurazioneAttiva.stanze[roomId] = {
+            ...stanzaBase,
+            attivaInEvento: false
+          };
+        }
+      });
+    }
+
     if (configurazioneAttiva.titoloEvento) {
       const headerTitle = document.querySelector(".app-header h1");
       if (headerTitle) headerTitle.textContent = configurazioneAttiva.titoloEvento;
     }
+
   } catch (err) {
-    console.error(`Errore nel caricamento del file di configurazione 'config/${configFile}.json'`, err);
+    console.error("Errore durante il caricamento delle configurazioni:", err);
   }
 }
 
 /* ==========================================================================
-   INIZIALIZZAZIONE SELETTORI (DROPDOWN & SWAP)
+   FUNZIONI DI SUPPORTO E UTILITY
+   ========================================================================== */
+
+function getTitoloFormattatoStanza(id) {
+  if (id === "ingresso-principale") return "📍 INGRESSO";
+  
+  const stanza = configurazioneAttiva?.stanze?.[id];
+  if (stanza) {
+    if (stanza.aulaOriginale && stanza.aulaOriginale !== stanza.etichetta) {
+      return `${stanza.etichetta} (${stanza.aulaOriginale})`;
+    }
+    return stanza.etichetta;
+  }
+  
+  return id.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+}
+
+/* ==========================================================================
+   INIZIALIZZAZIONE SELETTORI (DROPDOWNS)
    ========================================================================== */
 
 function popolaDropdowns() {
   const selectFrom = document.getElementById("select-from");
   const selectTo = document.getElementById("select-to");
-  const btnSwap = document.getElementById("btn-swap");
-
   if (!selectFrom || !selectTo) return;
 
   const elementiSelezionabili = Array.from(
@@ -117,102 +114,65 @@ function popolaDropdowns() {
     const id = el.getAttribute("id");
     if (!id) return;
 
-    // Se c'è un evento attivo, considera solo le stanze incluse nel file JSON
-    if (configurazioneAttiva && configurazioneAttiva.stanze && !configurazioneAttiva.stanze[id]) {
+    const eIngresso = (id === "ingresso-principale");
+    const stanza = configurazioneAttiva?.stanze?.[id];
+
+    // Se c'è un evento attivo, escludi le stanze marcate come non attive
+    if (!eIngresso && stanza?.attivaInEvento === false) {
       return;
     }
 
-    let titolo = "";
-    if (configurazioneAttiva && configurazioneAttiva.stanze[id]) {
-      titolo = configurazioneAttiva.stanze[id].etichetta;
-    } else {
-      titolo = etichetteStanze[id];
-      if (!titolo) {
-        if (id.startsWith("aula-")) {
-          const num = id.replace("aula-", "");
-          titolo = `Aula ${num}`;
-        } else {
-          titolo = id.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-        }
-      }
-    }
-
-    listaOpzioni.push({ id, titolo });
+    listaOpzioni.push({ id, titolo: getTitoloFormattatoStanza(id) });
   });
 
-  // Ordina le opzioni per le aule in sequenza numerica e alfabeticamente per gli altri locali
+  // Ordina le opzioni (Ingresso in cima, aule in ordine numerico/alfabetico)
   listaOpzioni.sort((a, b) => {
-    // L'INGRESSO rimane sempre in prima posizione
     if (a.id === "ingresso-principale") return -1;
     if (b.id === "ingresso-principale") return 1;
 
-    // Se sono entrambe aule, estrae i numeri/stringhe e applica l'ordinamento numerico
     const isAulaA = a.id.startsWith("aula-");
     const isAulaB = b.id.startsWith("aula-");
 
     if (isAulaA && isAulaB) {
-      return a.titolo.localeCompare(b.titolo, "it", {
-        numeric: true,
-        sensitivity: "base",
-      });
+      return a.titolo.localeCompare(b.titolo, "it", { numeric: true, sensitivity: "base" });
     }
-
-    // Le aule vengono mostrate prioritariamente subito dopo l'ingresso
     if (isAulaA && !isAulaB) return -1;
     if (!isAulaA && isAulaB) return 1;
 
-    // Ordinamento alfabetico standard per tutti gli altri locali
     return a.titolo.localeCompare(b.titolo, "it");
   });
 
-  // 1. Genera le opzioni per "DA:"
-  let optionsFromHTML = "";
-  listaOpzioni.forEach((opt) => {
-    optionsFromHTML += `<option value="${opt.id}">${opt.titolo}</option>`;
-  });
+  // Genera HTML opzioni DA:
+  let optionsFromHTML = listaOpzioni.map((opt) => `<option value="${opt.id}">${opt.titolo}</option>`).join("");
 
-  // 2. Genera le opzioni per "A:"
+  // Genera HTML opzioni A:
   let optionsToHTML = `<option value="evacuazione" style="background-color: #ef4444; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
   optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
   optionsToHTML += `<option disabled>──────────────────</option>`;
-
-  listaOpzioni.forEach((opt) => {
-    if (opt.id !== "ingresso-principale") {
-      optionsToHTML += `<option value="${opt.id}">${opt.titolo}</option>`;
-    }
-  });
+  optionsToHTML += listaOpzioni
+    .filter((opt) => opt.id !== "ingresso-principale")
+    .map((opt) => `<option value="${opt.id}">${opt.titolo}</option>`)
+    .join("");
 
   selectFrom.innerHTML = optionsFromHTML;
   selectTo.innerHTML = optionsToHTML;
 
-  selectFrom.value = partenzaId;
+  // Ripristina o imposta valori di default
+  if (listaOpzioni.some((opt) => opt.id === partenzaId)) {
+    selectFrom.value = partenzaId;
+  } else if (listaOpzioni.length > 0) {
+    partenzaId = listaOpzioni[0].id;
+    selectFrom.value = partenzaId;
+  }
+
   selectTo.value = destinazioneId;
-
-  // Event Listeners
-  selectFrom.addEventListener("change", (e) => {
-    partenzaId = e.target.value;
-    aggiornaMappa(true);
-  });
-
-  selectTo.addEventListener("change", (e) => {
-    destinazioneId = e.target.value;
-    gestisciStileSelettoreArrivo();
-    aggiornaMappa(true);
-  });
-
-  btnSwap?.addEventListener("click", scambiaOrigineDestinazione);
-
   gestisciStileSelettoreArrivo();
 }
 
 function gestisciStileSelettoreArrivo() {
   const selectTo = document.getElementById("select-to");
-  if (!selectTo) return;
-
-  if (destinazioneId === "evacuazione") {
-    selectTo.classList.add("mode-evacuazione");
-  } else {
-    selectTo.classList.remove("mode-evacuazione");
+  if (selectTo) {
+    selectTo.classList.toggle("mode-evacuazione", destinazioneId === "evacuazione");
   }
 }
 
@@ -238,9 +198,7 @@ function aggiornaMappa(focusActive = false) {
 
   document
     .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
-    .forEach((r) => {
-      r.classList.remove("state-from", "state-to");
-    });
+    .forEach((r) => r.classList.remove("state-from", "state-to"));
 
   if (partenzaId) {
     evidenziaElemento(partenzaId, "state-from");
@@ -261,7 +219,6 @@ function evidenziaElemento(id, cssClass) {
   const el = document.getElementById(id);
   if (el) {
     const parent = el.parentElement;
-
     parent.appendChild(el);
     el.classList.add(cssClass);
 
@@ -296,10 +253,8 @@ function autoFitCamera() {
   const elFrom = document.getElementById(partenzaId);
   const elTo = document.getElementById(destinazioneId);
 
-  let minX = Infinity,
-    minY = Infinity;
-  let maxX = -Infinity,
-    maxY = -Infinity;
+  let minX = Infinity, minY = Infinity;
+  let maxX = -Infinity, maxY = -Infinity;
 
   [elFrom, elTo].forEach((el) => {
     if (el) {
@@ -326,13 +281,10 @@ function autoFitCamera() {
   const paddingX = Math.max(80, contentWidth * 0.15);
   const paddingY = Math.max(80, contentHeight * 0.15);
 
-  let vX = minX - paddingX;
-  let vY = minY - paddingY;
-  let vW = contentWidth + paddingX * 2;
-  let vH = contentHeight + paddingY * 2;
-
-  vX = Math.max(0, vX);
-  vY = Math.max(0, vY);
+  const vX = Math.max(0, minX - paddingX);
+  const vY = Math.max(0, minY - paddingY);
+  const vW = contentWidth + paddingX * 2;
+  const vH = contentHeight + paddingY * 2;
 
   svg.setAttribute("viewBox", `${vX} ${vY} ${vW} ${vH}`);
 }
@@ -341,55 +293,37 @@ function autoFitCamera() {
    INTERAZIONE CLICK DIRETTO E POP-UP MODAL
    ========================================================================== */
 
-function setupMapClicks() {
-  document.querySelectorAll(".room, #ingresso-principale").forEach((roomEl) => {
-    roomEl.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const clickedId = roomEl.getAttribute("id");
-      if (!clickedId) return;
-
-      // Se c'è una configurazione speciale e la stanza non è abilitata, ignorala
-      if (configurazioneAttiva && configurazioneAttiva.stanze && !configurazioneAttiva.stanze[clickedId]) {
-        return;
-      }
-
-      mostraPopUpStanza(clickedId);
-    });
-  });
-
-  // Gestione chiusura della finestra modale
-  document.getElementById("modal-close")?.addEventListener("click", chiudiPopUp);
-  document.getElementById("room-modal")?.addEventListener("click", (e) => {
-    if (e.target.id === "room-modal") chiudiPopUp();
-  });
-}
-
 function mostraPopUpStanza(id) {
   const modal = document.getElementById("room-modal");
+  if (!modal) return;
+
+  const stanza = configurazioneAttiva?.stanze?.[id];
+
+  const info = {
+    titolo: stanza?.etichetta || id.replace(/-/g, " "),
+    categoria: stanza?.categoria || "Generale",
+    descrizione: stanza?.descrizione || "Nessuna descrizione aggiuntiva per questo locale.",
+    aulaOriginale: stanza?.aulaOriginale || null
+  };
+
   const modalTitle = document.getElementById("modal-title");
   const modalCategory = document.getElementById("modal-category");
   const modalDesc = document.getElementById("modal-description");
   const btnSetDest = document.getElementById("btn-set-destination");
-
-  if (!modal) return;
-
-  let info = {
-    titolo: etichetteStanze[id] || id.replace(/-/g, " "),
-    categoria: "Generale",
-    descrizione: "Nessuna descrizione aggiuntiva per questo locale."
-  };
-
-  // Se c'è una configurazione attiva, recupera le informazioni estese dal JSON
-  if (configurazioneAttiva && configurazioneAttiva.stanze[id]) {
-    const data = configurazioneAttiva.stanze[id];
-    info.titolo = data.etichetta || info.titolo;
-    info.categoria = data.categoria || "Generale";
-    info.descrizione = data.descrizione || "";
-  }
+  const refElement = document.getElementById("modal-room-reference");
 
   if (modalTitle) modalTitle.textContent = info.titolo;
   if (modalCategory) modalCategory.textContent = info.categoria;
   if (modalDesc) modalDesc.textContent = info.descrizione;
+
+  if (refElement) {
+    if (info.aulaOriginale && info.aulaOriginale !== info.titolo) {
+      refElement.textContent = `📍 Ubicazione: ${info.aulaOriginale}`;
+      refElement.style.display = "block";
+    } else {
+      refElement.style.display = "none";
+    }
+  }
 
   if (btnSetDest) {
     btnSetDest.onclick = () => {
@@ -409,7 +343,7 @@ function chiudiPopUp() {
 }
 
 /* ==========================================================================
-   GENERA ETICHETTE DINAMICHE / VISIBILI SULLA MAPPA (MULTIRIGA)
+   ETICHETTE DINAMICHE MAPPA (MULTIRIGA)
    ========================================================================== */
 
 function applicaEtichetteMappa() {
@@ -419,29 +353,23 @@ function applicaEtichetteMappa() {
     const id = el.getAttribute("id");
     if (!id) return;
 
-    // Se c'è una configurazione attiva, marca e disabilita le stanze non presenti
-    if (configurazioneAttiva && configurazioneAttiva.stanze) {
-      if (!configurazioneAttiva.stanze[id]) {
-        el.classList.add("room-disabled");
-        el.classList.remove("room-enabled");
-        return;
-      }
+    const stanza = configurazioneAttiva?.stanze?.[id];
+
+    // Gestione stato abilitata / disabilitata
+    if (stanza && stanza.attivaInEvento === false) {
+      el.classList.add("room-disabled");
+      el.classList.remove("room-enabled");
+    } else {
+      el.classList.add("room-enabled");
+      el.classList.remove("room-disabled");
     }
 
-    el.classList.add("room-enabled");
-    el.classList.remove("room-disabled");
+    let testoVisibile = stanza ? stanza.etichetta : id.replace(/-/g, " ");
+    let tooltipText = testoVisibile;
 
-    let testoVisibile = "";
-
-    if (configurazioneAttiva && configurazioneAttiva.stanze[id]) {
-      testoVisibile = configurazioneAttiva.stanze[id].etichetta;
-    } else if (id.startsWith("aula-")) {
-      testoVisibile = id.replace("aula-", "").replace(/-/g, ".");
-    } else if (id === "ingresso-principale") {
-      testoVisibile = "INGRESSO";
-    } else {
-      const nomeCompleto = etichetteStanze[id] || id.replace(/-/g, " ");
-      testoVisibile = abbreviaNomeStanza(nomeCompleto);
+    if (stanza?.aulaOriginale && stanza.aulaOriginale !== stanza.etichetta) {
+      testoVisibile += `\n(${stanza.aulaOriginale})`;
+      tooltipText = `${stanza.etichetta} - Ubicazione: ${stanza.aulaOriginale}`;
     }
 
     const x = parseFloat(el.getAttribute("x")) || 0;
@@ -457,7 +385,7 @@ function applicaEtichetteMappa() {
       titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
       el.appendChild(titleEl);
     }
-    titleEl.textContent = etichetteStanze[id] || testoVisibile;
+    titleEl.textContent = tooltipText;
 
     let textEl = document.getElementById(`label-${id}`);
     if (!textEl) {
@@ -477,22 +405,19 @@ function applicaEtichetteMappa() {
 function creaTestoMultiriga(textEl, testo, centerX, centerY) {
   textEl.innerHTML = "";
 
-  const parole = testo.split(" ");
+  const righe = testo.split("\n").flatMap((linea) => linea.split(" "));
 
-  if (parole.length === 1) {
+  if (righe.length === 1) {
     textEl.textContent = testo;
     return;
   }
 
   const lineHeight = 13;
-  const totalLines = parole.length;
+  const totalLines = righe.length;
   const startY = centerY - ((totalLines - 1) * lineHeight) / 2;
 
-  parole.forEach((parola, index) => {
-    const tspan = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "tspan"
-    );
+  righe.forEach((parola, index) => {
+    const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
     tspan.setAttribute("x", centerX);
 
     if (index === 0) {
@@ -506,27 +431,54 @@ function creaTestoMultiriga(textEl, testo, centerX, centerY) {
   });
 }
 
-function abbreviaNomeStanza(nome) {
-  return nome
-    .replace("Lab. ", "L. ")
-    .replace("Ufficio ", "Uff. ")
-    .replace("Presidenza", "PRES.")
-    .replace("Vicepresidenza", "VICEPR.")
-    .replace("Biblioteca", "BIBL")
-    .replace("Spazio Ristoro", "Ristoro")
-    .replace("📍 ", "");
-}
-
 /* ==========================================================================
-   CARICAMENTO SVG ESTERNO ED INIZIALIZZAZIONE
+   EVENT LISTENERS & INIZIALIZZAZIONE
    ========================================================================== */
+
+function setupEventListeners() {
+  const selectFrom = document.getElementById("select-from");
+  const selectTo = document.getElementById("select-to");
+  const btnSwap = document.getElementById("btn-swap");
+
+  selectFrom?.addEventListener("change", (e) => {
+    partenzaId = e.target.value;
+    aggiornaMappa(true);
+  });
+
+  selectTo?.addEventListener("change", (e) => {
+    destinazioneId = e.target.value;
+    gestisciStileSelettoreArrivo();
+    aggiornaMappa(true);
+  });
+
+  btnSwap?.addEventListener("click", scambiaOrigineDestinazione);
+
+  // Modal listeners
+  document.getElementById("modal-close")?.addEventListener("click", chiudiPopUp);
+  document.getElementById("room-modal")?.addEventListener("click", (e) => {
+    if (e.target.id === "room-modal") chiudiPopUp();
+  });
+
+  // Click su aule SVG
+  document.querySelectorAll(".room, #ingresso-principale").forEach((roomEl) => {
+    roomEl.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const clickedId = roomEl.getAttribute("id");
+      if (!clickedId) return;
+
+      const stanza = configurazioneAttiva?.stanze?.[clickedId];
+      if (stanza?.attivaInEvento === false) return;
+
+      mostraPopUpStanza(clickedId);
+    });
+  });
+}
 
 async function caricaMappaSVG() {
   const container = document.getElementById("map-container");
   if (!container) return;
 
   try {
-    // 1. Legge eventuale ?config= dall'URL prima di configurare la mappa
     await caricaConfigurazioneDaURL();
 
     const response = await fetch("mappa.svg");
@@ -535,15 +487,14 @@ async function caricaMappaSVG() {
     const svgText = await response.text();
     container.innerHTML = svgText;
 
-    const svg =
-      document.getElementById("school-map") || container.querySelector("svg");
+    const svg = document.getElementById("school-map") || container.querySelector("svg");
     if (svg && svg.getAttribute("viewBox")) {
       initialViewBox = svg.getAttribute("viewBox");
     }
 
     applicaEtichetteMappa();
     popolaDropdowns();
-    setupMapClicks();
+    setupEventListeners();
     aggiornaMappa(false);
   } catch (error) {
     console.error("Errore durante il caricamento della mappa:", error);
@@ -554,7 +505,7 @@ async function caricaMappaSVG() {
 
 document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 
-// Registrazione Service Worker
+// Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
