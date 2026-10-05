@@ -4,6 +4,8 @@
 
 let partenzaId = "ingresso-principale";
 let destinazioneId = "evacuazione";
+
+// ViewBox completo della mappa originale
 let initialViewBox = "0 0 2143 2500";
 
 let configurazioneBase = {}; // Dati fisici da config/school-day.json
@@ -28,12 +30,14 @@ async function caricaConfigurazioneDaURL() {
     } else {
       // 2. Carica il file dell'evento (es. career-day.json)
       const resEvento = await fetch(`config/${configFile}.json`);
-      if (!resEvento.ok) throw new Error(`Impossibile caricare config/${configFile}.json`);
+      if (!resEvento.ok)
+        throw new Error(`Impossibile caricare config/${configFile}.json`);
       const configurazioneEvento = await resEvento.json();
 
       configurazioneAttiva = {
-        titoloEvento: configurazioneEvento.titoloEvento || configurazioneBase.titoloEvento,
-        stanze: {}
+        titoloEvento:
+          configurazioneEvento.titoloEvento || configurazioneBase.titoloEvento,
+        stanze: {},
       };
 
       // Mappa di supporto per identificare le aule usate nell'evento
@@ -53,15 +57,18 @@ async function caricaConfigurazioneDaURL() {
         if (stanzaEvento) {
           configurazioneAttiva.stanze[roomId] = {
             ...stanzaEvento,
-            etichetta: stanzaEvento.etichetta || stanzaEvento.nome || stanzaBase.etichetta,
+            etichetta:
+              stanzaEvento.etichetta ||
+              stanzaEvento.nome ||
+              stanzaBase.etichetta,
             aulaOriginale: stanzaBase.etichetta,
-            attivaInEvento: true // Cliccabile ed elencabile
+            attivaInEvento: true, // Cliccabile ed elencabile
           };
         } else {
           // Stanza base mantenuta per la mappa, ma disabilitata durante l'evento
           configurazioneAttiva.stanze[roomId] = {
             ...stanzaBase,
-            attivaInEvento: false
+            attivaInEvento: false,
           };
         }
       });
@@ -69,9 +76,9 @@ async function caricaConfigurazioneDaURL() {
 
     if (configurazioneAttiva.titoloEvento) {
       const headerTitle = document.querySelector(".app-header h1");
-      if (headerTitle) headerTitle.textContent = configurazioneAttiva.titoloEvento;
+      if (headerTitle)
+        headerTitle.textContent = configurazioneAttiva.titoloEvento;
     }
-
   } catch (err) {
     console.error("Errore durante il caricamento delle configurazioni:", err);
   }
@@ -83,7 +90,7 @@ async function caricaConfigurazioneDaURL() {
 
 function getTitoloFormattatoStanza(id) {
   if (id === "ingresso-principale") return "📍 INGRESSO";
-  
+
   const stanza = configurazioneAttiva?.stanze?.[id];
   if (stanza) {
     if (stanza.aulaOriginale && stanza.aulaOriginale !== stanza.etichetta) {
@@ -91,7 +98,7 @@ function getTitoloFormattatoStanza(id) {
     }
     return stanza.etichetta;
   }
-  
+
   return id.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
@@ -105,7 +112,7 @@ function popolaDropdowns() {
   if (!selectFrom || !selectTo) return;
 
   const elementiSelezionabili = Array.from(
-    document.querySelectorAll(".room, #ingresso-principale")
+    document.querySelectorAll(".room, #ingresso-principale"),
   );
 
   let listaOpzioni = [];
@@ -114,7 +121,7 @@ function popolaDropdowns() {
     const id = el.getAttribute("id");
     if (!id) return;
 
-    const eIngresso = (id === "ingresso-principale");
+    const eIngresso = id === "ingresso-principale";
     const stanza = configurazioneAttiva?.stanze?.[id];
 
     // Se c'è un evento attivo, escludi le stanze marcate come non attive
@@ -134,7 +141,10 @@ function popolaDropdowns() {
     const isAulaB = b.id.startsWith("aula-");
 
     if (isAulaA && isAulaB) {
-      return a.titolo.localeCompare(b.titolo, "it", { numeric: true, sensitivity: "base" });
+      return a.titolo.localeCompare(b.titolo, "it", {
+        numeric: true,
+        sensitivity: "base",
+      });
     }
     if (isAulaA && !isAulaB) return -1;
     if (!isAulaA && isAulaB) return 1;
@@ -143,7 +153,9 @@ function popolaDropdowns() {
   });
 
   // Genera HTML opzioni DA:
-  let optionsFromHTML = listaOpzioni.map((opt) => `<option value="${opt.id}">${opt.titolo}</option>`).join("");
+  let optionsFromHTML = listaOpzioni
+    .map((opt) => `<option value="${opt.id}">${opt.titolo}</option>`)
+    .join("");
 
   // Genera HTML opzioni A:
   let optionsToHTML = `<option value="evacuazione" style="background-color: #ef4444; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
@@ -172,7 +184,10 @@ function popolaDropdowns() {
 function gestisciStileSelettoreArrivo() {
   const selectTo = document.getElementById("select-to");
   if (selectTo) {
-    selectTo.classList.toggle("mode-evacuazione", destinazioneId === "evacuazione");
+    selectTo.classList.toggle(
+      "mode-evacuazione",
+      destinazioneId === "evacuazione",
+    );
   }
 }
 
@@ -184,35 +199,6 @@ function scambiaOrigineDestinazione() {
   destinazioneId = temp;
 
   aggiornaMappa(true);
-}
-
-/* ==========================================================================
-   AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
-   ========================================================================== */
-
-function aggiornaMappa(focusActive = false) {
-  const selectFrom = document.getElementById("select-from");
-  const selectTo = document.getElementById("select-to");
-  if (selectFrom) selectFrom.value = partenzaId;
-  if (selectTo) selectTo.value = destinazioneId;
-
-  document
-    .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
-    .forEach((r) => r.classList.remove("state-from", "state-to"));
-
-  if (partenzaId) {
-    evidenziaElemento(partenzaId, "state-from");
-  }
-
-  if (destinazioneId && destinazioneId !== "evacuazione") {
-    evidenziaElemento(destinazioneId, "state-to");
-  } else if (destinazioneId === "evacuazione") {
-    mostraPianoEvacuazione();
-  }
-
-  if (focusActive) {
-    autoFitCamera();
-  }
 }
 
 function evidenziaElemento(id, cssClass) {
@@ -230,59 +216,173 @@ function evidenziaElemento(id, cssClass) {
   }
 }
 
-function mostraPianoEvacuazione() {
+/* ==========================================================================
+   AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
+   ========================================================================== */
+
+function aggiornaMappa(focusActive = false) {
+  const selectFrom = document.getElementById("select-from");
+  const selectTo = document.getElementById("select-to");
+  if (selectFrom) selectFrom.value = partenzaId;
+  if (selectTo) selectTo.value = destinazioneId;
+
+  // 1. Pulisce la selezione dalle aule
+  document
+    .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
+    .forEach((r) => r.classList.remove("state-from", "state-to"));
+
+  // 2. Nasconde tutti i punti di raccolta e uscite prima di aggiornare
+  document.querySelectorAll(".evacuazione-visibile").forEach((el) => {
+    el.classList.remove("evacuazione-visibile");
+  });
+
+  // 3. Evidenzia l'origine
+  if (partenzaId) {
+    evidenziaElemento(partenzaId, "state-from");
+  }
+
+  // 4. Gestisce la destinazione o la modalità evacuazione
+  if (destinazioneId && destinazioneId !== "evacuazione") {
+    evidenziaElemento(destinazioneId, "state-to");
+  } else if (destinazioneId === "evacuazione") {
+    mostraPianoEvacuazionePerStanza(partenzaId);
+  }
+
+  if (focusActive) {
+    autoFitCamera();
+  }
+}
+
+function mostraPianoEvacuazionePerStanza(idPartenza) {
+  const stanzaPartenza = configurazioneAttiva?.stanze?.[idPartenza];
+
+  // Estrae la lettera del settore (es. "e", "g"). Default: "e"
+  const settore = (
+    stanzaPartenza?.puntoRaccolta ||
+    stanzaPartenza?.settoreEvacuazione ||
+    "e"
+  ).toLowerCase();
+
+  // 1. Rendi visibile il layer principale
   const layerEvacuazione = document.getElementById("layer-evacuazione");
   if (layerEvacuazione) {
-    layerEvacuazione.style.display = "block";
+    layerEvacuazione.classList.add("evacuazione-visibile");
+  }
+
+  // 2. Mostra il Punto di Raccolta standardizzato (es. #punto-raccolta-g)
+  const elPuntoRaccolta = document.getElementById(`punto-raccolta-${settore}`);
+  if (elPuntoRaccolta) {
+    elPuntoRaccolta.classList.add("evacuazione-visibile");
+  }
+
+  // 3. Mostra l'Uscita di Sicurezza standardizzata (es. #uscita-sicurezza-g)
+  const elUscita =
+    document.getElementById(`uscita-sicurezza-${settore}`) ||
+    document.getElementById(`uscita-${settore}`);
+
+  if (elUscita) {
+    elUscita.classList.add("evacuazione-visibile");
   }
 }
 
 /* ==========================================================================
    GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
    ========================================================================== */
-
 function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
 
-  if (destinazioneId === "evacuazione" || (!partenzaId && !destinazioneId)) {
-    svg.setAttribute("viewBox", initialViewBox);
-    return;
+  const elementiInquadratura = [];
+
+  // 1. Aggiungi elemento di partenza
+  const elFrom = document.getElementById(partenzaId);
+  if (elFrom) elementiInquadratura.push(elFrom);
+
+  // 2. Determina gli elementi di destinazione
+  if (destinazioneId === "evacuazione") {
+    const stanzaPartenza = configurazioneAttiva?.stanze?.[partenzaId];
+    const settore = (
+      stanzaPartenza?.puntoRaccolta ||
+      stanzaPartenza?.settoreEvacuazione ||
+      "e"
+    ).toLowerCase();
+
+    const elRaccolta = document.getElementById(`punto-raccolta-${settore}`);
+    const elUscita =
+      document.getElementById(`uscita-sicurezza-${settore}`) ||
+      document.getElementById(`uscita-${settore}`);
+
+    if (elRaccolta) elementiInquadratura.push(elRaccolta);
+    if (elUscita) elementiInquadratura.push(elUscita);
+  } else if (destinazioneId) {
+    const elTo = document.getElementById(destinazioneId);
+    if (elTo) elementiInquadratura.push(elTo);
   }
 
-  const elFrom = document.getElementById(partenzaId);
-  const elTo = document.getElementById(destinazioneId);
+  let minX = Infinity,
+    minY = Infinity;
+  let maxX = -Infinity,
+    maxY = -Infinity;
 
-  let minX = Infinity, minY = Infinity;
-  let maxX = -Infinity, maxY = -Infinity;
+  // 3. Calcola i confini esatti degli elementi selezionati
+  elementiInquadratura.forEach((el) => {
+    let rx = 0,
+      ry = 0,
+      rw = 0,
+      rh = 0;
 
-  [elFrom, elTo].forEach((el) => {
-    if (el) {
-      const rx = parseFloat(el.getAttribute("x")) || 0;
-      const ry = parseFloat(el.getAttribute("y")) || 0;
-      const rw = parseFloat(el.getAttribute("width")) || 0;
-      const rh = parseFloat(el.getAttribute("height")) || 0;
+    try {
+      const bbox = el.getBBox();
+      rx = bbox.x;
+      ry = bbox.y;
+      rw = bbox.width;
+      rh = bbox.height;
 
-      minX = Math.min(minX, rx);
-      minY = Math.min(minY, ry);
-      maxX = Math.max(maxX, rx + rw);
-      maxY = Math.max(maxY, ry + rh);
+      // Estrae posizioni traslate / scalate dagli attributi transform
+      const transformAttr = el.getAttribute("transform");
+      if (transformAttr) {
+        const translateMatch =
+          /translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/.exec(transformAttr);
+        if (translateMatch) {
+          rx += parseFloat(translateMatch[1]);
+          ry += parseFloat(translateMatch[2]);
+        }
+
+        const scaleMatch = /scale\(\s*([-\d.]+)[,\s]*([-\d.]*)\s*\)/.exec(
+          transformAttr,
+        );
+        if (scaleMatch) {
+          const scaleX = parseFloat(scaleMatch[1]);
+          const scaleY = scaleMatch[2] ? parseFloat(scaleMatch[2]) : scaleX;
+          rw *= scaleX;
+          rh *= scaleY;
+        }
+      }
+    } catch (e) {
+      rx = parseFloat(el.getAttribute("x")) || 0;
+      ry = parseFloat(el.getAttribute("y")) || 0;
+      rw = parseFloat(el.getAttribute("width")) || 0;
+      rh = parseFloat(el.getAttribute("height")) || 0;
     }
+
+    minX = Math.min(minX, rx);
+    minY = Math.min(minY, ry);
+    maxX = Math.max(maxX, rx + rw);
+    maxY = Math.max(maxY, ry + rh);
   });
 
-  if (minX === Infinity) {
-    svg.setAttribute("viewBox", initialViewBox);
-    return;
-  }
+  if (minX === Infinity) return;
 
   const contentWidth = maxX - minX;
   const contentHeight = maxY - minY;
 
-  const paddingX = Math.max(80, contentWidth * 0.15);
-  const paddingY = Math.max(80, contentHeight * 0.15);
+  // Margine dinamico attorno agli elementi da mostrare
+  const paddingX = Math.max(120, contentWidth * 0.25);
+  const paddingY = Math.max(120, contentHeight * 0.25);
 
-  const vX = Math.max(0, minX - paddingX);
-  const vY = Math.max(0, minY - paddingY);
+  // Calcolo senza vincoli rigidi per accogliere punti esterni
+  const vX = minX - paddingX;
+  const vY = minY - paddingY;
   const vW = contentWidth + paddingX * 2;
   const vH = contentHeight + paddingY * 2;
 
@@ -302,8 +402,10 @@ function mostraPopUpStanza(id) {
   const info = {
     titolo: stanza?.etichetta || id.replace(/-/g, " "),
     categoria: stanza?.categoria || "Generale",
-    descrizione: stanza?.descrizione || "Nessuna descrizione aggiuntiva per questo locale.",
-    aulaOriginale: stanza?.aulaOriginale || null
+    descrizione:
+      stanza?.descrizione ||
+      "Nessuna descrizione aggiuntiva per questo locale.",
+    aulaOriginale: stanza?.aulaOriginale || null,
   };
 
   const modalTitle = document.getElementById("modal-title");
@@ -343,7 +445,7 @@ function chiudiPopUp() {
 }
 
 /* ==========================================================================
-   ETICHETTE DINAMICHE MAPPA (MULTIRIGA)
+   ETICHETTE DINAMICHE MAPPA (MULTIRIGA) E COLORAZIONE CATEGORIE
    ========================================================================== */
 
 function applicaEtichetteMappa() {
@@ -355,7 +457,12 @@ function applicaEtichetteMappa() {
 
     const stanza = configurazioneAttiva?.stanze?.[id];
 
-    // Gestione stato abilitata / disabilitata
+    if (stanza && stanza.categoria) {
+      el.dataset.category = stanza.categoria.toLowerCase();
+    } else {
+      delete el.dataset.category;
+    }
+
     if (stanza && stanza.attivaInEvento === false) {
       el.classList.add("room-disabled");
       el.classList.remove("room-enabled");
@@ -417,7 +524,10 @@ function creaTestoMultiriga(textEl, testo, centerX, centerY) {
   const startY = centerY - ((totalLines - 1) * lineHeight) / 2;
 
   righe.forEach((parola, index) => {
-    const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+    const tspan = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "tspan",
+    );
     tspan.setAttribute("x", centerX);
 
     if (index === 0) {
@@ -454,7 +564,9 @@ function setupEventListeners() {
   btnSwap?.addEventListener("click", scambiaOrigineDestinazione);
 
   // Modal listeners
-  document.getElementById("modal-close")?.addEventListener("click", chiudiPopUp);
+  document
+    .getElementById("modal-close")
+    ?.addEventListener("click", chiudiPopUp);
   document.getElementById("room-modal")?.addEventListener("click", (e) => {
     if (e.target.id === "room-modal") chiudiPopUp();
   });
@@ -487,15 +599,18 @@ async function caricaMappaSVG() {
     const svgText = await response.text();
     container.innerHTML = svgText;
 
-    const svg = document.getElementById("school-map") || container.querySelector("svg");
-    if (svg && svg.getAttribute("viewBox")) {
-      initialViewBox = svg.getAttribute("viewBox");
+    const svg =
+      document.getElementById("school-map") || container.querySelector("svg");
+    if (svg) {
+      svg.setAttribute("viewBox", initialViewBox);
+      svg.removeAttribute("preserveAspectRatio");
     }
-
     applicaEtichetteMappa();
     popolaDropdowns();
     setupEventListeners();
-    aggiornaMappa(false);
+
+    // Attiva lo zoom automatico sul caricamento iniziale (Ingresso -> Punto/Uscita assegnati)
+    aggiornaMappa(true);
   } catch (error) {
     console.error("Errore durante il caricamento della mappa:", error);
     container.innerHTML =

@@ -433,47 +433,47 @@
 </g>
 
 <!-- ===== PUNTI DI RACCOLTA ===== -->
-<g id="punto-raccolta-a" class="evacuazione-icon" transform="translate(850, 250)">
+<g id="punto-raccolta-a" class="evacuazione-icon" transform="translate(800, 700) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">A</text>
 </g>
-<g id="punto-raccolta-b" class="evacuazione-icon" transform="translate(1300, 150)">
+<g id="punto-raccolta-b" class="evacuazione-icon" transform="translate(1150, 320) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">B</text>
 </g>
-<g id="punto-raccolta-c" class="evacuazione-icon" transform="translate(1500, 150)">
+<g id="punto-raccolta-c" class="evacuazione-icon" transform="translate(1450, 320)  scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">C</text>
 </g>
-<g id="punto-raccolta-d" class="evacuazione-icon" transform="translate(1950, 760)">
+<g id="punto-raccolta-d" class="evacuazione-icon" transform="translate(1950, 780) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">D</text>
 </g>
-<g id="punto-raccolta-e" class="evacuazione-icon" transform="translate(550, 250)">
+<g id="punto-raccolta-e" class="evacuazione-icon" transform="translate(820, 1030) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">E</text>
 </g>
-<g id="punto-raccolta-f" class="evacuazione-icon" transform="translate(1950, 1120)">
+<g id="punto-raccolta-f" class="evacuazione-icon" transform="translate(1950, 1140) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">F</text>
 </g>
-<g id="punto-raccolta-g" class="evacuazione-icon" transform="translate(1950, 1700)">
+<g id="punto-raccolta-g" class="evacuazione-icon" transform="translate(1950, 1700) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">G</text>
 </g>
-<g id="punto-raccolta-h" class="evacuazione-icon" transform="translate(1800, 1700)">
+<g id="punto-raccolta-h" class="evacuazione-icon" transform="translate(1800, 1700) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">H</text>
 </g>
-<g id="punto-raccolta-i" class="evacuazione-icon" transform="translate(1650, 1700)">
+<g id="punto-raccolta-i" class="evacuazione-icon" transform="translate(800, 1220) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">I</text>
 </g>
-<g id="punto-raccolta-l" class="evacuazione-icon" transform="translate(1500, 1700)">
+<g id="punto-raccolta-l" class="evacuazione-icon" transform="translate(1600, 1700) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">L</text>
 </g>
-<g id="punto-raccolta-m" class="evacuazione-icon" transform="translate(620, 1730)">
+<g id="punto-raccolta-m" class="evacuazione-icon" transform="translate(620, 1750) scale(0.5, 0.5)">
     <use href="#master-punto-raccolta" />
     <text x="105" y="40" class="evacuazione-text">M</text>
 </g>

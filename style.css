@@ -1,5 +1,24 @@
 /* ==========================================================================
-   1. RESET & LAYOUT GLOBALE (PWA UI)
+   1. VARIABILI GLOBALI & PALETTE CROMATICA
+   ========================================================================== */
+:root {
+  /* Palette Indirizzi Ufficiale */
+  --color-biotecnologie: #57c25b; /* Verde */
+  --color-artistico: #88349e;     /* Viola */
+  --color-scientifico: #e63042;   /* Rosso */
+  --color-elettronica: #f9ad25;   /* Giallo / Arancione chiaro */
+  --color-informatica: #f47424;   /* Arancione */
+
+  /* Categoria Generale / Eventi */
+  --color-generale: #25518e;      /* Blu Istituzionale */
+
+  /* Default (School-Day o categorie non specificate) */
+  --color-default: #ffffff;
+  --border-default: #cccccc;
+}
+
+/* ==========================================================================
+   2. RESET & LAYOUT GLOBALE (PWA UI)
    ========================================================================== */
 * {
   box-sizing: border-box;
@@ -30,7 +49,7 @@ body {
 }
 
 /* ==========================================================================
-   2. CONTROLLI SIDEBAR (DESKTOP / MOBILE)
+   3. CONTROLLI SIDEBAR (DESKTOP / MOBILE)
    ========================================================================== */
 .top-control-bar {
   width: 320px;
@@ -87,13 +106,23 @@ body {
   cursor: pointer;
   outline: none;
   width: 100%;
+  transition: all 0.2s ease;
 }
 
 .route-dropdown.dropdown-from {
   border-color: #ea580c;
 }
+
 .route-dropdown.dropdown-to {
   border-color: #2563eb;
+}
+
+/* Stile speciale quando è selezionata l'evacuazione */
+.route-dropdown.mode-evacuazione {
+  border-color: #ef4444 !important;
+  background-color: #7f1d1d !important;
+  color: #ffffff !important;
+  font-weight: 800;
 }
 
 .btn-swap {
@@ -124,7 +153,7 @@ body {
 }
 
 /* ==========================================================================
-   3. CONTENITORE MAPPA SVG
+   4. CONTENITORE MAPPA SVG & STILI STANZE
    ========================================================================== */
 .map-wrapper {
   flex: 1;
@@ -154,11 +183,36 @@ body {
   object-fit: contain;
 }
 
+/* Stile Base per TUTTE le stanze SVG */
+.room {
+  fill: var(--color-default);
+  stroke: var(--border-default);
+  transition: fill 0.3s ease, opacity 0.3s ease;
+}
+
+/* Colorazione Automatica basata sulla Categoria (Attribute Selector) */
+.room[data-category="biotecnologie"] { fill: var(--color-biotecnologie); }
+.room[data-category="artistico"]     { fill: var(--color-artistico); }
+.room[data-category="scientifico"]  { fill: var(--color-scientifico); }
+.room[data-category="elettronica"]  { fill: var(--color-elettronica); }
+.room[data-category="informatica"]  { fill: var(--color-informatica); }
+.room[data-category="generale"]     { fill: var(--color-generale); }
+
+/* Interattività Stanze Abilitate / Disabilitate */
+.room.room-enabled {
+  cursor: pointer;
+}
+
+.room.room-disabled {
+  opacity: 0.35;
+  cursor: not-allowed !important;
+}
+
 /* ==========================================================================
-   4. STATI DINAMICI AULE (EVIDENZIAZIONE RECT / PATH)
+   5. STATI DINAMICI AULE (EVIDENZIAZIONE PERCORSO)
    ========================================================================== */
 
-/* Origine DA (Arancione Vívido) */
+/* Origine DA (Arancione Nitido) */
 rect.state-from,
 path.state-from,
 polygon.state-from {
@@ -167,7 +221,7 @@ polygon.state-from {
   stroke-width: 4px !important;
 }
 
-/* Destinazione A (Blu Vívido) */
+/* Destinazione A (Blu Nitido con Pulsazione) */
 rect.state-to,
 path.state-to,
 polygon.state-to {
@@ -188,86 +242,40 @@ polygon.state-to {
 }
 
 /* ==========================================================================
-   5. ETICHETTE TESTO NELL'SVG (.room-label)
+   6. ETICHETTE TESTO NELL'SVG (.room-label) E ALONE DI CONTRASTO
    ========================================================================== */
 
-/* Stile base per il testo in stato neutro (Nero/Grigio Scuro) */
+/* Testo base sulle stanze: include alone bianco esterno per leggibilità */
 text.room-label {
   font-family: system-ui, -apple-system, sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  fill: #1e293b !important; /* Testo scuro di default per stanze non selezionate */
+  fill: #1e293b;
   text-anchor: middle;
   dominant-baseline: central;
   pointer-events: none;
   user-select: none;
   transition: fill 0.2s ease, font-size 0.2s ease;
+
+  /* Alone di contrasto bianco attorno alle lettere */
+  stroke: #ffffff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
 }
 
-/* Quando l'etichetta di testo è sopra una stanza selezionata (Sempre BIANCO PURO) */
+/* Quando l'etichetta è sopra una stanza selezionata dal percorso */
 text.room-label.state-from,
 text.room-label.state-to {
-  fill: #ffffff !important; /* Forza il bianco */
+  fill: #ffffff !important;
+  stroke: #0f172a !important; /* Alone scuro per contrastare col fill bianco */
+  stroke-width: 3px;
   font-size: 15px;
   font-weight: 800;
-  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.8));
 }
 
 /* ==========================================================================
-   6. RESPONSIVE DESIGN (TABLET & SMARTPHONE <= 768px)
-   ========================================================================== */
-@media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
-  }
-
-  .top-control-bar {
-    width: 100%;
-    height: auto;
-    padding: 10px 15px;
-    border-right: none;
-    border-bottom: 1px solid #1e293b;
-    gap: 8px;
-  }
-
-  .app-header {
-    text-align: center;
-  }
-  .app-header h1 {
-    font-size: 1.1rem;
-  }
-
-  .route-banner {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .route-selector {
-    flex-direction: row;
-    align-items: center;
-    flex: 1;
-  }
-
-  .route-dropdown {
-    padding: 6px 8px;
-    font-size: 0.8rem;
-  }
-
-  .btn-swap {
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-  }
-
-  .map-wrapper {
-    padding: 8px;
-  }
-}
-
-/* ==========================================================================
-   POPUPS & MODALS
+   7. POPUPS & MODALS
    ========================================================================== */
 .modal-overlay {
   position: fixed;
@@ -363,12 +371,78 @@ text.room-label.state-to {
   background-color: #1d4ed8;
 }
 
-/* Evidenziazione visiva per le sole stanze abilitate dal JSON */
-.room.room-disabled {
-  opacity: 0.35;
-  cursor: not-allowed !important;
+/* ==========================================================================
+   8. GESTIONE VISIBILITÀ EVACUAZIONE E SICUREZZA
+   ========================================================================== */
+
+/* Nasconde punti di raccolta, uscite e layer dedicati di default */
+#layer-evacuazione,
+.evacuazione-icon,
+.uscita-sicurezza,
+[id^="punto-raccolta-"],
+[id^="uscita-sicurezza-"] {
+  display: none !important;
 }
 
-.room.room-enabled {
-  cursor: pointer;
+/* Mostra SOLO gli elementi attivi selezionati dinamicamente da JS */
+#layer-evacuazione.evacuazione-visibile,
+.evacuazione-icon.evacuazione-visibile,
+.uscita-sicurezza.evacuazione-visibile,
+[id^="punto-raccolta-"].evacuazione-visibile,
+[id^="uscita-sicurezza-"].evacuazione-visibile {
+  display: block !important;
+  filter: drop-shadow(0px 0px 8px rgba(239, 68, 68, 0.8));
+}
+
+/* ==========================================================================
+   9. RESPONSIVE DESIGN (TABLET & SMARTPHONE <= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .top-control-bar {
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+    border-right: none;
+    border-bottom: 1px solid #1e293b;
+    gap: 8px;
+  }
+
+  .app-header {
+    text-align: center;
+  }
+  .app-header h1 {
+    font-size: 1.1rem;
+  }
+
+  .route-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .route-selector {
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+  }
+
+  .route-dropdown {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .btn-swap {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .map-wrapper {
+    padding: 8px;
+  }
 }

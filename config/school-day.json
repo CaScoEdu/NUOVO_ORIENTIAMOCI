@@ -1,155 +1,47 @@
 {
   "titoloEvento": "Mappa dell'Istituto",
   "stanze": {
-    "palestra-M": {
-      "etichetta": "Palestra M",
-      "categoria": "Sport",
-      "descrizione": "Palestra per le attività motorie."
+    "audiovisivi": {
+      "etichetta": "Audiovisivi",
+      "categoria": "Servizi",
+      "descrizione": "Archivio ed attrezzature multimediali.",
+      "puntoRaccolta": "d"
     },
-    "aule-palazzina-distaccata": {
-      "etichetta": "Palazzina Distaccata",
+    "aula-1": {
+      "etichetta": "Aula 1",
       "categoria": "Aule Didattiche",
-      "descrizione": "Edificio secondario dell'istituto."
-    },
-    "palestre-ABCDE": {
-      "etichetta": "Palestre A-B-C-D-E",
-      "categoria": "Sport",
-      "descrizione": "Complesso principale delle palestre dell'istituto."
-    },
-    "tensostruttura": {
-      "etichetta": "Tensostruttura",
-      "categoria": "Sport",
-      "descrizione": "Struttura coperta per attività sportive al coperto."
-    },
-    "lab-chimica": {
-      "etichetta": "Lab. Chimica",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio per esercitazioni di chimica generale."
-    },
-    "lab-preparazione": {
-      "etichetta": "Prep. Chimica",
-      "categoria": "Laboratori",
-      "descrizione": "Locale preparativa per reagenti e campioni di chimica."
-    },
-    "lab-chimica-organica": {
-      "etichetta": "Lab. Chimica Organica",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio specializzato in chimica organica."
-    },
-    "lab-strumentale": {
-      "etichetta": "Lab. Analisi Strum.",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio per analisi instrumentali avanzate."
-    },
-    "aula-12": {
-      "etichetta": "Aula 12",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-13": {
-      "etichetta": "Aula 13",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-19": {
-      "etichetta": "Aula 19",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-20": {
-      "etichetta": "Aula 20",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "lab-fisica": {
-      "etichetta": "Lab. Fisica",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio per esperienze di fisica."
-    },
-    "lab-arti-pittoriche": {
-      "etichetta": "Lab. Arti Pittoriche",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio pratico di pittura e arti visive."
-    },
-    "lab-biologia": {
-      "etichetta": "Lab. Biologia",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio per le scienze biologiche."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
     },
     "aula-10": {
       "etichetta": "Aula 10",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
     },
-    "aula-9": {
-      "etichetta": "Aula 9",
+    "aula-12": {
+      "etichetta": "Aula 12",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "b"
     },
-    "aula-8": {
-      "etichetta": "Aula 8",
+    "aula-13": {
+      "etichetta": "Aula 13",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-7": {
-      "etichetta": "Aula 7",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-6": {
-      "etichetta": "Aula 6",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-23": {
-      "etichetta": "Aula 23",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-24": {
-      "etichetta": "Aula 24",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-25": {
-      "etichetta": "Aula 25",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-26": {
-      "etichetta": "Aula 26",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-27": {
-      "etichetta": "Aula 27",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "vicepresidenza": {
-      "etichetta": "Vicepresidenza",
-      "categoria": "Direzione & Uffici",
-      "descrizione": "Ufficio del Vicepreside."
-    },
-    "presidenza": {
-      "etichetta": "Presidenza",
-      "categoria": "Direzione & Uffici",
-      "descrizione": "Ufficio della Dirigenza Scolastica."
-    },
-    "ufficio-protocollo": {
-      "etichetta": "Ufficio Protocollo",
-      "categoria": "Direzione & Uffici",
-      "descrizione": "Ufficio protocollo."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "b"
     },
     "aula-14": {
       "etichetta": "Aula 14",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "b"
     },
     "aula-15": {
       "etichetta": "Aula 15",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "b"
     },
     "aula-16": {
       "etichetta": "Aula 16",
@@ -159,142 +51,188 @@
     "aula-17": {
       "etichetta": "Aula 17",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "c"
     },
     "aula-18": {
       "etichetta": "Aula 18",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "c"
     },
-    "lab-cic": {
-      "etichetta": "Sportello CIC",
-      "categoria": "Servizi",
-      "descrizione": "Centro di Informazione e Consulenza."
-    },
-    "lab-disegno-1": {
-      "etichetta": "Lab. Disegno Tecnico",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio di disegno tecnico e CAD."
-    },
-    "aula-22": {
-      "etichetta": "Aula 22",
+    "aula-19": {
+      "etichetta": "Aula 19",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "deposito": {
-      "etichetta": "Deposito",
-      "categoria": "Servizi",
-      "descrizione": "Deposito materiali ed attrezzature."
-    },
-    "infermeria": {
-      "etichetta": "Infermeria",
-      "categoria": "Servizi",
-      "descrizione": "Primo soccorso."
-    },
-    "sala-stampa": {
-      "etichetta": "Sala Stampa",
-      "categoria": "Servizi",
-      "descrizione": "Centro riproduzione e stampa."
-    },
-    "centro-stella": {
-      "etichetta": "Centro Stella",
-      "categoria": "Servizi",
-      "descrizione": "Nodo centrale di rete dell'istituto."
-    },
-    "audiovisivi": {
-      "etichetta": "Audiovisivi",
-      "categoria": "Servizi",
-      "descrizione": "Archivio ed attrezzature multimediali."
-    },
-    "lab-arti-plastiche": {
-      "etichetta": "Lab. Arti Plastiche",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio per modellazione e scultura."
-    },
-    "aula-4": {
-      "etichetta": "Aula 4",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-3": {
-      "etichetta": "Aula 3",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "c"
     },
     "aula-2": {
       "etichetta": "Aula 2",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
     },
-    "aula-1": {
-      "etichetta": "Aula 1",
+    "aula-20": {
+      "etichetta": "Aula 20",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "c"
     },
-    "lab-gerosa": {
-      "etichetta": "Lab. Gerosa",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio polifunzionale."
-    },
-    "aula-29": {
-      "etichetta": "Aula 29",
+    "aula-22": {
+      "etichetta": "Aula 22",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "c"
+    },
+    "aula-23": {
+      "etichetta": "Aula 23",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "d"
+    },
+    "aula-24": {
+      "etichetta": "Aula 24",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "d"
+    },
+    "aula-25": {
+      "etichetta": "Aula 25",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "d"
+    },
+    "aula-26": {
+      "etichetta": "Aula 26",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "d"
+    },
+    "aula-27": {
+      "etichetta": "Aula 27",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "d"
     },
     "aula-28": {
       "etichetta": "Aula 28",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "d"
+    },
+    "aula-29": {
+      "etichetta": "Aula 29",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "d"
+    },
+    "aula-3": {
+      "etichetta": "Aula 3",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
     },
     "aula-3-0": {
       "etichetta": "Aula 3.0",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica innovativa 3.0."
+      "descrizione": "Aula didattica innovativa 3.0.",
+      "puntoRaccolta": "d"
     },
-    "ufficio-segreteria": {
-      "etichetta": "Segreteria",
-      "categoria": "Direzione & Uffici",
-      "descrizione": "Segreteria didattica e amministrativa."
-    },
-    "ufficio-dsga": {
-      "etichetta": "Ufficio DSGA",
-      "categoria": "Direzione & Uffici",
-      "descrizione": "Ufficio del Direttore dei Servizi Generali e Amministrativi."
-    },
-    "ufficio-tecnico": {
-      "etichetta": "Ufficio Tecnico",
-      "categoria": "Direzione & Uffici",
-      "descrizione": "Gestione tecnica della struttura."
-    },
-    "aula-commissioni": {
-      "etichetta": "Sala Commissioni",
-      "categoria": "Direzione & Uffici",
-      "descrizione": "Sala per commissioni di lavoro."
-    },
-    "aula-pcto": {
-      "etichetta": "Aula PCTO",
+    "aula-32": {
+      "etichetta": "Aula 32",
       "categoria": "Aule Didattiche",
-      "descrizione": "Spazio dedicato ai percorsi PCTO."
+      "descrizione": "Aula didattica."
     },
-    "spogliatoio-ata": {
-      "etichetta": "Spogliatoio ATA",
-      "categoria": "Servizi",
-      "descrizione": "Spogliatoio personale ATA."
-    },
-    "ingresso-principale": {
-      "etichetta": "📍 INGRESSO",
-      "categoria": "Accesso",
-      "descrizione": "Ingresso principale dell'istituto."
-    },
-    "ex-in-rete-2": {
-      "etichetta": "Ex In Rete 2",
+    "aula-33": {
+      "etichetta": "Aula 33",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica cablata."
+      "descrizione": "Aula didattica."
     },
-    "ex-in-rete-1": {
-      "etichetta": "Ex In Rete 1",
+    "aula-34": {
+      "etichetta": "Aula 34",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica cablata."
+      "descrizione": "Aula didattica."
+    },
+    "aula-35": {
+      "etichetta": "Aula 35",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-36": {
+      "etichetta": "Aula 36",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-37": {
+      "etichetta": "Aula 37",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-38": {
+      "etichetta": "Aula 38",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-39": {
+      "etichetta": "Aula 39",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-4": {
+      "etichetta": "Aula 4",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
+    },
+    "aula-40": {
+      "etichetta": "Aula 40",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-41": {
+      "etichetta": "Aula 41",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-42": {
+      "etichetta": "Aula 42",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-43": {
+      "etichetta": "Aula 43",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-44": {
+      "etichetta": "Aula 44",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-45": {
+      "etichetta": "Aula 45",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-46": {
+      "etichetta": "Aula 46",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-47": {
+      "etichetta": "Aula 47",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-48": {
+      "etichetta": "Aula 48",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-49": {
+      "etichetta": "Aula 49",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
     },
     "aula-51": {
       "etichetta": "Aula 51",
@@ -316,185 +254,298 @@
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
-    "sala-docenti": {
-      "etichetta": "Sala Docenti",
+    "aula-6": {
+      "etichetta": "Aula 6",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica."
+    },
+    "aula-7": {
+      "etichetta": "Aula 7",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
+    },
+    "aula-8": {
+      "etichetta": "Aula 8",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
+    },
+    "aula-9": {
+      "etichetta": "Aula 9",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica.",
+      "puntoRaccolta": "a"
+    },
+    "aula-commissioni": {
+      "etichetta": "Sala Commissioni",
       "categoria": "Direzione & Uffici",
-      "descrizione": "Area riservata al personale docente."
-    },
-    "aula-34": {
-      "etichetta": "Aula 34",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-35": {
-      "etichetta": "Aula 35",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-36": {
-      "etichetta": "Aula 36",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "lab-cisco": {
-      "etichetta": "Lab. Cisco",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio per la formazione sulle reti Cisco."
+      "descrizione": "Sala per commissioni di lavoro.",
+      "puntoRaccolta": "e"
     },
     "aula-design": {
       "etichetta": "Aula Design",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula per discipline progettuali."
     },
-    "lab-design": {
-      "etichetta": "Lab. Design",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio di progettazione e design."
-    },
-    "ele-tele": {
-      "etichetta": "Lab. Elettronica",
-      "categoria": "Laboratori",
-      "descrizione": "Laboratorio di Elettronica e Telecomunicazioni."
-    },
-    "aula-49": {
-      "etichetta": "Aula 49",
+    "aula-pcto": {
+      "etichetta": "Aula PCTO",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Spazio dedicato ai percorsi PCTO.",
+      "puntoRaccolta": "e"
     },
-    "aula-37": {
-      "etichetta": "Aula 37",
+    "aula-polifunzionale": {
+      "etichetta": "Aula Polifunzionale",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Spazio versatile per lezioni, seminari e conferenze."
     },
-    "aula-38": {
-      "etichetta": "Aula 38",
+    "aule-palazzina-distaccata": {
+      "etichetta": "Palazzina Distaccata",
       "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-39": {
-      "etichetta": "Aula 39",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+      "descrizione": "Edificio secondario dell'istituto."
     },
     "biblioteca": {
       "etichetta": "Biblioteca",
       "categoria": "Servizi",
       "descrizione": "Biblioteca scolastica e sala consultazione."
     },
-    "ex-biblioteca": {
-      "etichetta": "Ex Biblioteca",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Spazio adibito ad attività di studio."
-    },
-    "aula-32": {
-      "etichetta": "Aula 32",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-33": {
-      "etichetta": "Aula 33",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "spazio-ristoro": {
-      "etichetta": "Spazio Ristoro",
-      "categoria": "Servizi",
-      "descrizione": "Area ristoro con distributori automatici."
-    },
     "break-bagni": {
       "etichetta": "Area Break",
       "categoria": "Servizi",
       "descrizione": "Punto di pausa e servizi igienici."
-    },
-    "tpsee": {
-      "etichetta": "Lab. TPSEE",
-      "categoria": "Laboratori",
-      "descrizione": "Tecnologie e Progettazione di Sistemi Elettrici ed Elettronici."
     },
     "centro-sistemi": {
       "etichetta": "Centro Sistemi",
       "categoria": "Laboratori",
       "descrizione": "Centro gestione risorse informatiche."
     },
-    "lab-microbiologia": {
-      "etichetta": "Lab. Microbiologia",
+    "centro-stella": {
+      "etichetta": "Centro Stella",
+      "categoria": "Servizi",
+      "descrizione": "Nodo centrale di rete dell'istituto.",
+      "puntoRaccolta": "d"
+    },
+    "deposito": {
+      "etichetta": "Deposito",
+      "categoria": "Servizi",
+      "descrizione": "Deposito materiali ed attrezzature.",
+      "puntoRaccolta": "a"
+    },
+    "ele-tele": {
+      "etichetta": "Lab. Elettronica",
       "categoria": "Laboratori",
-      "descrizione": "Laboratorio per la coltura dei microrganismi."
+      "descrizione": "Laboratorio di Elettronica e Telecomunicazioni."
+    },
+    "ex-biblioteca": {
+      "etichetta": "Ex Biblioteca",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Spazio adibito ad attività di studio."
+    },
+    "ex-in-rete-1": {
+      "etichetta": "Ex In Rete 1",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica cablata."
+    },
+    "ex-in-rete-2": {
+      "etichetta": "Ex In Rete 2",
+      "categoria": "Aule Didattiche",
+      "descrizione": "Aula didattica cablata."
+    },
+    "infermeria": {
+      "etichetta": "Infermeria",
+      "categoria": "Servizi",
+      "descrizione": "Primo soccorso.",
+      "puntoRaccolta": "a"
+    },
+    "ingresso-principale": {
+      "etichetta": "📍 INGRESSO",
+      "categoria": "Accesso",
+      "descrizione": "Ingresso principale dell'istituto.",
+      "puntoRaccolta": "e"
+    },
+    "lab-arti-pittoriche": {
+      "etichetta": "Lab. Arti Pittoriche",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio pratico di pittura e arti visive.",
+      "puntoRaccolta": "c"
+    },
+    "lab-arti-plastiche": {
+      "etichetta": "Lab. Arti Plastiche",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio per modellazione e scultura.",
+      "puntoRaccolta": "a"
+    },
+    "lab-biologia": {
+      "etichetta": "Lab. Biologia",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio per le scienze biologiche.",
+      "puntoRaccolta": "c"
+    },
+    "lab-chimica": {
+      "etichetta": "Lab. Chimica",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio per esercitazioni di chimica generale.",
+      "puntoRaccolta": "b"
     },
     "lab-chimica-fisica": {
       "etichetta": "Lab. Chimica Fisica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di analisi chimico-fisiche."
     },
-    "aula-46": {
-      "etichetta": "Aula 46",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+    "lab-chimica-organica": {
+      "etichetta": "Lab. Chimica Organica",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio specializzato in chimica organica.",
+      "puntoRaccolta": "b"
     },
-    "ufficio-magazzino": {
-      "etichetta": "Magazzino",
+    "lab-cic": {
+      "etichetta": "Sportello CIC",
       "categoria": "Servizi",
-      "descrizione": "Magazzino centrale dell'istituto."
+      "descrizione": "Centro di Informazione e Consulenza.",
+      "puntoRaccolta": "c"
     },
-    "aula-41": {
-      "etichetta": "Aula 41",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-40": {
-      "etichetta": "Aula 40",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-48": {
-      "etichetta": "Aula 48",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-47": {
-      "etichetta": "Aula 47",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "lab-sistemi-2": {
-      "etichetta": "Lab. Sistemi 2",
+    "lab-cisco": {
+      "etichetta": "Lab. Cisco",
       "categoria": "Laboratori",
-      "descrizione": "Laboratorio avanzato di sistemi."
+      "descrizione": "Laboratorio per la formazione sulle reti Cisco."
     },
-    "lab-sistemi-1": {
-      "etichetta": "Lab. Sistemi 1",
+    "lab-design": {
+      "etichetta": "Lab. Design",
       "categoria": "Laboratori",
-      "descrizione": "Laboratorio di sistemi operativi e reti."
+      "descrizione": "Laboratorio di progettazione e design."
     },
-    "aula-45": {
-      "etichetta": "Aula 45",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+    "lab-disegno-1": {
+      "etichetta": "Lab. Disegno Tecnico",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio di disegno tecnico e CAD.",
+      "puntoRaccolta": "c"
     },
-    "aula-44": {
-      "etichetta": "Aula 44",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+    "lab-fisica": {
+      "etichetta": "Lab. Fisica",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio per esperienze di fisica.",
+      "puntoRaccolta": "c"
     },
-    "aula-43": {
-      "etichetta": "Aula 43",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
-    },
-    "aula-42": {
-      "etichetta": "Aula 42",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Aula didattica."
+    "lab-gerosa": {
+      "etichetta": "Lab. Gerosa",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio polifunzionale.",
+      "puntoRaccolta": "d"
     },
     "lab-informatica": {
       "etichetta": "Lab. Informatica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di didattica informatica."
     },
-    "aula-polifunzionale": {
-      "etichetta": "Aula Polifunzionale",
-      "categoria": "Aule Didattiche",
-      "descrizione": "Spazio versatile per lezioni, seminari e conferenze."
+    "lab-microbiologia": {
+      "etichetta": "Lab. Microbiologia",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio per la coltura dei microrganismi."
+    },
+    "lab-preparazione": {
+      "etichetta": "Prep. Chimica",
+      "categoria": "Laboratori",
+      "descrizione": "Locale preparativa per reagenti e campioni di chimica.",
+      "puntoRaccolta": "b"
+    },
+    "lab-sistemi-1": {
+      "etichetta": "Lab. Sistemi 1",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio di sistemi operativi e reti."
+    },
+    "lab-sistemi-2": {
+      "etichetta": "Lab. Sistemi 2",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio avanzato di sistemi."
+    },
+    "lab-strumentale": {
+      "etichetta": "Lab. Analisi Strum.",
+      "categoria": "Laboratori",
+      "descrizione": "Laboratorio per analisi instrumentali avanzate.",
+      "puntoRaccolta": "b"
+    },
+    "palestra-M": {
+      "etichetta": "Palestra M",
+      "categoria": "Sport",
+      "descrizione": "Palestra per le attività motorie."
+    },
+    "palestre-ABCDE": {
+      "etichetta": "Palestre A-B-C-D-E",
+      "categoria": "Sport",
+      "descrizione": "Complesso principale delle palestre dell'istituto."
+    },
+    "presidenza": {
+      "etichetta": "Presidenza",
+      "categoria": "Direzione & Uffici",
+      "descrizione": "Ufficio della Dirigenza Scolastica.",
+      "puntoRaccolta": "b"
+    },
+    "sala-docenti": {
+      "etichetta": "Sala Docenti",
+      "categoria": "Direzione & Uffici",
+      "descrizione": "Area riservata al personale docente."
+    },
+    "sala-stampa": {
+      "etichetta": "Sala Stampa",
+      "categoria": "Servizi",
+      "descrizione": "Centro riproduzione e stampa.",
+      "puntoRaccolta": "a"
+    },
+    "spazio-ristoro": {
+      "etichetta": "Spazio Ristoro",
+      "categoria": "Servizi",
+      "descrizione": "Area ristoro con distributori automatici."
+    },
+    "spogliatoio-ata": {
+      "etichetta": "Spogliatoio ATA",
+      "categoria": "Servizi",
+      "descrizione": "Spogliatoio personale ATA.",
+      "puntoRaccolta": "e"
+    },
+    "tensostruttura": {
+      "etichetta": "Tensostruttura",
+      "categoria": "Sport",
+      "descrizione": "Struttura coperta per attività sportive al coperto."
+    },
+    "tpsee": {
+      "etichetta": "Lab. TPSEE",
+      "categoria": "Laboratori",
+      "descrizione": "Tecnologie e Progettazione di Sistemi Elettrici ed Elettronici."
+    },
+    "ufficio-dsga": {
+      "etichetta": "Ufficio DSGA",
+      "categoria": "Direzione & Uffici",
+      "descrizione": "Ufficio del Direttore dei Servizi Generali e Amministrativi.",
+      "puntoRaccolta": "e"
+    },
+    "ufficio-magazzino": {
+      "etichetta": "Magazzino",
+      "categoria": "Servizi",
+      "descrizione": "Magazzino centrale dell'istituto."
+    },
+    "ufficio-protocollo": {
+      "etichetta": "Ufficio Protocollo",
+      "categoria": "Direzione & Uffici",
+      "descrizione": "Ufficio protocollo.",
+      "puntoRaccolta": "b"
+    },
+    "ufficio-segreteria": {
+      "etichetta": "Segreteria",
+      "categoria": "Direzione & Uffici",
+      "descrizione": "Segreteria didattica e amministrativa.",
+      "puntoRaccolta": "e"
+    },
+    "ufficio-tecnico": {
+      "etichetta": "Ufficio Tecnico",
+      "categoria": "Direzione & Uffici",
+      "descrizione": "Gestione tecnica della struttura.",
+      "puntoRaccolta": "e"
+    },
+    "vicepresidenza": {
+      "etichetta": "Vicepresidenza",
+      "categoria": "Direzione & Uffici",
+      "descrizione": "Ufficio del Vicepreside.",
+      "puntoRaccolta": "b"
     }
   }
 }
