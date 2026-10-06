@@ -10,14 +10,30 @@ let initialViewBox = "0 0 2143 2500";
 
 let configurazioneBase = {}; // Dati fisici da config/school-day.json
 let configurazioneAttiva = {}; // Eventuale evento unito a school-day.json
+let mappaSicurezza = {}; // Mappa indipendente delle uscite/punti di raccolta da sicurezza/punti-raccolta.json
 
 /* ==========================================================================
-   CARICAMENTO CONFIGURAZIONI ED EVENTI
+   CARICAMENTO CONFIGURAZIONI, SICUREZZA ED EVENTI
    ========================================================================== */
+
+async function caricaMappaSicurezza() {
+  try {
+    const res = await fetch("sicurezza/punti-raccolta.json");
+    if (res.ok) {
+      const data = await res.json();
+      mappaSicurezza = data.puntiRaccolta || {};
+    }
+  } catch (err) {
+    console.warn("Impossibile caricare sicurezza/punti-raccolta.json:", err);
+  }
+}
 
 async function caricaConfigurazioneDaURL() {
   const urlParams = new URLSearchParams(window.location.search);
   const configFile = urlParams.get("config");
+
+  // Carica prima le associazioni di sicurezza indipendenti dall'evento
+  await caricaMappaSicurezza();
 
   try {
     // 1. Carica SEMPRE la mappa base dell'istituto
@@ -88,6 +104,17 @@ async function caricaConfigurazioneDaURL() {
    FUNZIONI DI SUPPORTO E UTILITY
    ========================================================================== */
 
+function getSettorePuntoRaccolta(idStanza) {
+  // Prende primariamente da sicurezza/punti-raccolta.json, altrimenti fallback su config o 'e'
+  const settore =
+    mappaSicurezza[idStanza] ||
+    configurazioneAttiva?.stanze?.[idStanza]?.puntoRaccolta ||
+    configurazioneAttiva?.stanze?.[idStanza]?.settoreEvacuazione ||
+    "e";
+
+  return settore.toLowerCase();
+}
+
 function getTitoloFormattatoStanza(id) {
   if (id === "ingresso-principale") return "📍 INGRESSO";
 
@@ -105,7 +132,6 @@ function getTitoloFormattatoStanza(id) {
 /* ==========================================================================
    INIZIALIZZAZIONE SELETTORI (DROPDOWNS)
    ========================================================================== */
-
 function popolaDropdowns() {
   const selectFrom = document.getElementById("select-from");
   const selectTo = document.getElementById("select-to");
@@ -115,7 +141,8 @@ function popolaDropdowns() {
     document.querySelectorAll(".room, #ingresso-principale"),
   );
 
-  let listaOpzioni = [];
+  // Mappa per raggruppare le opzioni per categoria
+  const gruppiPerCategoria = {};
 
   elementiSelezionabili.forEach((el) => {
     const id = el.getAttribute("id");
@@ -129,51 +156,87 @@ function popolaDropdowns() {
       return;
     }
 
-    listaOpzioni.push({ id, titolo: getTitoloFormattatoStanza(id) });
+    const categoria = stanza?.categoria || (eIngresso ? "Accesso" : "Altro");
+    const titolo = getTitoloFormattatoStanza(id);
+
+    if (!gruppiPerCategoria[categoria]) {
+      gruppiPerCategoria[categoria] = [];
+    }
+
+    gruppiPerCategoria[categoria].push({ id, titolo });
   });
 
-  // Ordina le opzioni (Ingresso in cima, aule in ordine numerico/alfabetico)
-  listaOpzioni.sort((a, b) => {
-    if (a.id === "ingresso-principale") return -1;
-    if (b.id === "ingresso-principale") return 1;
+  // Ordina gli elementi all'interno di ciascuna categoria
+  Object.keys(gruppiPerCategoria).forEach((cat) => {
+    gruppiPerCategoria[cat].sort((a, b) => {
+      if (a.id === "ingresso-principale") return -1;
+      if (b.id === "ingresso-principale") return 1;
 
-    const isAulaA = a.id.startsWith("aula-");
-    const isAulaB = b.id.startsWith("aula-");
-
-    if (isAulaA && isAulaB) {
       return a.titolo.localeCompare(b.titolo, "it", {
         numeric: true,
         sensitivity: "base",
       });
-    }
-    if (isAulaA && !isAulaB) return -1;
-    if (!isAulaA && isAulaB) return 1;
-
-    return a.titolo.localeCompare(b.titolo, "it");
+    });
   });
 
+  // Ordine di visualizzazione delle categorie (Sport posizionato in fondo)
+  const ordineCategorie = [
+    "Accesso",
+    "Aule Didattiche",
+    "Direzione & Uffici",
+    "Laboratori",
+    "Servizi",
+    "Sport",
+  ];
+
+  // Recupera tutte le categorie trovate e le ordina secondo la lista (più eventuali extra)
+  const categorieOrdinate = Object.keys(gruppiPerCategoria).sort((a, b) => {
+    const indexA = ordineCategorie.indexOf(a);
+    const indexB = ordineCategorie.indexOf(b);
+
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+    return a.localeCompare(b, "it");
+  });
+
+  // Helper per generare l'HTML degli <optgroup>
+  function generaHTMLGruppi(escludiIngresso = false) {
+    let html = "";
+    categorieOrdinate.forEach((cat) => {
+      const opzioniFiltrare = gruppiPerCategoria[cat].filter(
+        (opt) => !(escludiIngresso && opt.id === "ingresso-principale"),
+      );
+
+      if (opzioniFiltrare.length > 0) {
+        html += `<optgroup label="── ${cat.toUpperCase()} ──">`;
+        opzioniFiltrare.forEach((opt) => {
+          html += `<option value="${opt.id}">${opt.titolo}</option>`;
+        });
+        html += `</optgroup>`;
+      }
+    });
+    return html;
+  }
+
   // Genera HTML opzioni DA:
-  let optionsFromHTML = listaOpzioni
-    .map((opt) => `<option value="${opt.id}">${opt.titolo}</option>`)
-    .join("");
+  let optionsFromHTML = generaHTMLGruppi(false);
 
   // Genera HTML opzioni A:
-  let optionsToHTML = `<option value="evacuazione" style="background-color: #ef4444; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
+  // Genera HTML opzioni A:
+  let optionsToHTML = `<option value="evacuazione" style="background-color: #10b981; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
   optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
-  optionsToHTML += `<option disabled>──────────────────</option>`;
-  optionsToHTML += listaOpzioni
-    .filter((opt) => opt.id !== "ingresso-principale")
-    .map((opt) => `<option value="${opt.id}">${opt.titolo}</option>`)
-    .join("");
+  optionsToHTML += generaHTMLGruppi(true);
 
   selectFrom.innerHTML = optionsFromHTML;
   selectTo.innerHTML = optionsToHTML;
 
   // Ripristina o imposta valori di default
-  if (listaOpzioni.some((opt) => opt.id === partenzaId)) {
+  const tutteLeOpzioni = Object.values(gruppiPerCategoria).flat();
+  if (tutteLeOpzioni.some((opt) => opt.id === partenzaId)) {
     selectFrom.value = partenzaId;
-  } else if (listaOpzioni.length > 0) {
-    partenzaId = listaOpzioni[0].id;
+  } else if (tutteLeOpzioni.length > 0) {
+    partenzaId = tutteLeOpzioni[0].id;
     selectFrom.value = partenzaId;
   }
 
@@ -254,14 +317,7 @@ function aggiornaMappa(focusActive = false) {
 }
 
 function mostraPianoEvacuazionePerStanza(idPartenza) {
-  const stanzaPartenza = configurazioneAttiva?.stanze?.[idPartenza];
-
-  // Estrae la lettera del settore (es. "e", "g"). Default: "e"
-  const settore = (
-    stanzaPartenza?.puntoRaccolta ||
-    stanzaPartenza?.settoreEvacuazione ||
-    "e"
-  ).toLowerCase();
+  const settore = getSettorePuntoRaccolta(idPartenza);
 
   // 1. Rendi visibile il layer principale
   const layerEvacuazione = document.getElementById("layer-evacuazione");
@@ -300,12 +356,7 @@ function autoFitCamera() {
 
   // 2. Determina gli elementi di destinazione
   if (destinazioneId === "evacuazione") {
-    const stanzaPartenza = configurazioneAttiva?.stanze?.[partenzaId];
-    const settore = (
-      stanzaPartenza?.puntoRaccolta ||
-      stanzaPartenza?.settoreEvacuazione ||
-      "e"
-    ).toLowerCase();
+    const settore = getSettorePuntoRaccolta(partenzaId);
 
     const elRaccolta = document.getElementById(`punto-raccolta-${settore}`);
     const elUscita =
@@ -593,7 +644,9 @@ async function caricaMappaSVG() {
   try {
     await caricaConfigurazioneDaURL();
 
-    const response = await fetch("mappa.svg");
+    // Da: fetch("mappa.svg")
+    // A:
+    const response = await fetch("assets/mappa.svg");
     if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
 
     const svgText = await response.text();

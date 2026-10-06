@@ -1,19 +1,21 @@
-const CACHE_NAME = 'mappa-pwa-v1';
-const ASSETS = [
-  './',
-  './index.html',
-  './styles.css',
-  './app.js',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+const CACHE_NAME = 'mappa-pwa-v0.1';
+const urlsToCache = [
+  "./",
+  "./index.html",
+  "./css/style.css",
+  "./js/script.js",
+  "./assets/mappa.svg",
+  "./assets/icon-192.png",
+  "./assets/icon-512.png",
+  "./config/school-day.json",
+  "./sicurezza/punti-raccolta.json"
 ];
 
 // Installazione: salvataggio file in cache
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
+      return cache.addAll(urlsToCache);
     })
   );
 });
@@ -31,7 +33,7 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Intercettazione richieste: risposta da cache se offline
+// Intercettazione richieste: risposta da cache se disponibile, altrimenti rete
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {

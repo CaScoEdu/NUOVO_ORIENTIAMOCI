@@ -117,10 +117,10 @@ body {
   border-color: #2563eb;
 }
 
-/* Stile speciale quando è selezionata l'evacuazione */
+/* Stile speciale quando è selezionata l'evacuazione (Verde Emergenza / Sicurezza) */
 .route-dropdown.mode-evacuazione {
-  border-color: #ef4444 !important;
-  background-color: #7f1d1d !important;
+  border-color: #10b981 !important;
+  background-color: #065f46 !important;
   color: #ffffff !important;
   font-weight: 800;
 }
@@ -391,7 +391,7 @@ text.room-label.state-to {
 [id^="punto-raccolta-"].evacuazione-visibile,
 [id^="uscita-sicurezza-"].evacuazione-visibile {
   display: block !important;
-  filter: drop-shadow(0px 0px 8px rgba(239, 68, 68, 0.8));
+  filter: drop-shadow(0px 0px 8px rgba(16, 185, 129, 0.9));
 }
 
 /* ==========================================================================

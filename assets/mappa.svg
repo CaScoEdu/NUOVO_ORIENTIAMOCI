@@ -273,7 +273,7 @@
         <rect id="aula-17" class="room" x="1359" y="517" width="52" height="60" />
         <rect id="aula-18" class="room" x="1411" y="517" width="52" height="60" />
 
-        <rect id="lab-cic" class="room" x="1493" y="517" width="40" height="60" />
+        <rect id="aula-cic" class="room" x="1493" y="517" width="40" height="60" />
         <rect id="lab-disegno-1" class="room" x="1533" y="517" width="95" height="60" />
         <rect id="aula-22" class="room" x="1628" y="517" width="55" height="60" />
 
@@ -323,9 +323,9 @@
         <rect id="lab-cisco" class="room" x="1693" y="1087" width="90" height="60" />
 
         <!-- ===== BLOCCO SUD: MANICA OVEST ===== -->
-        <rect id="aula-design" class="room" x="883" y="1177" width="70" height="100" />
+        <rect id="aula-50" class="room" x="883" y="1177" width="70" height="100" />
         <rect id="lab-design" class="room" x="883" y="1277" width="70" height="90" />
-        <rect id="ele-tele" class="room" x="883" y="1367" width="70" height="80" />
+        <rect id="lab-ele-tele" class="room" x="883" y="1367" width="70" height="80" />
         <rect id="aula-49" class="room" x="883" y="1447" width="35" height="110" />
 
         <!-- ===== BLOCCO SUD: MANICA EST ===== -->
