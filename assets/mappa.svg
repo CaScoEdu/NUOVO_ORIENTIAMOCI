@@ -170,6 +170,7 @@
         <!-- ingressi pedonali -->
         <rect id="corridoio-vert-principale" x="753" y="367" width="60" height="2121" class="ingresso-pedonale" />
         <rect id="corridoio-oriz-principale" x="10" y="2020" width="745" height="60" class="ingresso-pedonale" />
+        <rect id="corridoio-palestra-m" x="550" y="1440" width="200" height="30" class="ingresso-pedonale" />
         <rect id="corridoio-oriz-uscita-sud" x="753" y="1600" width="1380" height="30" class="ingresso-pedonale" />
 
         <!-- EDIFICIO PRINCIPALE EINSTEIN -->
@@ -306,8 +307,12 @@
         <rect id="spogliatoio-ata" class="room" x="1333" y="1117" width="35" height="30" />
 
         <!-- AREA INGRESSO PRINCIPALE (Zona aperta senza muri) -->
-        <rect id="ingresso-principale" class="area-aperta" x="1295" y="952" width="80" height="60" rx="4" />
-
+        <!-- Nodo Ingresso nel corridoio -->
+        <g id="ingresso-principale" class="nodo-ingresso" style="cursor: pointer;">
+            <!-- Centro X=1300 (1295 + 40), Y=982 (952 + 30) -->
+            <circle cx="1313" cy="985" r="16" fill="#ea580c" stroke="#ffffff" stroke-width="2" />
+            <text x="1313" y="989" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="bold">IN</text>
+        </g>
         <!-- ===== BLOCCO SUD: RIGA SUPERIORE ===== -->
         <rect id="ex-in-rete-2" class="room" x="883" y="1087" width="45" height="60" />
         <rect id="ex-in-rete-1" class="room" x="928" y="1087" width="45" height="60" />
@@ -385,7 +390,7 @@
      3. LAYER SEGNALETICA & OVERLAY INFORMATIVI
      ========================================== -->
     <g id="layer-segnaletica">
-        <text id="ingresso-einstein" class="room-label" x="1090" y="982" fill="#ffffff" font-size="18" font-weight="900"
+        <text id="ingresso-einstein"  x="1000" y="982" fill="#000000" font-size="32" font-weight="900"
             letter-spacing="1" text-anchor="middle" dominant-baseline="central">ENTRATA QUI ➔</text>
     </g>
 
@@ -394,89 +399,88 @@
        ========================================== -->
     <g id="layer-evacuazione">
         <!-- ===== USCITE DI SICUREZZA ===== -->
-        <!-- ===== USCITE DI SICUREZZA ===== -->
-<g id="uscita-sicurezza-a" class="evacuazione-icon" transform="translate(915, 787) scale(-0.7, 0.7)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">A</text>
-</g>
-<g id="uscita-sicurezza-b" class="evacuazione-icon" transform="translate(1296, 458) rotate(-90)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="18" y="-72" class="evacuazione-text-small" transform="rotate(90)">B</text>
-</g>
-<g id="uscita-sicurezza-c" class="evacuazione-icon" transform="translate(1336, 458) rotate(-90)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="18" y="-72" class="evacuazione-text-small" transform="rotate(90)">C</text>
-</g>
-<g id="uscita-sicurezza-d" class="evacuazione-icon" transform="translate(1750, 787) scale(0.7, 0.7)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="72" y="18" class="evacuazione-text-small">D</text>
-</g>
-<g id="uscita-sicurezza-e" class="evacuazione-icon" transform="translate(1285, 968) scale(-1, 1)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">E</text>
-</g>
-<g id="uscita-sicurezza-f" class="evacuazione-icon" transform="translate(1750, 1150) scale(0.7, 0.7)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="72" y="18" class="evacuazione-text-small">F</text>
-</g>
-<g id="uscita-sicurezza-g" class="evacuazione-icon" transform="translate(1370, 1510) rotate(90)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="-18" y="72" class="evacuazione-text-small" transform="rotate(-90)">G</text>
-</g>
-<g id="uscita-sicurezza-h" class="evacuazione-icon" transform="translate(1335, 1510) rotate(90)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="-18" y="72" class="evacuazione-text-small" transform="rotate(-90)">H</text>
-</g>
-<g id="uscita-sicurezza-i" class="evacuazione-icon" transform="translate(915, 1148) scale(-0.7, 0.7)">
-    <use href="#master-uscita-sicurezza-small" />
-    <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">I</text>
-</g>
+        <g id="uscita-sicurezza-a" class="evacuazione-icon" transform="translate(915, 787) scale(-0.7, 0.7)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">A</text>
+        </g>
+        <g id="uscita-sicurezza-b" class="evacuazione-icon" transform="translate(1296, 458) rotate(-90)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="18" y="-72" class="evacuazione-text-small" transform="rotate(90)">B</text>
+        </g>
+        <g id="uscita-sicurezza-c" class="evacuazione-icon" transform="translate(1336, 458) rotate(-90)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="18" y="-72" class="evacuazione-text-small" transform="rotate(90)">C</text>
+        </g>
+        <g id="uscita-sicurezza-d" class="evacuazione-icon" transform="translate(1750, 787) scale(0.7, 0.7)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="72" y="18" class="evacuazione-text-small">D</text>
+        </g>
+        <g id="uscita-sicurezza-e" class="evacuazione-icon" transform="translate(1284, 964) scale(-1, 1)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">E</text>
+        </g>
+        <g id="uscita-sicurezza-f" class="evacuazione-icon" transform="translate(1750, 1150) scale(0.7, 0.7)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="72" y="18" class="evacuazione-text-small">F</text>
+        </g>
+        <g id="uscita-sicurezza-g" class="evacuazione-icon" transform="translate(1370, 1510) rotate(90)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="-18" y="72" class="evacuazione-text-small" transform="rotate(-90)">G</text>
+        </g>
+        <g id="uscita-sicurezza-h" class="evacuazione-icon" transform="translate(1335, 1510) rotate(90)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="-18" y="72" class="evacuazione-text-small" transform="rotate(-90)">H</text>
+        </g>
+        <g id="uscita-sicurezza-i" class="evacuazione-icon" transform="translate(915, 1148) scale(-0.7, 0.7)">
+            <use href="#master-uscita-sicurezza-small" />
+            <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">I</text>
+        </g>
 
-<!-- ===== PUNTI DI RACCOLTA ===== -->
-<g id="punto-raccolta-a" class="evacuazione-icon" transform="translate(800, 700) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">A</text>
-</g>
-<g id="punto-raccolta-b" class="evacuazione-icon" transform="translate(1150, 320) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">B</text>
-</g>
-<g id="punto-raccolta-c" class="evacuazione-icon" transform="translate(1450, 320)  scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">C</text>
-</g>
-<g id="punto-raccolta-d" class="evacuazione-icon" transform="translate(1950, 780) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">D</text>
-</g>
-<g id="punto-raccolta-e" class="evacuazione-icon" transform="translate(820, 1030) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">E</text>
-</g>
-<g id="punto-raccolta-f" class="evacuazione-icon" transform="translate(1950, 1140) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">F</text>
-</g>
-<g id="punto-raccolta-g" class="evacuazione-icon" transform="translate(1950, 1700) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">G</text>
-</g>
-<g id="punto-raccolta-h" class="evacuazione-icon" transform="translate(1800, 1700) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">H</text>
-</g>
-<g id="punto-raccolta-i" class="evacuazione-icon" transform="translate(800, 1220) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">I</text>
-</g>
-<g id="punto-raccolta-l" class="evacuazione-icon" transform="translate(1600, 1700) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">L</text>
-</g>
-<g id="punto-raccolta-m" class="evacuazione-icon" transform="translate(620, 1750) scale(0.5, 0.5)">
-    <use href="#master-punto-raccolta" />
-    <text x="105" y="40" class="evacuazione-text">M</text>
-</g>
+        <!-- ===== PUNTI DI RACCOLTA ===== -->
+        <g id="punto-raccolta-a" class="evacuazione-icon" transform="translate(800, 700) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">A</text>
+        </g>
+        <g id="punto-raccolta-b" class="evacuazione-icon" transform="translate(1150, 320) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">B</text>
+        </g>
+        <g id="punto-raccolta-c" class="evacuazione-icon" transform="translate(1450, 320)  scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">C</text>
+        </g>
+        <g id="punto-raccolta-d" class="evacuazione-icon" transform="translate(1950, 780) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">D</text>
+        </g>
+        <g id="punto-raccolta-e" class="evacuazione-icon" transform="translate(820, 1030) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">E</text>
+        </g>
+        <g id="punto-raccolta-f" class="evacuazione-icon" transform="translate(1950, 1140) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">F</text>
+        </g>
+        <g id="punto-raccolta-g" class="evacuazione-icon" transform="translate(1950, 1700) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">G</text>
+        </g>
+        <g id="punto-raccolta-h" class="evacuazione-icon" transform="translate(1800, 1700) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">H</text>
+        </g>
+        <g id="punto-raccolta-i" class="evacuazione-icon" transform="translate(800, 1220) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">I</text>
+        </g>
+        <g id="punto-raccolta-l" class="evacuazione-icon" transform="translate(1600, 1700) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">L</text>
+        </g>
+        <g id="punto-raccolta-m" class="evacuazione-icon" transform="translate(620, 1750) scale(0.5, 0.5)">
+            <use href="#master-punto-raccolta" />
+            <text x="105" y="40" class="evacuazione-text">M</text>
+        </g>
     </g>
 
 </svg>
