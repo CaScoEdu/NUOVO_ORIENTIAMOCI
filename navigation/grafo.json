@@ -2,7 +2,19 @@
   "adiacenze": {
     "ingresso-principale": [
       "ufficio-dsga",
-      "snodo-ufficio-tecnico"
+      "snodo-ufficio-tecnico",
+      "snodo-sicurezza-e-1"
+    ],
+    "snodo-sicurezza-e-1": [
+      "ingresso-principale",
+      "snodo-sicurezza-e-2"
+    ],
+    "snodo-sicurezza-e-2": [
+      "snodo-sicurezza-e-1",
+      "punto-raccolta-e"
+    ],   
+    "punto-raccolta-e": [
+      "snodo-sicurezza-e-2"
     ],
     "ufficio-dsga": [
       "ingresso-principale"

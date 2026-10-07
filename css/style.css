@@ -214,7 +214,7 @@ body {
   cursor: pointer;
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3));
   
-  /* IMPO: Imposta il centro di ingrandimento sul cerchio stesso e non su (0,0) */
+  /* Imposta il centro di ingrandimento sul cerchio stesso e non su (0,0) */
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -263,18 +263,20 @@ g.state-to circle {
 
 /* Stile e Animazione per la linea del percorso (Grafo Dijkstra) */
 #path-percorso {
-  fill: none;
-  stroke: #2563eb;
-  stroke-width: 6px;
+  fill: none !important;
+  stroke: #2563eb !important;        /* Blu ad alto contrasto */
+  stroke-width: 14px !important;     /* Spessore proporzionato per viewBox 2143x2500 */
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 8, 8;
+  stroke-dasharray: 18, 10;
+  pointer-events: none;
+  opacity: 0.95;
   animation: dash-animation 1s linear infinite;
 }
 
 @keyframes dash-animation {
   to {
-    stroke-dashoffset: -16;
+    stroke-dashoffset: -28;
   }
 }
 
@@ -412,23 +414,26 @@ text.room-label.state-to {
    8. GESTIONE VISIBILITÀ EVACUAZIONE E SICUREZZA
    ========================================================================== */
 
-/* Nasconde punti di raccolta, uscite e layer dedicati di default */
+/* Nasconde punti di raccolta e uscite MANTENENDO il calcolo delle coordinate SVG (no display:none) */
 #layer-evacuazione,
 .evacuazione-icon,
 .uscita-sicurezza,
 [id^="punto-raccolta-"],
 [id^="uscita-sicurezza-"] {
-  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-/* Mostra SOLO gli elementi attivi selezionati dinamicamente da JS con alone verde */
+/* Mostra gli elementi attivi selezionati dinamicamente da JS con alone verde */
 #layer-evacuazione.evacuazione-visibile,
 .evacuazione-icon.evacuazione-visibile,
 .uscita-sicurezza.evacuazione-visibile,
 [id^="punto-raccolta-"].evacuazione-visibile,
 [id^="uscita-sicurezza-"].evacuazione-visibile {
-  display: block !important;
-  filter: drop-shadow(0px 0px 8px rgba(16, 185, 129, 0.9));
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  filter: drop-shadow(0px 0px 10px rgba(16, 185, 129, 0.9));
 }
 
 /* ==========================================================================
@@ -485,33 +490,21 @@ text.room-label.state-to {
 }
 
 /* ==========================================================================
-   STILI NODI DI NAVIGAZIONE E DEBUG
+   10. STILI NODI DI NAVIGAZIONE E DEBUG
    ========================================================================== */
 
-/* Di default (in produzione) gli snodi del corridoio sono invisibili */
+/* PRODUZIONE: Snodi del corridoio invisibili di default */
 .layer-snodi-debug circle {
   fill: transparent;
   stroke: none;
-  pointer-events: none; /* Impedisce che interferiscano con i clic del mouse */
+  pointer-events: none;
 }
 
-/* MODALITÀ DEBUG: Decommenta questa regola quando stai disegnano o posizionando il grafo */
-
+/* DEBUG: Decommenta questo blocco per mostrare i punti rossi degli snodi
 .layer-snodi-debug circle {
   fill: #ef4444 !important;   
   stroke: #ffffff !important;
   stroke-width: 1px !important;
   opacity: 0.8;
 }
-
-
-#path-percorso {
-  fill: none !important;
-  stroke: #2563eb !important;        /* Blu ad alto contrasto */
-  stroke-width: 14px !important;     /* Spessore ben visibile su viewBox 2143x2500 */
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 18 10;           /* Tratteggio dinamico */
-  pointer-events: none;
-  opacity: 0.95;
-}
+*/

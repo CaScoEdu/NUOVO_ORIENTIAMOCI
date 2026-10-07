@@ -490,6 +490,9 @@
         <!-- Snodi Corridoio (Nodi della Dorsale) -->
         <circle id="snodo-ufficio-tecnico" cx="1313" cy="1030" r="4" />
         <circle id="snodo-aula-commissioni" cx="1313" cy="1070" r="4" />
+    
+       <circle id="snodo-sicurezza-e-1" cx="783" cy="982" r="4" />
+       <circle id="snodo-sicurezza-e-2" cx="783" cy="1052" r="4" />
     </g>
 
 </svg>

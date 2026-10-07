@@ -290,9 +290,9 @@ function evidenziaElemento(id, cssClass) {
    ========================================================================== */
 function disegnaPercorsoSVG(percorsoNodi) {
   // Cerca il layer dedicato al percorso, altrimenti fa il fallback sul tag <svg>
-  const targetContainer = 
-    document.getElementById("layer-percorso") || 
-    document.getElementById("school-map") || 
+  const targetContainer =
+    document.getElementById("layer-percorso") ||
+    document.getElementById("school-map") ||
     document.querySelector("svg");
 
   if (!targetContainer) return;
@@ -300,7 +300,10 @@ function disegnaPercorsoSVG(percorsoNodi) {
   let polyline = document.getElementById("path-percorso");
 
   if (!polyline) {
-    polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    polyline = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "polyline",
+    );
     polyline.setAttribute("id", "path-percorso");
     targetContainer.appendChild(polyline);
   }
@@ -320,6 +323,10 @@ function disegnaPercorsoSVG(percorsoNodi) {
 
   polyline.setAttribute("points", punti);
 }
+
+/* ==========================================================================
+   AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
+   ========================================================================== */
 
 /* ==========================================================================
    AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
@@ -347,11 +354,11 @@ function aggiornaMappa(focusActive = false) {
     evidenziaElemento(partenzaId, "state-from");
   }
 
-  // 3. Gestisce la destinazione standard (Calcolo Percorso) o la modalità evacuazione
+  // 3. Gestisce Destinazione Standard oppure Evacuazione
   if (destinazioneId && destinazioneId !== "evacuazione") {
     evidenziaElemento(destinazioneId, "state-to");
 
-    // Calcolo e tracciamento percorso tramite Dijkstra
+    // Calcolo percorso standard
     if (grafoDati && partenzaId) {
       const percorso = calcolaPercorsoMinimo(
         grafoDati,
@@ -361,6 +368,7 @@ function aggiornaMappa(focusActive = false) {
       disegnaPercorsoSVG(percorso);
     }
   } else if (destinazioneId === "evacuazione") {
+    // Modalità Evacuazione: Mostra segnali e traccia percorso fino al punto di raccolta del settore
     mostraPianoEvacuazionePerStanza(partenzaId);
   }
 
@@ -372,12 +380,14 @@ function aggiornaMappa(focusActive = false) {
 function mostraPianoEvacuazionePerStanza(idPartenza) {
   const settore = getSettorePuntoRaccolta(idPartenza);
 
+  // 1. PRIMA rendi visibili gli elementi nell'SVG
   const layerEvacuazione = document.getElementById("layer-evacuazione");
   if (layerEvacuazione) {
     layerEvacuazione.classList.add("evacuazione-visibile");
   }
 
-  const elPuntoRaccolta = document.getElementById(`punto-raccolta-${settore}`);
+  const idPuntoRaccolta = `punto-raccolta-${settore}`;
+  const elPuntoRaccolta = document.getElementById(idPuntoRaccolta);
   if (elPuntoRaccolta) {
     elPuntoRaccolta.classList.add("evacuazione-visibile");
   }
@@ -388,6 +398,12 @@ function mostraPianoEvacuazionePerStanza(idPartenza) {
 
   if (elUscita) {
     elUscita.classList.add("evacuazione-visibile");
+  }
+
+  // 2. POI calcola e disegna il percorso (così getBBox non legge display:none)
+  if (grafoDati && idPartenza && idPuntoRaccolta) {
+    const percorsoEvacuazione = calcolaPercorsoMinimo(grafoDati, idPartenza, idPuntoRaccolta);
+    disegnaPercorsoSVG(percorsoEvacuazione);
   }
 }
 
