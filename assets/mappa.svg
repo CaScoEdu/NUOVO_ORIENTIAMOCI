@@ -226,6 +226,10 @@
         <rect id="corridoio-sud-orizzontale" x="883" y="1447" width="900" height="30" class="corridoio" />
         <rect id="area-ingresso-sud" class="corridoio" x="1293" y="1447" width="80" height="155" />
 
+        <!-- 2. LAYER PERCORSO (Inserito qui per stare SOPRA i corridoi ma SOTTO le stanze) -->
+        <g id="layer-percorso"></g>
+
+
         <!-- ========================================================================
        Stanze, Aule & Servizi
        Rettangoli delle aule, laboratori, uffici, bagni, icone di sicurezza.
@@ -390,8 +394,8 @@
      3. LAYER SEGNALETICA & OVERLAY INFORMATIVI
      ========================================== -->
     <g id="layer-segnaletica">
-        <text id="ingresso-einstein"  x="1000" y="982" fill="#000000" font-size="32" font-weight="900"
-            letter-spacing="1" text-anchor="middle" dominant-baseline="central">ENTRATA QUI ➔</text>
+        <text id="ingresso-einstein" x="1000" y="982" fill="#000000" font-size="32" font-weight="900" letter-spacing="1"
+            text-anchor="middle" dominant-baseline="central">ENTRATA QUI ➔</text>
     </g>
 
     <!-- ==========================================
@@ -481,6 +485,11 @@
             <use href="#master-punto-raccolta" />
             <text x="105" y="40" class="evacuazione-text">M</text>
         </g>
+    </g>
+    <g id="layer-nodi" class="layer-snodi-debug">
+        <!-- Snodi Corridoio (Nodi della Dorsale) -->
+        <circle id="snodo-ufficio-tecnico" cx="1313" cy="1030" r="4" />
+        <circle id="snodo-aula-commissioni" cx="1313" cy="1070" r="4" />
     </g>
 
 </svg>

@@ -1,3 +1,8 @@
+import {
+  calcolaPercorsoMinimo,
+  getCentroideNodo,
+} from "../navigation/pathfinder.js";
+
 /* ==========================================================================
    CONFIGURAZIONE E VARIABILI GLOBALI
    ========================================================================== */
@@ -11,10 +16,23 @@ let initialViewBox = "0 0 2143 2500";
 let configurazioneBase = {}; // Dati fisici da config/school-day.json
 let configurazioneAttiva = {}; // Eventuale evento unito a school-day.json
 let mappaSicurezza = {}; // Mappa indipendente delle uscite/punti di raccolta da sicurezza/punti-raccolta.json
+let grafoDati = null; // Struttura del grafo caricata da navigation/grafo.json
 
 /* ==========================================================================
-   CARICAMENTO CONFIGURAZIONI, SICUREZZA ED EVENTI
+   CARICAMENTO CONFIGURAZIONI, SICUREZZA, GRAFO ED EVENTI
    ========================================================================== */
+
+async function caricaGrafo() {
+  try {
+    const res = await fetch("navigation/grafo.json");
+    if (res.ok) {
+      grafoDati = await res.json();
+      console.log("Grafo di navigazione caricato con successo:", grafoDati);
+    }
+  } catch (err) {
+    console.warn("Impossibile caricare navigation/grafo.json:", err);
+  }
+}
 
 async function caricaMappaSicurezza() {
   try {
@@ -32,8 +50,8 @@ async function caricaConfigurazioneDaURL() {
   const urlParams = new URLSearchParams(window.location.search);
   const configFile = urlParams.get("config");
 
-  // Carica prima le associazioni di sicurezza indipendenti dall'evento
-  await caricaMappaSicurezza();
+  // Carica le associazioni di sicurezza e il grafo di navigazione
+  await Promise.all([caricaMappaSicurezza(), caricaGrafo()]);
 
   try {
     // 1. Carica SEMPRE la mappa base dell'istituto
@@ -105,7 +123,6 @@ async function caricaConfigurazioneDaURL() {
    ========================================================================== */
 
 function getSettorePuntoRaccolta(idStanza) {
-  // Prende primariamente da sicurezza/punti-raccolta.json, altrimenti fallback su config o 'e'
   const settore =
     mappaSicurezza[idStanza] ||
     configurazioneAttiva?.stanze?.[idStanza]?.puntoRaccolta ||
@@ -141,7 +158,6 @@ function popolaDropdowns() {
     document.querySelectorAll(".room, #ingresso-principale"),
   );
 
-  // Mappa per raggruppare le opzioni per categoria
   const gruppiPerCategoria = {};
 
   elementiSelezionabili.forEach((el) => {
@@ -151,7 +167,6 @@ function popolaDropdowns() {
     const eIngresso = id === "ingresso-principale";
     const stanza = configurazioneAttiva?.stanze?.[id];
 
-    // Se c'è un evento attivo, escludi le stanze marcate come non attive
     if (!eIngresso && stanza?.attivaInEvento === false) {
       return;
     }
@@ -166,7 +181,6 @@ function popolaDropdowns() {
     gruppiPerCategoria[categoria].push({ id, titolo });
   });
 
-  // Ordina gli elementi all'interno di ciascuna categoria
   Object.keys(gruppiPerCategoria).forEach((cat) => {
     gruppiPerCategoria[cat].sort((a, b) => {
       if (a.id === "ingresso-principale") return -1;
@@ -179,7 +193,6 @@ function popolaDropdowns() {
     });
   });
 
-  // Ordine di visualizzazione delle categorie (Sport posizionato in fondo)
   const ordineCategorie = [
     "Accesso",
     "Aule Didattiche",
@@ -189,7 +202,6 @@ function popolaDropdowns() {
     "Sport",
   ];
 
-  // Recupera tutte le categorie trovate e le ordina secondo la lista (più eventuali extra)
   const categorieOrdinate = Object.keys(gruppiPerCategoria).sort((a, b) => {
     const indexA = ordineCategorie.indexOf(a);
     const indexB = ordineCategorie.indexOf(b);
@@ -200,7 +212,6 @@ function popolaDropdowns() {
     return a.localeCompare(b, "it");
   });
 
-  // Helper per generare l'HTML degli <optgroup>
   function generaHTMLGruppi(escludiIngresso = false) {
     let html = "";
     categorieOrdinate.forEach((cat) => {
@@ -219,11 +230,7 @@ function popolaDropdowns() {
     return html;
   }
 
-  // Genera HTML opzioni DA:
   let optionsFromHTML = generaHTMLGruppi(false);
-
-  // Genera HTML opzioni A:
-  // Genera HTML opzioni A:
   let optionsToHTML = `<option value="evacuazione" style="background-color: #10b981; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
   optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
   optionsToHTML += generaHTMLGruppi(true);
@@ -231,7 +238,6 @@ function popolaDropdowns() {
   selectFrom.innerHTML = optionsFromHTML;
   selectTo.innerHTML = optionsToHTML;
 
-  // Ripristina o imposta valori di default
   const tutteLeOpzioni = Object.values(gruppiPerCategoria).flat();
   if (tutteLeOpzioni.some((opt) => opt.id === partenzaId)) {
     selectFrom.value = partenzaId;
@@ -280,6 +286,42 @@ function evidenziaElemento(id, cssClass) {
 }
 
 /* ==========================================================================
+   TRACCIAMENTO GRAFICO DEL PERCORSO SULL'SVG
+   ========================================================================== */
+function disegnaPercorsoSVG(percorsoNodi) {
+  // Cerca il layer dedicato al percorso, altrimenti fa il fallback sul tag <svg>
+  const targetContainer = 
+    document.getElementById("layer-percorso") || 
+    document.getElementById("school-map") || 
+    document.querySelector("svg");
+
+  if (!targetContainer) return;
+
+  let polyline = document.getElementById("path-percorso");
+
+  if (!polyline) {
+    polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    polyline.setAttribute("id", "path-percorso");
+    targetContainer.appendChild(polyline);
+  }
+
+  if (!percorsoNodi || percorsoNodi.length < 2) {
+    polyline.setAttribute("points", "");
+    return;
+  }
+
+  const punti = percorsoNodi
+    .map((nodoId) => {
+      const pos = getCentroideNodo(nodoId);
+      return pos ? `${pos.x},${pos.y}` : null;
+    })
+    .filter((p) => p !== null)
+    .join(" ");
+
+  polyline.setAttribute("points", punti);
+}
+
+/* ==========================================================================
    AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
    ========================================================================== */
 
@@ -289,24 +331,35 @@ function aggiornaMappa(focusActive = false) {
   if (selectFrom) selectFrom.value = partenzaId;
   if (selectTo) selectTo.value = destinazioneId;
 
-  // 1. Pulisce la selezione dalle aule
+  // 1. Pulisce le selezioni visive e il percorso precedente
   document
     .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
     .forEach((r) => r.classList.remove("state-from", "state-to"));
 
-  // 2. Nasconde tutti i punti di raccolta e uscite prima di aggiornare
   document.querySelectorAll(".evacuazione-visibile").forEach((el) => {
     el.classList.remove("evacuazione-visibile");
   });
 
-  // 3. Evidenzia l'origine
+  disegnaPercorsoSVG([]);
+
+  // 2. Evidenzia l'origine
   if (partenzaId) {
     evidenziaElemento(partenzaId, "state-from");
   }
 
-  // 4. Gestisce la destinazione o la modalità evacuazione
+  // 3. Gestisce la destinazione standard (Calcolo Percorso) o la modalità evacuazione
   if (destinazioneId && destinazioneId !== "evacuazione") {
     evidenziaElemento(destinazioneId, "state-to");
+
+    // Calcolo e tracciamento percorso tramite Dijkstra
+    if (grafoDati && partenzaId) {
+      const percorso = calcolaPercorsoMinimo(
+        grafoDati,
+        partenzaId,
+        destinazioneId,
+      );
+      disegnaPercorsoSVG(percorso);
+    }
   } else if (destinazioneId === "evacuazione") {
     mostraPianoEvacuazionePerStanza(partenzaId);
   }
@@ -319,19 +372,16 @@ function aggiornaMappa(focusActive = false) {
 function mostraPianoEvacuazionePerStanza(idPartenza) {
   const settore = getSettorePuntoRaccolta(idPartenza);
 
-  // 1. Rendi visibile il layer principale
   const layerEvacuazione = document.getElementById("layer-evacuazione");
   if (layerEvacuazione) {
     layerEvacuazione.classList.add("evacuazione-visibile");
   }
 
-  // 2. Mostra il Punto di Raccolta standardizzato (es. #punto-raccolta-g)
   const elPuntoRaccolta = document.getElementById(`punto-raccolta-${settore}`);
   if (elPuntoRaccolta) {
     elPuntoRaccolta.classList.add("evacuazione-visibile");
   }
 
-  // 3. Mostra l'Uscita di Sicurezza standardizzata (es. #uscita-sicurezza-g)
   const elUscita =
     document.getElementById(`uscita-sicurezza-${settore}`) ||
     document.getElementById(`uscita-${settore}`);
@@ -350,11 +400,9 @@ function autoFitCamera() {
 
   const elementiInquadratura = [];
 
-  // 1. Aggiungi elemento di partenza
   const elFrom = document.getElementById(partenzaId);
   if (elFrom) elementiInquadratura.push(elFrom);
 
-  // 2. Determina gli elementi di destinazione
   if (destinazioneId === "evacuazione") {
     const settore = getSettorePuntoRaccolta(partenzaId);
 
@@ -375,7 +423,6 @@ function autoFitCamera() {
   let maxX = -Infinity,
     maxY = -Infinity;
 
-  // 3. Calcola i confini esatti degli elementi selezionati
   elementiInquadratura.forEach((el) => {
     let rx = 0,
       ry = 0,
@@ -389,7 +436,6 @@ function autoFitCamera() {
       rw = bbox.width;
       rh = bbox.height;
 
-      // Estrae posizioni traslate / scalate dagli attributi transform
       const transformAttr = el.getAttribute("transform");
       if (transformAttr) {
         const translateMatch =
@@ -427,11 +473,9 @@ function autoFitCamera() {
   const contentWidth = maxX - minX;
   const contentHeight = maxY - minY;
 
-  // Margine dinamico attorno agli elementi da mostrare
   const paddingX = Math.max(120, contentWidth * 0.25);
   const paddingY = Math.max(120, contentHeight * 0.25);
 
-  // Calcolo senza vincoli rigidi per accogliere punti esterni
   const vX = minX - paddingX;
   const vY = minY - paddingY;
   const vW = contentWidth + paddingX * 2;
@@ -530,13 +574,9 @@ function applicaEtichetteMappa() {
       tooltipText = `${stanza.etichetta} - Ubicazione: ${stanza.aulaOriginale}`;
     }
 
-    const x = parseFloat(el.getAttribute("x")) || 0;
-    const y = parseFloat(el.getAttribute("y")) || 0;
-    const width = parseFloat(el.getAttribute("width")) || 0;
-    const height = parseFloat(el.getAttribute("height")) || 0;
-
-    const centerX = x + width / 2;
-    const centerY = y + height / 2;
+    const pos = getCentroideNodo(id);
+    const centerX = pos ? pos.x : 0;
+    const centerY = pos ? pos.y : 0;
 
     let titleEl = el.querySelector("title");
     if (!titleEl) {
@@ -644,8 +684,6 @@ async function caricaMappaSVG() {
   try {
     await caricaConfigurazioneDaURL();
 
-    // Da: fetch("mappa.svg")
-    // A:
     const response = await fetch("assets/mappa.svg");
     if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
 
@@ -662,7 +700,7 @@ async function caricaMappaSVG() {
     popolaDropdowns();
     setupEventListeners();
 
-    // Attiva lo zoom automatico sul caricamento iniziale (Ingresso -> Punto/Uscita assegnati)
+    // Attiva lo zoom automatico sul caricamento iniziale
     aggiornaMappa(true);
   } catch (error) {
     console.error("Errore durante il caricamento della mappa:", error);

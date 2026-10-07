@@ -1,0 +1,18 @@
+{
+  "adiacenze": {
+    "ingresso-principale": [
+      "ufficio-dsga",
+      "snodo-ufficio-tecnico"
+    ],
+    "ufficio-dsga": [
+      "ingresso-principale"
+    ],
+    "snodo-ufficio-tecnico": [
+      "ingresso-principale",
+      "ufficio-tecnico"
+    ],
+    "ufficio-tecnico": [
+      "snodo-ufficio-tecnico"
+    ]
+  }
+}

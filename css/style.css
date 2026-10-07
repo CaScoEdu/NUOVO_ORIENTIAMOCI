@@ -483,3 +483,35 @@ text.room-label.state-to {
     padding: 8px;
   }
 }
+
+/* ==========================================================================
+   STILI NODI DI NAVIGAZIONE E DEBUG
+   ========================================================================== */
+
+/* Di default (in produzione) gli snodi del corridoio sono invisibili */
+.layer-snodi-debug circle {
+  fill: transparent;
+  stroke: none;
+  pointer-events: none; /* Impedisce che interferiscano con i clic del mouse */
+}
+
+/* MODALITÀ DEBUG: Decommenta questa regola quando stai disegnano o posizionando il grafo */
+
+.layer-snodi-debug circle {
+  fill: #ef4444 !important;   
+  stroke: #ffffff !important;
+  stroke-width: 1px !important;
+  opacity: 0.8;
+}
+
+
+#path-percorso {
+  fill: none !important;
+  stroke: #2563eb !important;        /* Blu ad alto contrasto */
+  stroke-width: 14px !important;     /* Spessore ben visibile su viewBox 2143x2500 */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 18 10;           /* Tratteggio dinamico */
+  pointer-events: none;
+  opacity: 0.95;
+}
