@@ -3,7 +3,87 @@
     "ingresso-principale": [
       "ufficio-dsga",
       "snodo-ufficio-tecnico",
-      "snodo-sicurezza-e-1"
+      "snodo-sicurezza-e-1",
+      "incrocio-blocchi-nord-centrale"
+    ],
+    "incrocio-blocchi-nord-centrale": [
+      "ingresso-principale",
+      "snodo-sala-stampa"
+    ],
+    "snodo-sala-stampa": [
+      "incrocio-blocchi-nord-centrale",
+      "sala-stampa",
+      "snodo-aula-1"
+    ],
+    "sala-stampa": [
+      "snodo-sala-stampa"
+    ],
+    "snodo-aula-1": [
+      "snodo-sala-stampa",
+      "aula-1",
+      "incrocio-nord-v2-sud"
+    ],
+    "aula-1": [
+      "snodo-aula-1"
+    ],
+    "incrocio-nord-v2-sud": [
+      "snodo-aula-1",
+      "snodo-infermeria"
+    ],
+    "snodo-infermeria": [
+      "incrocio-nord-v2-sud",
+      "infermeria",
+      "snodo-aula-2"
+    ],
+    "infermeria": [
+      "snodo-infermeria"
+    ],
+    "snodo-aula-2": [
+      "snodo-infermeria",
+      "aula-2",
+      "snodo-aula-3"
+    ],
+    "aula-2": [
+      "snodo-aula-2"
+    ],
+    "snodo-aula-3": [
+      "snodo-aula-2",
+      "aula-3",
+      "snodo-aula-4"
+    ],
+    "aula-3": [
+      "snodo-aula-3"
+    ],
+    "snodo-aula-4": [
+      "snodo-aula-3",
+      "aula-4",
+      "incrocio-nord-v1-sud"
+    ],
+    "aula-4": [
+      "snodo-aula-4"
+    ],
+    "incrocio-nord-v1-sud": [
+      "snodo-aula-4",
+      "snodo-lab-arti-plastiche"
+    ],
+    "snodo-lab-arti-plastiche": [
+      "incrocio-nord-v1-sud",
+      "lab-arti-plastiche",
+      "snodo-sicurezza-a-1"
+    ],
+    "lab-arti-plastiche": [
+      "snodo-lab-arti-plastiche"
+    ],
+    "snodo-sicurezza-a-1": [
+      "snodo-lab-arti-plastiche",
+      "snodo-sicurezza-a-2"
+    ],
+    "snodo-sicurezza-a-2": [
+      "snodo-sicurezza-a-1",
+      "punto-raccolta-a"
+    ],
+    "punto-raccolta-a": [
+      "snodo-sicurezza-a-2"
     ],
     "snodo-sicurezza-e-1": [
       "ingresso-principale",
@@ -21,10 +101,34 @@
     ],
     "snodo-ufficio-tecnico": [
       "ingresso-principale",
-      "ufficio-tecnico"
+      "ufficio-tecnico",
+      "snodo-sala-commissioni"
     ],
     "ufficio-tecnico": [
       "snodo-ufficio-tecnico"
+    ],
+    "snodo-sala-commissioni": [
+      "snodo-ufficio-tecnico",
+      "sala-commissioni",
+      "snodo-pcto"
+    ],
+    "sala-commissioni": [
+      "snodo-sala-commissioni"
+    ],
+    "snodo-pcto": [
+      "snodo-sala-commissioni",
+      "pcto",
+      "snodo-spogliatoio-ata"
+    ],
+    "pcto": [
+      "snodo-pcto"
+    ],
+    "snodo-spogliatoio-ata": [
+      "snodo-pcto",
+      "spogliatoio-ata"
+    ],
+    "spogliatoio-ata": [
+      "snodo-spogliatoio-ata"
     ]
   }
 }

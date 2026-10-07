@@ -306,8 +306,8 @@
         <rect id="ufficio-segreteria" class="room" x="1333" y="847" width="80" height="115" />
         <rect id="ufficio-dsga" class="room" x="1333" y="962" width="80" height="45" />
         <rect id="ufficio-tecnico" class="room" x="1333" y="1007" width="80" height="45" />
-        <rect id="aula-commissioni" class="room" x="1333" y="1052" width="80" height="35" />
-        <rect id="aula-pcto" class="room" x="1333" y="1087" width="35" height="30" />
+        <rect id="sala-commissioni" class="room" x="1333" y="1052" width="80" height="35" />
+        <rect id="pcto" class="room" x="1333" y="1087" width="35" height="30" />
         <rect id="spogliatoio-ata" class="room" x="1333" y="1117" width="35" height="30" />
 
         <!-- AREA INGRESSO PRINCIPALE (Zona aperta senza muri) -->
@@ -487,12 +487,34 @@
         </g>
     </g>
     <g id="layer-nodi" class="layer-snodi-debug">
-        <!-- Snodi Corridoio (Nodi della Dorsale) -->
+        <!-- Incroci Corridoi -->
+        <circle id="incrocio-nord-v1-sud" cx="968" cy="802" r="4" />
+        <circle id="incrocio-nord-v2-sud" cx="1188" cy="802" r="4" />
+
+        <circle id="incrocio-blocchi-nord-centrale" cx="1313" cy="802" r="4" />
+
+        <!-- Snodi Corridoio Sud Blocco Nord -->
+        <circle id="snodo-lab-arti-plastiche" cx="930" cy="802" r="4" />
+        <circle id="snodo-aula-4" cx="1003" cy="802" r="4" />
+        <circle id="snodo-aula-3" cx="1073" cy="802" r="4" />
+        <circle id="snodo-aula-2" cx="1143" cy="802" r="4" />
+        <circle id="snodo-infermeria" cx="1161" cy="802" r="4" />
+        <circle id="snodo-aula-1" cx="1213" cy="802" r="4" />
+        <circle id="snodo-sala-stampa" cx="1250" cy="802" r="4" />
+
+
+        <!-- Snodi Corridoio Uffici (Nodi delle Dorsali) -->
         <circle id="snodo-ufficio-tecnico" cx="1313" cy="1030" r="4" />
-        <circle id="snodo-aula-commissioni" cx="1313" cy="1070" r="4" />
-    
-       <circle id="snodo-sicurezza-e-1" cx="783" cy="982" r="4" />
-       <circle id="snodo-sicurezza-e-2" cx="783" cy="1052" r="4" />
+        <circle id="snodo-sala-commissioni" cx="1313" cy="1070" r="4" />
+        <circle id="snodo-pcto" cx="1313" cy="1102" r="4" />
+        <circle id="snodo-spogliatoio-ata" cx="1313" cy="1132" r="4" />
+
+        <!-- Snodi esterni verso i punti di raccolta -->
+        <circle id="snodo-sicurezza-a-1" cx="783" cy="802" r="4" />
+        <circle id="snodo-sicurezza-a-2" cx="783" cy="721" r="4" />
+
+        <circle id="snodo-sicurezza-e-1" cx="783" cy="982" r="4" />
+        <circle id="snodo-sicurezza-e-2" cx="783" cy="1052" r="4" />
     </g>
 
 </svg>

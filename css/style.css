@@ -226,7 +226,7 @@ body {
 
 .nodo-ingresso text {
   font-family: system-ui, sans-serif;
-  pointer-events: none; /* Impedisce al testo di catturare il mouse infastidendo l'hover */
+  pointer-events: none;
   user-select: none;
 }
 
@@ -234,7 +234,7 @@ body {
    5. STATI DINAMICI AULE & TRACCIAMENTO PERCORSO GRAFO
    ========================================================================== */
 
-/* Origine DA (Arancione Nitido) - Supporta rect, path, polygon e gruppi <g> */
+/* Origine DA (Arancione Nitido) */
 .state-from,
 g.state-from circle {
   fill: #f97316 !important;
@@ -265,18 +265,21 @@ g.state-to circle {
 #path-percorso {
   fill: none !important;
   stroke: #2563eb !important;        /* Blu ad alto contrasto */
-  stroke-width: 14px !important;     /* Spessore proporzionato per viewBox 2143x2500 */
+  stroke-width: 12px !important;     /* Spessore ottimizzato */
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 18, 10;
+  stroke-dasharray: 20, 12;
   pointer-events: none;
   opacity: 0.95;
-  animation: dash-animation 1s linear infinite;
+  animation: dash-animation 1.2s linear infinite !important;
 }
 
 @keyframes dash-animation {
+  from {
+    stroke-dashoffset: 64;
+  }
   to {
-    stroke-dashoffset: -28;
+    stroke-dashoffset: 0;
   }
 }
 
@@ -284,31 +287,38 @@ g.state-to circle {
    6. ETICHETTE TESTO NELL'SVG (.room-label) E ALONE DI CONTRASTO
    ========================================================================== */
 
-/* Testo base sulle stanze: include alone bianco esterno per leggibilità */
-text.room-label {
+/* Testo base sulle stanze con contorno bianco ultra-nitido */
+text.room-label,
+.room-label {
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 13px;
   font-weight: 700;
-  fill: #1e293b;
+  fill: #0f172a !important; /* Scuro e ben visibile */
   text-anchor: middle;
   dominant-baseline: central;
-  pointer-events: none;
+  pointer-events: none !important;
   user-select: none;
   transition: fill 0.2s ease, font-size 0.2s ease;
 
-  /* Alone di contrasto bianco attorno alle lettere */
-  stroke: #ffffff;
-  stroke-width: 3px;
+  /* Contorno bianco per garantire leggibilità su qualsiasi colore di stanza */
+  stroke: #ffffff !important;
+  stroke-width: 3.5px !important;
+  stroke-linecap: round;
   stroke-linejoin: round;
   paint-order: stroke fill;
 }
 
-/* Quando l'etichetta è sopra una stanza selezionata dal percorso */
+.room-label tspan {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Quando l'etichetta è sopra una stanza selezionata */
 text.room-label.state-from,
 text.room-label.state-to {
   fill: #ffffff !important;
-  stroke: #0f172a !important; /* Alone scuro per contrastare col fill bianco */
-  stroke-width: 3px;
+  stroke: #0f172a !important;
+  stroke-width: 4px !important;
   font-size: 15px;
   font-weight: 800;
 }
@@ -414,23 +424,27 @@ text.room-label.state-to {
    8. GESTIONE VISIBILITÀ EVACUAZIONE E SICUREZZA
    ========================================================================== */
 
-/* Nasconde punti di raccolta e uscite MANTENENDO il calcolo delle coordinate SVG (no display:none) */
+/* Nasconde di default elementi di evacuazione e uscite */
 #layer-evacuazione,
 .evacuazione-icon,
 .uscita-sicurezza,
 [id^="punto-raccolta-"],
-[id^="uscita-sicurezza-"] {
+[id^="uscita-sicurezza-"],
+[id^="uscita-"] {
+  display: none;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
 
-/* Mostra gli elementi attivi selezionati dinamicamente da JS con alone verde */
+/* Rende visibili solo gli elementi abilitati dinamicamente da JS */
 #layer-evacuazione.evacuazione-visibile,
 .evacuazione-icon.evacuazione-visibile,
 .uscita-sicurezza.evacuazione-visibile,
 [id^="punto-raccolta-"].evacuazione-visibile,
-[id^="uscita-sicurezza-"].evacuazione-visibile {
+[id^="uscita-sicurezza-"].evacuazione-visibile,
+[id^="uscita-"].evacuazione-visibile {
+  display: block !important;
   opacity: 1 !important;
   pointer-events: auto !important;
   filter: drop-shadow(0px 0px 10px rgba(16, 185, 129, 0.9));
@@ -493,18 +507,20 @@ text.room-label.state-to {
    10. STILI NODI DI NAVIGAZIONE E DEBUG
    ========================================================================== */
 
-/* PRODUZIONE: Snodi del corridoio invisibili di default */
+/* Snodi del corridoio invisibili in produzione */
 .layer-snodi-debug circle {
   fill: transparent;
   stroke: none;
   pointer-events: none;
 }
 
-/* DEBUG: Decommenta questo blocco per mostrare i punti rossi degli snodi
-.layer-snodi-debug circle {
-  fill: #ef4444 !important;   
-  stroke: #ffffff !important;
-  stroke-width: 1px !important;
-  opacity: 0.8;
+/* ==========================================================================
+   PERCORSO DI EVACUAZIONE E SICUREZZA (VERDE EMERGENZA)
+   ========================================================================== */
+
+/* Quando è selezionata la modalità evacuazione dal selettore o la linea ha classe .evacuazione */
+.mode-evacuazione #path-percorso,
+#path-percorso.evacuazione {
+  stroke: #10b981 !important; /* Verde smeraldo brillante */
+  filter: drop-shadow(0px 0px 10px rgba(16, 185, 129, 0.8)) !important;
 }
-*/

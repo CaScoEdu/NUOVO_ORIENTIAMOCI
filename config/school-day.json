@@ -261,8 +261,8 @@
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
-    "aula-pcto": {
-      "etichetta": "Aula PCTO",
+    "pcto": {
+      "etichetta": "PCTO",
       "categoria": "Aule Didattiche",
       "descrizione": "Spazio dedicato ai percorsi PCTO."
     },
@@ -291,7 +291,7 @@
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica cablata."
     },
-    "aula-commissioni": {
+    "sala-commissioni": {
       "etichetta": "Sala Commissioni",
       "categoria": "Direzione & Uffici",
       "descrizione": "Sala per commissioni di lavoro."
@@ -312,7 +312,7 @@
       "descrizione": "Ufficio del Direttore dei Servizi Generali e Amministrativi."
     },
     "ufficio-protocollo": {
-      "etichetta": "Prot.",
+      "etichetta": "U.P.",
       "categoria": "Direzione & Uffici",
       "descrizione": "Ufficio Protocollo."
     },
@@ -436,11 +436,6 @@
       "categoria": "Servizi",
       "descrizione": "Biblioteca scolastica e sala consultazione."
     },
-    "break-bagni": {
-      "etichetta": "Area Break",
-      "categoria": "Servizi",
-      "descrizione": "Punto di pausa e servizi igienici."
-    },
     "centro-sistemi": {
       "etichetta": "Centro Sistemi",
       "categoria": "Servizi",
@@ -450,11 +445,6 @@
       "etichetta": "Centro Stella",
       "categoria": "Servizi",
       "descrizione": "Nodo centrale di rete dell'istituto."
-    },
-    "deposito": {
-      "etichetta": "Dep.",
-      "categoria": "Servizi",
-      "descrizione": "Deposito."
     },
     "infermeria": {
       "etichetta": "Inf.",
@@ -470,16 +460,6 @@
       "etichetta": "Spazio Ristoro",
       "categoria": "Servizi",
       "descrizione": "Area ristoro."
-    },
-    "spogliatoio-ata": {
-      "etichetta": "ATA",
-      "categoria": "Servizi",
-      "descrizione": "Spogliatoio personale ATA."
-    },
-    "ufficio-magazzino": {
-      "etichetta": "Mag.",
-      "categoria": "Servizi",
-      "descrizione": "Magazzino Sud dell'istituto."
     },
     "palestra-M": {
       "etichetta": "Palestra M",
