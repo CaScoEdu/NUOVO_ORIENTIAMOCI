@@ -1,7 +1,4 @@
-import {
-  calcolaPercorsoMinimo,
-  getCentroideNodo,
-} from "../navigation/pathfinder.js";
+import { calcolaPercorsoMinimo, getCentroideNodo } from "./pathfinder.js";
 
 /* ==========================================================================
    CONFIGURAZIONE E VARIABILI GLOBALI
@@ -13,9 +10,8 @@ let destinazioneId = "evacuazione";
 // ViewBox completo della mappa originale
 let initialViewBox = "0 0 2143 2500";
 
-let configurazioneBase = {}; // Dati fisici da config/school-day.json
-let configurazioneAttiva = {}; // Eventuale evento unito a school-day.json
-let mappaSicurezza = {}; // Mappa indipendente delle uscite/punti di raccolta da sicurezza/punti-raccolta.json
+let configurazioneAttiva = {}; // Configurazione finale unita (Base + Custom)
+let mappaSicurezza = {}; // Mappa uscite/punti di raccolta da sicurezza/punti-raccolta.json
 let grafoDati = null; // Struttura del grafo caricata da navigation/grafo.json
 
 /* ==========================================================================
@@ -24,97 +20,157 @@ let grafoDati = null; // Struttura del grafo caricata da navigation/grafo.json
 
 async function caricaGrafo() {
   try {
-    const res = await fetch("navigation/grafo.json");
+    const res = await fetch("config/navigation/grafo.json");
     if (res.ok) {
       grafoDati = await res.json();
       console.log("Grafo di navigazione caricato con successo:", grafoDati);
     }
   } catch (err) {
-    console.warn("Impossibile caricare navigation/grafo.json:", err);
+    console.warn("Impossibile caricare config/navigation/grafo.json:", err);
   }
 }
 
 async function caricaMappaSicurezza() {
   try {
-    const res = await fetch("sicurezza/punti-raccolta.json");
+    const res = await fetch("config/sicurezza/punti-raccolta.json");
     if (res.ok) {
       const data = await res.json();
       mappaSicurezza = data.puntiRaccolta || {};
     }
   } catch (err) {
-    console.warn("Impossibile caricare sicurezza/punti-raccolta.json:", err);
+    console.warn(
+      "Impossibile caricare config/sicurezza/punti-raccolta.json:",
+      err,
+    );
   }
 }
 
 async function caricaConfigurazioneDaURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  const configFile = urlParams.get("config");
+  // Se manca ?config=, il valore predefinito è sempre "school-day"
+  const configFile = urlParams.get("config") || "school-day";
 
-  // Carica le associazioni di sicurezza e il grafo di navigazione
   await Promise.all([caricaMappaSicurezza(), caricaGrafo()]);
 
   try {
-    // 1. Carica SEMPRE la mappa base dell'istituto
-    const resBase = await fetch("config/school-day.json");
-    if (!resBase.ok) throw new Error("Impossibile caricare school-day.json");
-    configurazioneBase = await resBase.json();
+    // 1. CARICAMENTO INIZIALE BASE: config/base/stanze.json
+    const resBase = await fetch("config/base/stanze.json");
+    if (!resBase.ok)
+      throw new Error("Impossibile caricare config/base/stanze.json");
+    const datiBase = await resBase.json();
 
-    if (!configFile || configFile === "school-day") {
-      configurazioneAttiva = configurazioneBase;
-    } else {
-      // 2. Carica il file dell'evento (es. career-day.json)
-      const resEvento = await fetch(`config/${configFile}.json`);
-      if (!resEvento.ok)
-        throw new Error(`Impossibile caricare config/${configFile}.json`);
-      const configurazioneEvento = await resEvento.json();
-
-      configurazioneAttiva = {
-        titoloEvento:
-          configurazioneEvento.titoloEvento || configurazioneBase.titoloEvento,
-        stanze: {},
-      };
-
-      // Mappa di supporto per identificare le aule usate nell'evento
-      const mappaEventoPerAula = {};
-      if (configurazioneEvento.stanze) {
-        Object.entries(configurazioneEvento.stanze).forEach(([key, item]) => {
-          const aulaTargetId = item.aula || item.id || key;
-          mappaEventoPerAula[aulaTargetId] = item;
-        });
+    // 2. CARICAMENTO OVERRIDE CUSTOM: config/custom/[configFile].json
+    let configurazioneCustom = {};
+    try {
+      const resCustom = await fetch(`config/custom/${configFile}.json`);
+      if (resCustom.ok) {
+        configurazioneCustom = await resCustom.json();
+      } else if (configFile !== "school-day") {
+        // Fallback a school-day se il file custom richiesto non esiste
+        const resFallback = await fetch("config/custom/school-day.json");
+        if (resFallback.ok) configurazioneCustom = await resFallback.json();
       }
+    } catch (errCustom) {
+      console.warn(
+        `Impossibile caricare config/custom/${configFile}.json, utilizzo fallback.`,
+        errCustom,
+      );
+    }
 
-      // 3. Fonde TUTTE le stanze di base mantenendo la visibilità, ma contrassegna quelle dell'evento
-      Object.keys(configurazioneBase.stanze).forEach((roomId) => {
-        const stanzaBase = configurazioneBase.stanze[roomId];
-        const stanzaEvento = mappaEventoPerAula[roomId];
+    configurazioneAttiva = {
+      titoloEvento:
+        configurazioneCustom.titoloEvento ||
+        datiBase.titoloEvento ||
+        "Mappa dell'Istituto",
+      stanze: {},
+    };
 
-        if (stanzaEvento) {
-          configurazioneAttiva.stanze[roomId] = {
-            ...stanzaEvento,
-            etichetta:
-              stanzaEvento.etichetta ||
-              stanzaEvento.nome ||
-              stanzaBase.etichetta,
-            aulaOriginale: stanzaBase.etichetta,
-            attivaInEvento: true, // Cliccabile ed elencabile
-          };
-        } else {
-          // Stanza base mantenuta per la mappa, ma disabilitata durante l'evento
+    const stanzeCustom = configurazioneCustom.stanze || {};
+
+    // 3. MERGE: Inizializza tutte le stanze da stanze.json e applica le personalizzazioni custom
+    Object.keys(datiBase.stanze).forEach((roomId) => {
+      const stanzaBase = datiBase.stanze[roomId];
+      const stanzaCustom = stanzeCustom[roomId];
+
+      // Il custom ha la precedenza assoluta sul base per etichetta-mappa ed etichetta-elenco
+      const etichettaMappa =
+        stanzaCustom?.["etichetta-mappa"] ||
+        stanzaCustom?.etichettaMappa ||
+        stanzaBase?.["etichetta-mappa"] ||
+        stanzaBase?.etichettaMappa ||
+        roomId;
+
+      const etichettaElenco =
+        stanzaCustom?.["etichetta-elenco"] ||
+        stanzaCustom?.etichettaElenco ||
+        stanzaCustom?.etichetta ||
+        stanzaBase?.["etichetta-elenco"] ||
+        stanzaBase?.etichettaElenco ||
+        stanzaBase?.etichetta ||
+        etichettaMappa;
+
+      if (configFile === "school-day") {
+        // Modalità School-Day standard: tutte le stanze visibili ed attive
+        configurazioneAttiva.stanze[roomId] = {
+          ...stanzaBase,
+          ...(stanzaCustom || {}),
+          etichettaMappa,
+          etichettaElenco,
+          categoria:
+            stanzaCustom?.categoria ||
+            stanzaBase?.categoria ||
+            "Aule Didattiche",
+          puntoRaccolta:
+            stanzaCustom?.["punto-raccolta"] ||
+            stanzaCustom?.puntoRaccolta ||
+            stanzaBase?.["punto-raccolta"] ||
+            stanzaBase?.puntoRaccolta,
+          attivaInEvento: true,
+        };
+      } else {
+        // Modalità Evento Specifico (es. career-day)
+        if (stanzaCustom) {
           configurazioneAttiva.stanze[roomId] = {
             ...stanzaBase,
+            ...stanzaCustom,
+            etichettaMappa,
+            etichettaElenco,
+            categoria:
+              stanzaCustom.categoria || stanzaBase?.categoria || "Evento",
+            aulaOriginale:
+              stanzaBase?.["etichetta-mappa"] ||
+              stanzaBase?.etichettaMappa ||
+              stanzaBase?.etichetta,
+            puntoRaccolta:
+              stanzaCustom["punto-raccolta"] ||
+              stanzaCustom.puntoRaccolta ||
+              stanzaBase?.["punto-raccolta"] ||
+              stanzaBase?.puntoRaccolta,
+            attivaInEvento: true,
+          };
+        } else {
+          // Stanza non attiva nell'evento: presente in mappa ma disabilitata
+          configurazioneAttiva.stanze[roomId] = {
+            ...stanzaBase,
+            etichettaMappa,
+            etichettaElenco,
             attivaInEvento: false,
           };
         }
-      });
-    }
+      }
+    });
 
     if (configurazioneAttiva.titoloEvento) {
       const headerTitle = document.querySelector(".app-header h1");
-      if (headerTitle)
+      if (headerTitle) {
         headerTitle.textContent = configurazioneAttiva.titoloEvento;
+      }
     }
   } catch (err) {
-    console.error("Errore durante il caricamento delle configurazioni:", err);
+    console.error(
+      "Errore durante il caricamento e merge delle configurazioni:",
+      err,
+    );
   }
 }
 
@@ -124,9 +180,9 @@ async function caricaConfigurazioneDaURL() {
 
 function getSettorePuntoRaccolta(idStanza) {
   const settore =
-    mappaSicurezza[idStanza] ||
     configurazioneAttiva?.stanze?.[idStanza]?.puntoRaccolta ||
-    configurazioneAttiva?.stanze?.[idStanza]?.settoreEvacuazione ||
+    configurazioneAttiva?.stanze?.[idStanza]?.["punto-raccolta"] ||
+    mappaSicurezza[idStanza] ||
     "e";
 
   return settore.toLowerCase();
@@ -137,17 +193,19 @@ function getTitoloFormattatoStanza(id) {
 
   const stanza = configurazioneAttiva?.stanze?.[id];
   if (stanza) {
-    if (stanza.aulaOriginale && stanza.aulaOriginale !== stanza.etichetta) {
-      return `${stanza.etichetta} (${stanza.aulaOriginale})`;
+    const etichetta =
+      stanza.etichettaElenco || stanza["etichetta-elenco"] || stanza.etichetta;
+    if (stanza.aulaOriginale && stanza.aulaOriginale !== etichetta) {
+      return `${etichetta} (${stanza.aulaOriginale})`;
     }
-    return stanza.etichetta;
+    return etichetta;
   }
 
   return id.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
 /* ==========================================================================
-   INIZIALIZZAZIONE SELETTORI (DROPDOWNS)
+   INIZIALIZZAZIONE SELETTORI (DROPDOWNS DALLA CONFIGURAZIONE CUSTOM)
    ========================================================================== */
 function popolaDropdowns() {
   const selectFrom = document.getElementById("select-from");
@@ -167,6 +225,7 @@ function popolaDropdowns() {
     const eIngresso = id === "ingresso-principale";
     const stanza = configurazioneAttiva?.stanze?.[id];
 
+    // Se non è l'ingresso ed è disabilitata per l'evento, la escludiamo dal menu
     if (!eIngresso && stanza?.attivaInEvento === false) {
       return;
     }
@@ -181,6 +240,7 @@ function popolaDropdowns() {
     gruppiPerCategoria[categoria].push({ id, titolo });
   });
 
+  // Ordina alfabeticamente le stanze dentro ciascuna categoria
   Object.keys(gruppiPerCategoria).forEach((cat) => {
     gruppiPerCategoria[cat].sort((a, b) => {
       if (a.id === "ingresso-principale") return -1;
@@ -193,7 +253,7 @@ function popolaDropdowns() {
     });
   });
 
-  const ordineCategorie = [
+  const ordinePredefinitoCategorie = [
     "Accesso",
     "Aule Didattiche",
     "Direzione & Uffici",
@@ -202,9 +262,10 @@ function popolaDropdowns() {
     "Sport",
   ];
 
+  // Ordina le categorie
   const categorieOrdinate = Object.keys(gruppiPerCategoria).sort((a, b) => {
-    const indexA = ordineCategorie.indexOf(a);
-    const indexB = ordineCategorie.indexOf(b);
+    const indexA = ordinePredefinitoCategorie.indexOf(a);
+    const indexB = ordinePredefinitoCategorie.indexOf(b);
 
     if (indexA !== -1 && indexB !== -1) return indexA - indexB;
     if (indexA !== -1) return -1;
@@ -289,7 +350,6 @@ function evidenziaElemento(id, cssClass) {
    TRACCIAMENTO GRAFICO DEL PERCORSO SULL'SVG
    ========================================================================== */
 function disegnaPercorsoSVG(percorsoNodi, isEvacuazione = false) {
-  // Cerca il layer dedicato al percorso, altrimenti fa il fallback sul tag <svg>
   const targetContainer =
     document.getElementById("layer-percorso") ||
     document.getElementById("school-map") ||
@@ -308,7 +368,6 @@ function disegnaPercorsoSVG(percorsoNodi, isEvacuazione = false) {
     targetContainer.appendChild(polyline);
   }
 
-  // Gestione classe colore percorso (verde per evacuazione, blu per standard)
   if (isEvacuazione) {
     polyline.classList.add("evacuazione");
   } else {
@@ -341,7 +400,6 @@ function aggiornaMappa(focusActive = false) {
   if (selectFrom) selectFrom.value = partenzaId;
   if (selectTo) selectTo.value = destinazioneId;
 
-  // 1. Pulisce le selezioni visive e il percorso precedente
   document
     .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
     .forEach((r) => r.classList.remove("state-from", "state-to"));
@@ -352,16 +410,13 @@ function aggiornaMappa(focusActive = false) {
 
   disegnaPercorsoSVG([], false);
 
-  // 2. Evidenzia l'origine
   if (partenzaId) {
     evidenziaElemento(partenzaId, "state-from");
   }
 
-  // 3. Gestisce Destinazione Standard oppure Evacuazione
   if (destinazioneId && destinazioneId !== "evacuazione") {
     evidenziaElemento(destinazioneId, "state-to");
 
-    // Calcolo percorso standard
     if (grafoDati && partenzaId) {
       const percorso = calcolaPercorsoMinimo(
         grafoDati,
@@ -371,7 +426,6 @@ function aggiornaMappa(focusActive = false) {
       disegnaPercorsoSVG(percorso, false);
     }
   } else if (destinazioneId === "evacuazione") {
-    // Modalità Evacuazione: Mostra segnali e traccia percorso fino al punto di raccolta del settore
     mostraPianoEvacuazionePerStanza(partenzaId);
   }
 
@@ -383,7 +437,6 @@ function aggiornaMappa(focusActive = false) {
 function mostraPianoEvacuazionePerStanza(idPartenza) {
   const settore = getSettorePuntoRaccolta(idPartenza);
 
-  // 1. PRIMA rendi visibili gli elementi nell'SVG
   const layerEvacuazione = document.getElementById("layer-evacuazione");
   if (layerEvacuazione) {
     layerEvacuazione.classList.add("evacuazione-visibile");
@@ -403,9 +456,12 @@ function mostraPianoEvacuazionePerStanza(idPartenza) {
     elUscita.classList.add("evacuazione-visibile");
   }
 
-  // 2. POI calcola e disegna il percorso verde (così getBBox non legge display:none)
   if (grafoDati && idPartenza && idPuntoRaccolta) {
-    const percorsoEvacuazione = calcolaPercorsoMinimo(grafoDati, idPartenza, idPuntoRaccolta);
+    const percorsoEvacuazione = calcolaPercorsoMinimo(
+      grafoDati,
+      idPartenza,
+      idPuntoRaccolta,
+    );
     disegnaPercorsoSVG(percorsoEvacuazione, true);
   }
 }
@@ -514,7 +570,10 @@ function mostraPopUpStanza(id) {
   const stanza = configurazioneAttiva?.stanze?.[id];
 
   const info = {
-    titolo: stanza?.etichetta || id.replace(/-/g, " "),
+    titolo:
+      stanza?.etichettaElenco ||
+      stanza?.etichettaMappa ||
+      id.replace(/-/g, " "),
     categoria: stanza?.categoria || "Generale",
     descrizione:
       stanza?.descrizione ||
@@ -585,12 +644,25 @@ function applicaEtichetteMappa() {
       el.classList.remove("room-disabled");
     }
 
-    let testoVisibile = stanza ? stanza.etichetta : id.replace(/-/g, " ");
-    let tooltipText = testoVisibile;
+    // 1. Prende etichettaMappa (o etichetta-mappa)
+    let testoMappa = stanza
+      ? stanza.etichettaMappa ||
+        stanza["etichetta-mappa"] ||
+        stanza.etichettaElenco
+      : id.replace(/-/g, " ");
 
-    if (stanza?.aulaOriginale && stanza.aulaOriginale !== stanza.etichetta) {
-      testoVisibile += `\n(${stanza.aulaOriginale})`;
-      tooltipText = `${stanza.etichetta} - Ubicazione: ${stanza.aulaOriginale}`;
+    // 2. Se in un evento ha un'aula originale diversa, aggiunge la seconda riga tra parentesi
+    if (stanza?.aulaOriginale && stanza.aulaOriginale !== testoMappa) {
+      testoMappa += `\n(${stanza.aulaOriginale})`;
+    }
+
+    // Tooltip per l'hover del mouse (mostra sia l'etichetta elenco che l'aula originale)
+    let tooltipText = stanza?.etichettaElenco || testoMappa.replace(/\n/g, " ");
+    if (
+      stanza?.aulaOriginale &&
+      stanza.aulaOriginale !== stanza.etichettaElenco
+    ) {
+      tooltipText = `${stanza.etichettaElenco} - Ubicazione: ${stanza.aulaOriginale}`;
     }
 
     const pos = getCentroideNodo(id);
@@ -615,7 +687,8 @@ function applicaEtichetteMappa() {
     textEl.setAttribute("x", centerX);
     textEl.setAttribute("y", centerY);
 
-    creaTestoMultiriga(textEl, testoVisibile, centerX, centerY);
+    // Renderizza il testo gestendo correttamente le righe multiple con <tspan>
+    creaTestoMultiriga(textEl, testoMappa, centerX, centerY);
   });
 }
 
@@ -673,7 +746,6 @@ function setupEventListeners() {
 
   btnSwap?.addEventListener("click", scambiaOrigineDestinazione);
 
-  // Modal listeners
   document
     .getElementById("modal-close")
     ?.addEventListener("click", chiudiPopUp);
@@ -681,7 +753,6 @@ function setupEventListeners() {
     if (e.target.id === "room-modal") chiudiPopUp();
   });
 
-  // Click su aule SVG
   document.querySelectorAll(".room, #ingresso-principale").forEach((roomEl) => {
     roomEl.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -719,7 +790,6 @@ async function caricaMappaSVG() {
     popolaDropdowns();
     setupEventListeners();
 
-    // Attiva lo zoom automatico sul caricamento iniziale
     aggiornaMappa(true);
   } catch (error) {
     console.error("Errore durante il caricamento della mappa:", error);
@@ -730,7 +800,6 @@ async function caricaMappaSVG() {
 
 document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 
-// Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker

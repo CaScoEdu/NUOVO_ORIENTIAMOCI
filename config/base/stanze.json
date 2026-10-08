@@ -1,0 +1,401 @@
+{
+  "titoloEvento": "Mappa base dell'Istituto",
+  "stanze": {
+    "audiovisivi": {
+      "etichetta-mappa": "Audiovisivi",
+      "punto-raccolta": "d"
+    },
+    "aula-1": {
+      "etichetta-mappa": "Aula\n1",
+      "punto-raccolta": "a"
+    },
+    "aula-10": {
+      "etichetta-mappa": "Aula\n10",
+      "punto-raccolta": "a"
+    },
+    "aula-12": {
+      "etichetta-mappa": "Aula\n12",
+      "punto-raccolta": "b"
+    },
+    "aula-13": {
+      "etichetta-mappa": "Aula\n13",
+      "punto-raccolta": "b"
+    },
+    "aula-14": {
+      "etichetta-mappa": "Aula\n14",
+      "punto-raccolta": "b"
+    },
+    "aula-15": {
+      "etichetta-mappa": "Aula\n15",
+      "punto-raccolta": "b"
+    },
+    "aula-16": {
+      "etichetta-mappa": "Aula\n16",
+      "punto-raccolta": "b"
+    },
+    "aula-17": {
+      "etichetta-mappa": "Aula\n17",
+      "punto-raccolta": "c"
+    },
+    "aula-18": {
+      "etichetta-mappa": "Aula\n18",
+      "punto-raccolta": "c"
+    },
+    "aula-19": {
+      "etichetta-mappa": "Aula\n19",
+      "punto-raccolta": "c"
+    },
+    "aula-2": {
+      "etichetta-mappa": "Aula\n2",
+      "punto-raccolta": "a"
+    },
+    "aula-20": {
+      "etichetta-mappa": "Aula\n20",
+      "punto-raccolta": "c"
+    },
+    "aula-22": {
+      "etichetta-mappa": "Aula\n22",
+      "punto-raccolta": "c"
+    },
+    "aula-23": {
+      "etichetta-mappa": "Aula\n23",
+      "punto-raccolta": "d"
+    },
+    "aula-24": {
+      "etichetta-mappa": "Aula\n24",
+      "punto-raccolta": "d"
+    },
+    "aula-25": {
+      "etichetta-mappa": "Aula\n25",
+      "punto-raccolta": "d"
+    },
+    "aula-26": {
+      "etichetta-mappa": "Aula\n26",
+      "punto-raccolta": "d"
+    },
+    "aula-27": {
+      "etichetta-mappa": "Aula\n27",
+      "punto-raccolta": "d"
+    },
+    "aula-28": {
+      "etichetta-mappa": "Aula\n28",
+      "punto-raccolta": "d"
+    },
+    "aula-29": {
+      "etichetta-mappa": "Aula\n29",
+      "punto-raccolta": "d"
+    },
+    "aula-3": {
+      "etichetta-mappa": "Aula\n3",
+      "punto-raccolta": "a"
+    },
+    "aula-3-0": {
+      "etichetta-mappa": "Aula\n3.0",
+      "punto-raccolta": "d"
+    },
+    "aula-32": {
+      "etichetta-mappa": "Aula\n32",
+      "punto-raccolta": "f"
+    },
+    "aula-33": {
+      "etichetta-mappa": "Aula\n33",
+      "punto-raccolta": "f"
+    },
+    "aula-34": {
+      "etichetta-mappa": "Aula\n34",
+      "punto-raccolta": "f"
+    },
+    "aula-35": {
+      "etichetta-mappa": "Aula\n35",
+      "punto-raccolta": "f"
+    },
+    "aula-36": {
+      "etichetta-mappa": "Aula\n36",
+      "punto-raccolta": "f"
+    },
+    "aula-37": {
+      "etichetta-mappa": "Aula\n37",
+      "punto-raccolta": "f"
+    },
+    "aula-38": {
+      "etichetta-mappa": "Aula\n38",
+      "punto-raccolta": "f"
+    },
+    "aula-39": {
+      "etichetta-mappa": "Aula\n39",
+      "punto-raccolta": "f"
+    },
+    "aula-4": {
+      "etichetta-mappa": "Aula\n4",
+      "punto-raccolta": "a"
+    },
+    "aula-40": {
+      "etichetta-mappa": "Aula\n40",
+      "punto-raccolta": "g"
+    },
+    "aula-41": {
+      "etichetta-mappa": "Aula\n41",
+      "punto-raccolta": "g"
+    },
+    "aula-42": {
+      "etichetta-mappa": "Aula\n42",
+      "punto-raccolta": "g"
+    },
+    "aula-43": {
+      "etichetta-mappa": "Aula\n43",
+      "punto-raccolta": "g"
+    },
+    "aula-44": {
+      "etichetta-mappa": "Aula\n44",
+      "punto-raccolta": "g"
+    },
+    "aula-45": {
+      "etichetta-mappa": "Aula\n45",
+      "punto-raccolta": "g"
+    },
+    "aula-46": {
+      "etichetta-mappa": "Aula\n46",
+      "punto-raccolta": "g"
+    },
+    "aula-47": {
+      "etichetta-mappa": "Aula\n47",
+      "punto-raccolta": "h"
+    },
+    "aula-48": {
+      "etichetta-mappa": "Aula\n48",
+      "punto-raccolta": "h"
+    },
+    "aula-49": {
+      "etichetta-mappa": "Aula\n49",
+      "punto-raccolta": "h"
+    },
+    "aula-50": {
+      "etichetta-mappa": "Aula\n50",
+      "punto-raccolta": "i"
+    },
+    "aula-51": {
+      "etichetta-mappa": "Aula\n51",
+      "punto-raccolta": "i"
+    },
+    "aula-52": {
+      "etichetta-mappa": "Aula\n52",
+      "punto-raccolta": "i"
+    },
+    "aula-53": {
+      "etichetta-mappa": "Aula\n53",
+      "punto-raccolta": "i"
+    },
+    "aula-54": {
+      "etichetta-mappa": "Aula\n54",
+      "punto-raccolta": "i"
+    },
+    "aula-6": {
+      "etichetta-mappa": "Aula\n6",
+      "punto-raccolta": "a"
+    },
+    "aula-7": {
+      "etichetta-mappa": "Aula\n7",
+      "punto-raccolta": "a"
+    },
+    "aula-8": {
+      "etichetta-mappa": "Aula\n8",
+      "punto-raccolta": "a"
+    },
+    "aula-9": {
+      "etichetta-mappa": "Aula\n9",
+      "punto-raccolta": "a"
+    },
+    "aula-cic": {
+      "etichetta-mappa": "Aula\nCIC",
+      "punto-raccolta": "c"
+    },
+    "sala-commissioni": {
+      "etichetta-mappa": "Commissioni",
+      "punto-raccolta": "e"
+    },
+    "pcto": {
+      "etichetta-mappa": "PCTO",
+      "punto-raccolta": "e"
+    },
+    "aula-polifunzionale": {
+      "etichetta-mappa": "Aula\nPolifunzionale",
+      "punto-raccolta": "g"
+    },
+    "aule-palazzina-distaccata": {
+      "etichetta-mappa": "Aule\nPalazzina\nDistaccata",
+      "punto-raccolta": "m"
+    },
+    "biblioteca": {
+      "etichetta-mappa": "Biblioteca",
+      "punto-raccolta": "f"
+    },
+    "break-bagni": {
+      "etichetta-mappa": "Area\nBreak e\nBagni",
+      "punto-raccolta": "i"
+    },
+    "centro-sistemi": {
+      "etichetta-mappa": "Centro\nSistemi",
+      "punto-raccolta": "h"
+    },
+    "centro-stella": {
+      "etichetta-mappa": "Centro\nStella",
+      "punto-raccolta": "d"
+    },
+    "deposito": {
+      "etichetta-mappa": "Deposito",
+      "punto-raccolta": "a"
+    },
+    "ex-biblioteca": {
+      "etichetta-mappa": "Ex\nBiblioteca",
+      "punto-raccolta": "f"
+    },
+    "ex-in-rete-1": {
+      "etichetta-mappa": "Ex In\nRete 1",
+      "punto-raccolta": "i"
+    },
+    "ex-in-rete-2": {
+      "etichetta-mappa": "Ex In\nRete 2",
+      "punto-raccolta": "i"
+    },
+    "infermeria": {
+      "etichetta-mappa": "Inf.",
+      "punto-raccolta": "a"
+    },
+    "ingresso-principale": {
+      "etichetta-mappa": "📍 INGRESSO",
+      "punto-raccolta": "e"
+    },
+    "lab-arti-pittoriche": {
+      "etichetta-mappa": "Lab\nArti\nPittoriche",
+      "punto-raccolta": "c"
+    },
+    "lab-arti-plastiche": {
+      "etichetta-mappa": "Lab\nArti\nPlastiche",
+      "punto-raccolta": "a"
+    },
+    "lab-biologia": {
+      "etichetta-mappa": "Lab\nBiologia",
+      "punto-raccolta": "c"
+    },
+    "lab-chimica": {
+      "etichetta-mappa": "Lab\nChimica",
+      "punto-raccolta": "b"
+    },
+    "lab-chimica-fisica": {
+      "etichetta-mappa": "Lab\nChimica\nFisica",
+      "punto-raccolta": "g"
+    },
+    "lab-chimica-organica": {
+      "etichetta-mappa": "Lab\nChimica\nOrganica",
+      "punto-raccolta": "b"
+    },
+    "lab-cisco": {
+      "etichetta-mappa": "Lab\nCisco",
+      "punto-raccolta": "f"
+    },
+    "lab-design": {
+      "etichetta-mappa": "Lab\nDesign",
+      "punto-raccolta": "i"
+    },
+    "lab-disegno-1": {
+      "etichetta-mappa": "Lab\nDisegno Tecnico",
+      "punto-raccolta": "c"
+    },
+    "lab-ele-tele": {
+      "etichetta-mappa": "Lab\nElettronica",
+      "punto-raccolta": "h"
+    },
+    "lab-fisica": {
+      "etichetta-mappa": "Lab\nFisica",
+      "punto-raccolta": "c"
+    },
+    "lab-gerosa": {
+      "etichetta-mappa": "Lab\nGerosa",
+      "punto-raccolta": "d"
+    },
+    "lab-informatica": {
+      "etichetta-mappa": "Lab\nInformatica",
+      "punto-raccolta": "g"
+    },
+    "lab-microbiologia": {
+      "etichetta-mappa": "Lab\nMicrobiologia",
+      "punto-raccolta": "h"
+    },
+    "lab-preparazione": {
+      "etichetta-mappa": "Prep.",
+      "punto-raccolta": "b"
+    },
+    "lab-sistemi-1": {
+      "etichetta-mappa": "Lab\nSistemi 1",
+      "punto-raccolta": "h"
+    },
+    "lab-sistemi-2": {
+      "etichetta-mappa": "Lab\nSistemi 2",
+      "punto-raccolta": "h"
+    },
+    "lab-strumentale": {
+      "etichetta-mappa": "Lab\nAnalisi\nStrum.",
+      "punto-raccolta": "b"
+    },
+    "palestra-M": {
+      "etichetta-mappa": "Palestra\nM",
+      "punto-raccolta": "m"
+    },
+    "palestre-ABCDE": {
+      "etichetta-mappa": "Palestre\nA-B-C-D-E",
+      "punto-raccolta": "l"
+    },
+    "presidenza": {
+      "etichetta-mappa": "Presidenza",
+      "punto-raccolta": "b"
+    },
+    "sala-docenti": {
+      "etichetta-mappa": "Sala\nDocenti",
+      "punto-raccolta": "f"
+    },
+    "sala-stampa": {
+      "etichetta-mappa": "Sala Stampa",
+      "punto-raccolta": "a"
+    },
+    "spazio-ristoro": {
+      "etichetta-mappa": "Spazio\nRistoro",
+      "punto-raccolta": "i"
+    },
+    "spogliatoio-ata": {
+      "etichetta-mappa": "ATA",
+      "punto-raccolta": "e"
+    },
+    "tensostruttura": {
+      "etichetta-mappa": "Tensostruttura",
+      "punto-raccolta": "l"
+    },
+    "lab-tpsee": {
+      "etichetta-mappa": "Lab\nTPSEE",
+      "punto-raccolta": "h"
+    },
+    "ufficio-dsga": {
+      "etichetta-mappa": "DSGA",
+      "punto-raccolta": "e"
+    },
+    "ufficio-magazzino": {
+      "etichetta-mappa": "Magazzino",
+      "punto-raccolta": "g"
+    },
+    "ufficio-protocollo": {
+      "etichetta-mappa": "U.P.",
+      "punto-raccolta": "b"
+    },
+    "ufficio-segreteria": {
+      "etichetta-mappa": "Segreteria",
+      "punto-raccolta": "e"
+    },
+    "ufficio-tecnico": {
+      "etichetta-mappa": "Ufficio\nTecnico",
+      "punto-raccolta": "e"
+    },
+    "ufficio-vicepresidenza": {
+      "etichetta-mappa": "Vice\nPres.",
+      "punto-raccolta": "b"
+    }
+  }
+}

@@ -2,15 +2,18 @@
    1. VARIABILI GLOBALI & PALETTE CROMATICA
    ========================================================================== */
 :root {
+  /* Palette Stanze Ufficiale */
+  --color-aule: red;
+
   /* Palette Indirizzi Ufficiale */
   --color-biotecnologie: #57c25b; /* Verde */
-  --color-artistico: #88349e;     /* Viola */
-  --color-scientifico: #e63042;   /* Rosso */
-  --color-elettronica: #f9ad25;   /* Giallo / Arancione chiaro */
-  --color-informatica: #f47424;   /* Arancione */
+  --color-artistico: #88349e; /* Viola */
+  --color-scientifico: #e63042; /* Rosso */
+  --color-elettronica: #f9ad25; /* Giallo / Arancione chiaro */
+  --color-informatica: #f47424; /* Arancione */
 
   /* Categoria Generale / Eventi */
-  --color-generale: #25518e;      /* Blu Istituzionale */
+  --color-generale: #25518e; /* Blu Istituzionale */
 
   /* Default (School-Day o categorie non specificate) */
   --color-default: #ffffff;
@@ -187,16 +190,34 @@ body {
 .room {
   fill: var(--color-default);
   stroke: var(--border-default);
-  transition: fill 0.3s ease, opacity 0.3s ease;
+  transition:
+    fill 0.3s ease,
+    opacity 0.3s ease;
 }
 
 /* Colorazione Automatica basata sulla Categoria (Attribute Selector) */
-.room[data-category="biotecnologie"] { fill: var(--color-biotecnologie); }
-.room[data-category="artistico"]     { fill: var(--color-artistico); }
-.room[data-category="scientifico"]  { fill: var(--color-scientifico); }
-.room[data-category="elettronica"]  { fill: var(--color-elettronica); }
-.room[data-category="informatica"]  { fill: var(--color-informatica); }
-.room[data-category="generale"]     { fill: var(--color-generale); }
+.room[data-category="Aule Didattiche"] {
+  fill: var(--color-aule);
+}
+
+.room[data-category="biotecnologie"] {
+  fill: var(--color-biotecnologie);
+}
+.room[data-category="artistico"] {
+  fill: var(--color-artistico);
+}
+.room[data-category="scientifico"] {
+  fill: var(--color-scientifico);
+}
+.room[data-category="elettronica"] {
+  fill: var(--color-elettronica);
+}
+.room[data-category="informatica"] {
+  fill: var(--color-informatica);
+}
+.room[data-category="generale"] {
+  fill: var(--color-generale);
+}
 
 /* Interattività Stanze Abilitate / Disabilitate */
 .room.room-enabled {
@@ -210,10 +231,12 @@ body {
 
 /* Styling per l'indicatore Ingresso Principale (Nodo compatto) */
 .nodo-ingresso circle {
-  transition: transform 0.2s ease, fill 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    fill 0.2s ease;
   cursor: pointer;
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3));
-  
+
   /* Imposta il centro di ingrandimento sul cerchio stesso e non su (0,0) */
   transform-box: fill-box;
   transform-origin: center;
@@ -264,8 +287,8 @@ g.state-to circle {
 /* Stile e Animazione per la linea del percorso (Grafo Dijkstra) */
 #path-percorso {
   fill: none !important;
-  stroke: #2563eb !important;        /* Blu ad alto contrasto */
-  stroke-width: 12px !important;     /* Spessore ottimizzato */
+  stroke: #2563eb !important; /* Blu ad alto contrasto */
+  stroke-width: 12px !important; /* Spessore ottimizzato */
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 20, 12;
@@ -290,7 +313,10 @@ g.state-to circle {
 /* Testo base sulle stanze con contorno bianco ultra-nitido */
 text.room-label,
 .room-label {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 13px;
   font-weight: 700;
   fill: #0f172a !important; /* Scuro e ben visibile */
@@ -298,7 +324,9 @@ text.room-label,
   dominant-baseline: central;
   pointer-events: none !important;
   user-select: none;
-  transition: fill 0.2s ease, font-size 0.2s ease;
+  transition:
+    fill 0.2s ease,
+    font-size 0.2s ease;
 
   /* Contorno bianco per garantire leggibilità su qualsiasi colore di stanza */
   stroke: #ffffff !important;

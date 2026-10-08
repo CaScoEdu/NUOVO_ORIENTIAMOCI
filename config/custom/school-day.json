@@ -2,477 +2,478 @@
   "titoloEvento": "Mappa dell'Istituto",
   "stanze": {
     "ingresso-principale": {
-      "etichetta": "📍 INGRESSO",
+        "etichetta-mappa": "Ing",
+      "etichetta-elenco": "📍 INGRESSO",
       "categoria": "Accesso",
       "descrizione": "Ingresso principale dell'istituto."
     },
     "aula-1": {
-      "etichetta": "Aula 1",
+      "etichetta-elenco": "Aula 1",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-2": {
-      "etichetta": "Aula 2",
+      "etichetta-elenco": "Aula 2",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-3": {
-      "etichetta": "Aula 3",
+      "etichetta-elenco": "Aula 3",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-3-0": {
-      "etichetta": "Aula 3.0",
+      "etichetta-elenco": "Aula 3.0",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica innovativa 3.0."
     },
     "aula-4": {
-      "etichetta": "Aula 4",
+      "etichetta-elenco": "Aula 4",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-6": {
-      "etichetta": "Aula 6",
+      "etichetta-elenco": "Aula 6",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-7": {
-      "etichetta": "Aula 7",
+      "etichetta-elenco": "Aula 7",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-8": {
-      "etichetta": "Aula 8",
+      "etichetta-elenco": "Aula 8",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-9": {
-      "etichetta": "Aula 9",
+      "etichetta-elenco": "Aula 9",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-10": {
-      "etichetta": "Aula 10",
+      "etichetta-elenco": "Aula 10",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-12": {
-      "etichetta": "Aula 12",
+      "etichetta-elenco": "Aula 12",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-13": {
-      "etichetta": "Aula 13",
+      "etichetta-elenco": "Aula 13",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-14": {
-      "etichetta": "Aula 14",
+      "etichetta-elenco": "Aula 14",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-15": {
-      "etichetta": "Aula 15",
+      "etichetta-elenco": "Aula 15",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-16": {
-      "etichetta": "Aula 16",
+      "etichetta-elenco": "Aula 16",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-17": {
-      "etichetta": "Aula 17",
+      "etichetta-elenco": "Aula 17",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-18": {
-      "etichetta": "Aula 18",
+      "etichetta-elenco": "Aula 18",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-19": {
-      "etichetta": "Aula 19",
+      "etichetta-elenco": "Aula 19",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-20": {
-      "etichetta": "Aula 20",
+      "etichetta-elenco": "Aula 20",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-22": {
-      "etichetta": "Aula 22",
+      "etichetta-elenco": "Aula 22",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-23": {
-      "etichetta": "Aula 23",
+      "etichetta-elenco": "Aula 23",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-24": {
-      "etichetta": "Aula 24",
+      "etichetta-elenco": "Aula 24",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-25": {
-      "etichetta": "Aula 25",
+      "etichetta-elenco": "Aula 25",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-26": {
-      "etichetta": "Aula 26",
+      "etichetta-elenco": "Aula 26",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-27": {
-      "etichetta": "Aula 27",
+      "etichetta-elenco": "Aula 27",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-28": {
-      "etichetta": "Aula 28",
+      "etichetta-elenco": "Aula 28",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-29": {
-      "etichetta": "Aula 29",
+      "etichetta-elenco": "Aula 29",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-32": {
-      "etichetta": "Aula 32",
+      "etichetta-elenco": "Aula 32",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-33": {
-      "etichetta": "Aula 33",
+      "etichetta-elenco": "Aula 33",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-34": {
-      "etichetta": "Aula 34",
+      "etichetta-elenco": "Aula 34",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-35": {
-      "etichetta": "Aula 35",
+      "etichetta-elenco": "Aula 35",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-36": {
-      "etichetta": "Aula 36",
+      "etichetta-elenco": "Aula 36",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-37": {
-      "etichetta": "Aula 37",
+      "etichetta-elenco": "Aula 37",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-38": {
-      "etichetta": "Aula 38",
+      "etichetta-elenco": "Aula 38",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-39": {
-      "etichetta": "Aula 39",
+      "etichetta-elenco": "Aula 39",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-40": {
-      "etichetta": "Aula 40",
+      "etichetta-elenco": "Aula 40",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-41": {
-      "etichetta": "Aula 41",
+      "etichetta-elenco": "Aula 41",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-42": {
-      "etichetta": "Aula 42",
+      "etichetta-elenco": "Aula 42",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-43": {
-      "etichetta": "Aula 43",
+      "etichetta-elenco": "Aula 43",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-44": {
-      "etichetta": "Aula 44",
+      "etichetta-elenco": "Aula 44",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-45": {
-      "etichetta": "Aula 45",
+      "etichetta-elenco": "Aula 45",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-46": {
-      "etichetta": "Aula 46",
+      "etichetta-elenco": "Aula 46",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-47": {
-      "etichetta": "Aula 47",
+      "etichetta-elenco": "Aula 47",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-48": {
-      "etichetta": "Aula 48",
+      "etichetta-elenco": "Aula 48",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-49": {
-      "etichetta": "Aula 49",
+      "etichetta-elenco": "Aula 49",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-50": {
-      "etichetta": "Aula 50",
+      "etichetta-elenco": "Aula 50",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula per discipline progettuali."
     },
     "aula-51": {
-      "etichetta": "Aula 51",
+      "etichetta-elenco": "Aula 51",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-52": {
-      "etichetta": "Aula 52",
+      "etichetta-elenco": "Aula 52",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-53": {
-      "etichetta": "Aula 53",
+      "etichetta-elenco": "Aula 53",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-54": {
-      "etichetta": "Aula 54",
+      "etichetta-elenco": "Aula 54",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "aula-cic": {
-      "etichetta": "Aula CIC",
+      "etichetta-elenco": "Aula CIC",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica."
     },
     "pcto": {
-      "etichetta": "PCTO",
+      "etichetta-elenco": "PCTO",
       "categoria": "Aule Didattiche",
       "descrizione": "Spazio dedicato ai percorsi PCTO."
     },
     "aula-polifunzionale": {
-      "etichetta": "Aula Polifunzionale",
+      "etichetta-elenco": "Aula Polifunzionale",
       "categoria": "Aule Didattiche",
       "descrizione": "Spazio versatile per lezioni, seminari e conferenze."
     },
     "aule-palazzina-distaccata": {
-      "etichetta": "Aule Palazzina Distaccata",
+      "etichetta-elenco": "Aule Palazzina Distaccata",
       "categoria": "Aule Didattiche",
       "descrizione": "Edificio secondario dell'istituto."
     },
     "ex-biblioteca": {
-      "etichetta": "Ex Biblioteca",
+      "etichetta-elenco": "Ex Biblioteca",
       "categoria": "Aule Didattiche",
       "descrizione": "Spazio adibito ad attività di studio."
     },
     "ex-in-rete-1": {
-      "etichetta": "Ex In Rete 1",
+      "etichetta-elenco": "Ex In Rete 1",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica cablata."
     },
     "ex-in-rete-2": {
-      "etichetta": "Ex In Rete 2",
+      "etichetta-elenco": "Ex In Rete 2",
       "categoria": "Aule Didattiche",
       "descrizione": "Aula didattica cablata."
     },
     "sala-commissioni": {
-      "etichetta": "Sala Commissioni",
+      "etichetta-elenco": "Sala Commissioni",
       "categoria": "Direzione & Uffici",
       "descrizione": "Sala per commissioni di lavoro."
     },
     "presidenza": {
-      "etichetta": "Presidenza",
+      "etichetta-elenco": "Presidenza",
       "categoria": "Direzione & Uffici",
       "descrizione": "Ufficio della Dirigenza Scolastica."
     },
     "sala-docenti": {
-      "etichetta": "Sala Docenti",
+      "etichetta-elenco": "Sala Docenti",
       "categoria": "Direzione & Uffici",
       "descrizione": "Area riservata al personale docente."
     },
     "ufficio-dsga": {
-      "etichetta": "Ufficio DSGA",
+      "etichetta-elenco": "Ufficio DSGA",
       "categoria": "Direzione & Uffici",
       "descrizione": "Ufficio del Direttore dei Servizi Generali e Amministrativi."
     },
     "ufficio-protocollo": {
-      "etichetta": "U.P.",
+      "etichetta-elenco": "Ufficio Protocollo",
       "categoria": "Direzione & Uffici",
       "descrizione": "Ufficio Protocollo."
     },
     "ufficio-segreteria": {
-      "etichetta": "Segreteria",
+      "etichetta-elenco": "Segreteria",
       "categoria": "Direzione & Uffici",
       "descrizione": "Segreteria didattica e amministrativa."
     },
     "ufficio-tecnico": {
-      "etichetta": "Ufficio Tecnico",
+      "etichetta-elenco": "Ufficio Tecnico",
       "categoria": "Direzione & Uffici",
       "descrizione": "Gestione tecnica della struttura."
     },
-    "vicepresidenza": {
-      "etichetta": "VicePres.",
+    "ufficio-vicepresidenza": {
+      "etichetta-elenco": "Ufficio VicePresidenza",
       "categoria": "Direzione & Uffici",
       "descrizione": "Ufficio Vicepresidenza"
     },
     "lab-arti-pittoriche": {
-      "etichetta": "Lab. Arti Pittoriche",
+      "etichetta-elenco": "Lab. Arti Pittoriche",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio pratico di pittura e arti visive."
     },
     "lab-arti-plastiche": {
-      "etichetta": "Lab. Arti Plastiche",
+      "etichetta-elenco": "Lab. Arti Plastiche",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio per modellazione e scultura."
     },
     "lab-biologia": {
-      "etichetta": "Lab. Biologia",
+      "etichetta-elenco": "Lab. Biologia",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio per le scienze biologiche."
     },
     "lab-chimica": {
-      "etichetta": "Lab. Chimica",
+      "etichetta-elenco": "Lab. Chimica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio per esercitazioni di chimica generale."
     },
     "lab-chimica-fisica": {
-      "etichetta": "Lab. Chimica Fisica",
+      "etichetta-elenco": "Lab. Chimica Fisica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di analisi chimico-fisiche."
     },
     "lab-chimica-organica": {
-      "etichetta": "Lab. Chimica Organica",
+      "etichetta-elenco": "Lab. Chimica Organica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio specializzato in chimica organica."
     },
     "lab-cisco": {
-      "etichetta": "Lab. Cisco",
+      "etichetta-elenco": "Lab. Cisco",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio per la formazione sulle reti Cisco."
     },
     "lab-design": {
-      "etichetta": "Lab. Design",
+      "etichetta-elenco": "Lab. Design",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di progettazione e design."
     },
     "lab-disegno-1": {
-      "etichetta": "Lab. Disegno Tecnico",
+      "etichetta-elenco": "Lab. Disegno Tecnico",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di disegno tecnico e CAD."
     },
     "lab-ele-tele": {
-      "etichetta": "Lab. Elettronica",
+      "etichetta-elenco": "Lab. Elettronica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di Elettronica e Telecomunicazioni."
     },
     "lab-fisica": {
-      "etichetta": "Lab. Fisica",
+      "etichetta-elenco": "Lab. Fisica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio per esperienze di fisica."
     },
     "lab-gerosa": {
-      "etichetta": "Lab. Gerosa",
+      "etichetta-elenco": "Lab. Gerosa",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio polifunzionale."
     },
     "lab-informatica": {
-      "etichetta": "Lab. Informatica",
+      "etichetta-elenco": "Lab. Informatica",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di didattica informatica."
     },
     "lab-microbiologia": {
-      "etichetta": "Lab. Microbiologia",
+      "etichetta-elenco": "Lab. Microbiologia",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio per la coltura dei microrganismi."
     },
     "lab-preparazione": {
-      "etichetta": "Prep.",
+      "etichetta-elenco": "Prep.",
       "categoria": "Laboratori",
       "descrizione": "Preparazione Chimica."
     },
     "lab-sistemi-1": {
-      "etichetta": "Lab. Sistemi 1",
+      "etichetta-elenco": "Lab. Sistemi 1",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di sistemi operativi e reti."
     },
     "lab-sistemi-2": {
-      "etichetta": "Lab. Sistemi 2",
+      "etichetta-elenco": "Lab. Sistemi 2",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio avanzato di sistemi."
     },
     "lab-strumentale": {
-      "etichetta": "Lab. Analisi Strum.",
+      "etichetta-elenco": "Lab. Analisi Strum.",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio per analisi instrumentali avanzate."
     },
-    "tpsee": {
-      "etichetta": "Lab. TPSEE",
+    "lab-tpsee": {
+      "etichetta-elenco": "Lab. TPSEE",
       "categoria": "Laboratori",
       "descrizione": "Tecnologie e Progettazione di Sistemi Elettrici ed Elettronici."
     },
     "audiovisivi": {
-      "etichetta": "Audiovisivi",
+      "etichetta-elenco": "Audiovisivi",
       "categoria": "Servizi",
       "descrizione": "Archivio ed attrezzature multimediali."
     },
     "biblioteca": {
-      "etichetta": "Biblioteca",
+      "etichetta-elenco": "Biblioteca",
       "categoria": "Servizi",
       "descrizione": "Biblioteca scolastica e sala consultazione."
     },
     "centro-sistemi": {
-      "etichetta": "Centro Sistemi",
+      "etichetta-elenco": "Centro Sistemi",
       "categoria": "Servizi",
       "descrizione": "Centro gestione risorse informatiche."
     },
     "centro-stella": {
-      "etichetta": "Centro Stella",
+      "etichetta-elenco": "Centro Stella",
       "categoria": "Servizi",
       "descrizione": "Nodo centrale di rete dell'istituto."
     },
     "infermeria": {
-      "etichetta": "Inf.",
+      "etichetta-elenco": "Infermeria",
       "categoria": "Servizi",
       "descrizione": "Infermeria."
     },
     "sala-stampa": {
-      "etichetta": "Sala Stampa",
+      "etichetta-elenco": "Sala Stampa",
       "categoria": "Servizi",
       "descrizione": "Centro riproduzione e stampa."
     },
     "spazio-ristoro": {
-      "etichetta": "Spazio Ristoro",
+      "etichetta-elenco": "Spazio Ristoro",
       "categoria": "Servizi",
       "descrizione": "Area ristoro."
     },
     "palestra-M": {
-      "etichetta": "Palestra M",
+      "etichetta-elenco": "Palestra M",
       "categoria": "Sport",
       "descrizione": "Palestra per le attività motorie."
     },
     "palestre-ABCDE": {
-      "etichetta": "Palestre A-B-C-D-E",
+      "etichetta-elenco": "Palestre A-B-C-D-E",
       "categoria": "Sport",
       "descrizione": "Complesso principale delle palestre dell'istituto."
     },
     "tensostruttura": {
-      "etichetta": "Tensostruttura",
+      "etichetta-elenco": "Tensostruttura",
       "categoria": "Sport",
       "descrizione": "Struttura coperta per attività sportive al coperto."
     }

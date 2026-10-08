@@ -268,7 +268,7 @@
         <rect id="aula-27" class="room" x="1713" y="727" width="70" height="60" />
 
         <!-- ===== BLOCCO NORD: RIGA CENTRALE ===== -->
-        <rect id="vicepresidenza" class="room" x="983" y="517" width="75" height="60" />
+        <rect id="ufficio-vicepresidenza" class="room" x="983" y="517" width="75" height="60" />
         <rect id="presidenza" class="room" x="1058" y="517" width="80" height="60" />
         <rect id="ufficio-protocollo" class="room" x="1138" y="517" width="35" height="60" />
 
@@ -353,7 +353,7 @@
         <rect id="break-bagni" class="room" x="1203" y="1177" width="95" height="50" />
 
         <!-- ===== BLOCCO SUD: LABORATORI CENTRALI INFERIORI ===== -->
-        <rect id="tpsee" class="room" x="983" y="1367" width="140" height="80" />
+        <rect id="lab-tpsee" class="room" x="983" y="1367" width="140" height="80" />
         <rect id="centro-sistemi" class="room" x="1123" y="1367" width="50" height="60" />
         <rect id="lab-microbiologia" class="room" x="1203" y="1367" width="95" height="80" />
         <rect id="lab-chimica-fisica" class="room" x="1298" y="1367" width="90" height="80" />
@@ -495,11 +495,11 @@
 
         <!-- Snodi Corridoio Sud Blocco Nord -->
         <circle id="snodo-lab-arti-plastiche" cx="930" cy="802" r="4" />
-        <circle id="snodo-aula-4" cx="1003" cy="802" r="4" />
-        <circle id="snodo-aula-3" cx="1073" cy="802" r="4" />
-        <circle id="snodo-aula-2" cx="1143" cy="802" r="4" />
+        <circle id="snodo-aula-4" cx="1008" cy="802" r="4" />
+        <circle id="snodo-aula-3" cx="1079" cy="802" r="4" />
+        <circle id="snodo-aula-2" cx="1145" cy="802" r="4" />
         <circle id="snodo-infermeria" cx="1161" cy="802" r="4" />
-        <circle id="snodo-aula-1" cx="1213" cy="802" r="4" />
+        <circle id="snodo-aula-1" cx="1217" cy="802" r="4" />
         <circle id="snodo-sala-stampa" cx="1250" cy="802" r="4" />
 
 
