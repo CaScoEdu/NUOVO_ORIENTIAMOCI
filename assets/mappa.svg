@@ -82,7 +82,7 @@
             }
 
             .bagno {
-                fill: #e6e6fa;
+                fill: #A953A0;
                 stroke: #000000;
                 stroke-width: 1.5px;
                 pointer-events: none;

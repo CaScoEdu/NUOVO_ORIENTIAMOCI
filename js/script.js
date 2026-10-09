@@ -14,6 +14,36 @@ let configurazioneAttiva = {}; // Configurazione finale unita (Base + Custom)
 let mappaSicurezza = {}; // Mappa uscite/punti di raccolta da sicurezza/punti-raccolta.json
 let grafoDati = null; // Struttura del grafo caricata da navigation/grafo.json
 
+/* Mappa cromatica delle categorie stilata con le variabili di style.css */
+const MappaColoriCategorie = {
+  "Aule": "var(--color-aule)",
+  "Aule Didattiche": "var(--color-aule)",
+  "Laboratori": "var(--color-laboratori)",
+  "Uffici": "var(--color-uffici)",
+  "Direzione & Uffici": "var(--color-uffici)",
+  "Servizi": "var(--color-servizi)",
+  "Locali Tecnici": "var(--color-locali-tecnici)",
+  "Sport": "var(--color-sport)",
+  "Accesso": "var(--color-generale)",
+
+  // Categorie / Indirizzi Custom (es. Career Day)
+  "biotecnologie": "var(--color-biotecnologie)",
+  "artistico": "var(--color-artistico)",
+  "scientifico": "var(--color-scientifico)",
+  "elettronica": "var(--color-elettronica)",
+  "informatica": "var(--color-informatica)",
+  "generale": "var(--color-generale)",
+};
+
+function getColoreCategoria(categoria) {
+  if (!categoria) return "var(--color-default)";
+  return (
+    MappaColoriCategorie[categoria] ||
+    MappaColoriCategorie[categoria.toLowerCase()] ||
+    "var(--color-generale)"
+  );
+}
+
 /* ==========================================================================
    CARICAMENTO CONFIGURAZIONI, SICUREZZA, GRAFO ED EVENTI
    ========================================================================== */
@@ -87,17 +117,25 @@ async function caricaConfigurazioneDaURL() {
 
     const stanzeCustom = configurazioneCustom.stanze || {};
 
-    // 3. MERGE: Inizializza tutte le stanze da stanze.json e applica le personalizzazioni custom
+    // 3. MERGE UNIFORME PER TUTTI I CUSTOM
     Object.keys(datiBase.stanze).forEach((roomId) => {
       const stanzaBase = datiBase.stanze[roomId];
       const stanzaCustom = stanzeCustom[roomId];
 
-      // Il custom ha la precedenza assoluta sul base per etichetta-mappa ed etichetta-elenco
+      // Nome fisico originale di base (es. "Aula 1" o "Lab. Informatica")
+      const nomeFisicoBase =
+        stanzaBase?.["etichetta-mappa"] ||
+        stanzaBase?.etichettaMappa ||
+        stanzaBase?.etichetta ||
+        roomId.replace(/-/g, " ");
+
+      // Priorità al file custom per etichetta-mappa ed etichetta-elenco
       const etichettaMappa =
         stanzaCustom?.["etichetta-mappa"] ||
         stanzaCustom?.etichettaMappa ||
         stanzaBase?.["etichetta-mappa"] ||
         stanzaBase?.etichettaMappa ||
+        stanzaBase?.etichetta ||
         roomId;
 
       const etichettaElenco =
@@ -109,54 +147,32 @@ async function caricaConfigurazioneDaURL() {
         stanzaBase?.etichetta ||
         etichettaMappa;
 
-      if (configFile === "school-day") {
-        // Modalità School-Day standard: tutte le stanze visibili ed attive
+      if (stanzaCustom) {
+        // Stanza presente nel file custom selezionato: attiva
         configurazioneAttiva.stanze[roomId] = {
           ...stanzaBase,
-          ...(stanzaCustom || {}),
+          ...stanzaCustom,
           etichettaMappa,
           etichettaElenco,
           categoria:
-            stanzaCustom?.categoria ||
-            stanzaBase?.categoria ||
-            "Aule Didattiche",
+            stanzaCustom.categoria || stanzaBase?.categoria || "Aule",
+          aulaOriginale: nomeFisicoBase,
           puntoRaccolta:
-            stanzaCustom?.["punto-raccolta"] ||
-            stanzaCustom?.puntoRaccolta ||
+            stanzaCustom["punto-raccolta"] ||
+            stanzaCustom.puntoRaccolta ||
             stanzaBase?.["punto-raccolta"] ||
             stanzaBase?.puntoRaccolta,
           attivaInEvento: true,
         };
       } else {
-        // Modalità Evento Specifico (es. career-day)
-        if (stanzaCustom) {
-          configurazioneAttiva.stanze[roomId] = {
-            ...stanzaBase,
-            ...stanzaCustom,
-            etichettaMappa,
-            etichettaElenco,
-            categoria:
-              stanzaCustom.categoria || stanzaBase?.categoria || "Evento",
-            aulaOriginale:
-              stanzaBase?.["etichetta-mappa"] ||
-              stanzaBase?.etichettaMappa ||
-              stanzaBase?.etichetta,
-            puntoRaccolta:
-              stanzaCustom["punto-raccolta"] ||
-              stanzaCustom.puntoRaccolta ||
-              stanzaBase?.["punto-raccolta"] ||
-              stanzaBase?.puntoRaccolta,
-            attivaInEvento: true,
-          };
-        } else {
-          // Stanza non attiva nell'evento: presente in mappa ma disabilitata
-          configurazioneAttiva.stanze[roomId] = {
-            ...stanzaBase,
-            etichettaMappa,
-            etichettaElenco,
-            attivaInEvento: false,
-          };
-        }
+        // Stanza non presente nel file custom: disabilitata
+        configurazioneAttiva.stanze[roomId] = {
+          ...stanzaBase,
+          etichettaMappa,
+          etichettaElenco,
+          aulaOriginale: nomeFisicoBase,
+          attivaInEvento: false,
+        };
       }
     });
 
@@ -188,16 +204,37 @@ function getSettorePuntoRaccolta(idStanza) {
   return settore.toLowerCase();
 }
 
+// Pulisce e normalizza le stringhe rimuovendo \n, trattini, emoji e spazi doppi per il confronto
+function normalizzaStringa(str) {
+  if (!str) return "";
+  return str
+    .replace(/\n/g, " ") // Rimuove i caratteri a capo
+    .replace(/^[^\w\d]+/, "") // Rimuove emoji/simboli in testa
+    .replace(/\s+/g, " ") // Riduce gli spazi multipli a uno solo
+    .trim()
+    .toLowerCase();
+}
+
 function getTitoloFormattatoStanza(id) {
   if (id === "ingresso-principale") return "📍 INGRESSO";
 
   const stanza = configurazioneAttiva?.stanze?.[id];
   if (stanza) {
     const etichetta =
-      stanza.etichettaElenco || stanza["etichetta-elenco"] || stanza.etichetta;
-    if (stanza.aulaOriginale && stanza.aulaOriginale !== etichetta) {
-      return `${etichetta} (${stanza.aulaOriginale})`;
+      stanza.etichettaElenco ||
+      stanza["etichetta-elenco"] ||
+      stanza.etichetta ||
+      id;
+
+    const cleanEtichetta = normalizzaStringa(etichetta);
+    const cleanOriginale = normalizzaStringa(stanza.aulaOriginale);
+
+    // Mostra l'ubicazione tra parentesi SOLO SE è sostanzialmente diversa
+    if (cleanOriginale && cleanOriginale !== cleanEtichetta) {
+      const originalePulito = stanza.aulaOriginale.replace(/\n/g, " ");
+      return `${etichetta} (${originalePulito})`;
     }
+
     return etichetta;
   }
 
@@ -207,6 +244,11 @@ function getTitoloFormattatoStanza(id) {
 /* ==========================================================================
    INIZIALIZZAZIONE SELETTORI (DROPDOWNS DALLA CONFIGURAZIONE CUSTOM)
    ========================================================================== */
+
+/* ==========================================================================
+   INIZIALIZZAZIONE SELETTORI (DROPDOWNS DALLA CONFIGURAZIONE CUSTOM)
+   ========================================================================== */
+
 function popolaDropdowns() {
   const selectFrom = document.getElementById("select-from");
   const selectTo = document.getElementById("select-to");
@@ -225,12 +267,12 @@ function popolaDropdowns() {
     const eIngresso = id === "ingresso-principale";
     const stanza = configurazioneAttiva?.stanze?.[id];
 
-    // Se non è l'ingresso ed è disabilitata per l'evento, la escludiamo dal menu
+    // Esclude le stanze non attive nell'evento corrente (tranne l'ingresso che è sempre attivo)
     if (!eIngresso && stanza?.attivaInEvento === false) {
       return;
     }
 
-    const categoria = stanza?.categoria || (eIngresso ? "Accesso" : "Altro");
+    const categoria = eIngresso ? "Accesso" : (stanza?.categoria || "Aule");
     const titolo = getTitoloFormattatoStanza(id);
 
     if (!gruppiPerCategoria[categoria]) {
@@ -240,7 +282,7 @@ function popolaDropdowns() {
     gruppiPerCategoria[categoria].push({ id, titolo });
   });
 
-  // Ordina alfabeticamente le stanze dentro ciascuna categoria
+  // Ordina alfabeticamente le stanze dentro ciascuna categoria, ma mantiene l'ingresso SEMPRE in cima
   Object.keys(gruppiPerCategoria).forEach((cat) => {
     gruppiPerCategoria[cat].sort((a, b) => {
       if (a.id === "ingresso-principale") return -1;
@@ -253,17 +295,22 @@ function popolaDropdowns() {
     });
   });
 
+  // Ordine rigido delle categorie (Accesso è tassativamente la prima)
   const ordinePredefinitoCategorie = [
     "Accesso",
-    "Aule Didattiche",
-    "Direzione & Uffici",
+    "Aule",
     "Laboratori",
+    "Uffici",
     "Servizi",
+    "Locali Tecnici",
     "Sport",
   ];
 
-  // Ordina le categorie
+  // Ordina le categorie secondo l'elenco specificato, assicurando Accesso in cima
   const categorieOrdinate = Object.keys(gruppiPerCategoria).sort((a, b) => {
+    if (a === "Accesso") return -1;
+    if (b === "Accesso") return 1;
+
     const indexA = ordinePredefinitoCategorie.indexOf(a);
     const indexB = ordinePredefinitoCategorie.indexOf(b);
 
@@ -281,9 +328,15 @@ function popolaDropdowns() {
       );
 
       if (opzioniFiltrare.length > 0) {
-        html += `<optgroup label="── ${cat.toUpperCase()} ──">`;
+        const coloreBg = getColoreCategoria(cat);
+        const coloreTesto =
+          cat === "Aule" || cat === "Servizi" || cat === "Aule Didattiche"
+            ? "#000000"
+            : "#ffffff";
+
+        html += `<optgroup label="── ${cat.toUpperCase()} ──" style="background-color: ${coloreBg}; color: ${coloreTesto}; font-weight: bold;">`;
         opzioniFiltrare.forEach((opt) => {
-          html += `<option value="${opt.id}">${opt.titolo}</option>`;
+          html += `<option value="${opt.id}" style="background-color: #1e293b; color: #ffffff;">${opt.titolo}</option>`;
         });
         html += `</optgroup>`;
       }
@@ -299,11 +352,15 @@ function popolaDropdowns() {
   selectFrom.innerHTML = optionsFromHTML;
   selectTo.innerHTML = optionsToHTML;
 
-  const tutteLeOpzioni = Object.values(gruppiPerCategoria).flat();
-  if (tutteLeOpzioni.some((opt) => opt.id === partenzaId)) {
+  // Imposta l'ingresso-principale come valore predefinito di partenza se disponibile
+  const tutteLeOpzioniFrom = Object.values(gruppiPerCategoria).flat();
+  if (tutteLeOpzioniFrom.some((opt) => opt.id === partenzaId)) {
     selectFrom.value = partenzaId;
-  } else if (tutteLeOpzioni.length > 0) {
-    partenzaId = tutteLeOpzioni[0].id;
+  } else if (tutteLeOpzioniFrom.some((opt) => opt.id === "ingresso-principale")) {
+    partenzaId = "ingresso-principale";
+    selectFrom.value = partenzaId;
+  } else if (tutteLeOpzioniFrom.length > 0) {
+    partenzaId = tutteLeOpzioniFrom[0].id;
     selectFrom.value = partenzaId;
   }
 
@@ -349,6 +406,7 @@ function evidenziaElemento(id, cssClass) {
 /* ==========================================================================
    TRACCIAMENTO GRAFICO DEL PERCORSO SULL'SVG
    ========================================================================== */
+
 function disegnaPercorsoSVG(percorsoNodi, isEvacuazione = false) {
   const targetContainer =
     document.getElementById("layer-percorso") ||
@@ -469,6 +527,7 @@ function mostraPianoEvacuazionePerStanza(idPartenza) {
 /* ==========================================================================
    GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
    ========================================================================== */
+
 function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
@@ -574,7 +633,7 @@ function mostraPopUpStanza(id) {
       stanza?.etichettaElenco ||
       stanza?.etichettaMappa ||
       id.replace(/-/g, " "),
-    categoria: stanza?.categoria || "Generale",
+    categoria: stanza?.categoria || "Aule",
     descrizione:
       stanza?.descrizione ||
       "Nessuna descrizione aggiuntiva per questo locale.",
@@ -588,11 +647,29 @@ function mostraPopUpStanza(id) {
   const refElement = document.getElementById("modal-room-reference");
 
   if (modalTitle) modalTitle.textContent = info.titolo;
-  if (modalCategory) modalCategory.textContent = info.categoria;
   if (modalDesc) modalDesc.textContent = info.descrizione;
 
+  if (modalCategory) {
+    modalCategory.textContent = info.categoria;
+    const coloreBg = getColoreCategoria(info.categoria);
+    modalCategory.style.backgroundColor = coloreBg;
+
+    if (
+      info.categoria === "Aule" ||
+      info.categoria === "Servizi" ||
+      info.categoria === "Aule Didattiche"
+    ) {
+      modalCategory.style.color = "#000000";
+    } else {
+      modalCategory.style.color = "#ffffff";
+    }
+  }
+
   if (refElement) {
-    if (info.aulaOriginale && info.aulaOriginale !== info.titolo) {
+    const cleanTitolo = normalizzaStringa(info.titolo);
+    const cleanOriginale = normalizzaStringa(info.aulaOriginale);
+
+    if (cleanOriginale && cleanOriginale !== cleanTitolo) {
       refElement.textContent = `📍 Ubicazione: ${info.aulaOriginale}`;
       refElement.style.display = "block";
     } else {
@@ -632,6 +709,7 @@ function applicaEtichetteMappa() {
 
     if (stanza && stanza.categoria) {
       el.dataset.category = stanza.categoria.toLowerCase();
+      el.style.fill = getColoreCategoria(stanza.categoria);
     } else {
       delete el.dataset.category;
     }
@@ -644,24 +722,17 @@ function applicaEtichetteMappa() {
       el.classList.remove("room-disabled");
     }
 
-    // 1. Prende etichettaMappa (o etichetta-mappa)
-    let testoMappa = stanza
-      ? stanza.etichettaMappa ||
-        stanza["etichetta-mappa"] ||
-        stanza.etichettaElenco
+    let testoVisibile = stanza
+      ? stanza.etichettaMappa || stanza["etichetta-mappa"]
       : id.replace(/-/g, " ");
 
-    // 2. Se in un evento ha un'aula originale diversa, aggiunge la seconda riga tra parentesi
-    if (stanza?.aulaOriginale && stanza.aulaOriginale !== testoMappa) {
-      testoMappa += `\n(${stanza.aulaOriginale})`;
-    }
+    let tooltipText =
+      stanza?.etichettaElenco || testoVisibile.replace(/\n/g, " ");
 
-    // Tooltip per l'hover del mouse (mostra sia l'etichetta elenco che l'aula originale)
-    let tooltipText = stanza?.etichettaElenco || testoMappa.replace(/\n/g, " ");
-    if (
-      stanza?.aulaOriginale &&
-      stanza.aulaOriginale !== stanza.etichettaElenco
-    ) {
+    const cleanElenco = normalizzaStringa(stanza?.etichettaElenco);
+    const cleanOriginale = normalizzaStringa(stanza?.aulaOriginale);
+
+    if (cleanOriginale && cleanOriginale !== cleanElenco) {
       tooltipText = `${stanza.etichettaElenco} - Ubicazione: ${stanza.aulaOriginale}`;
     }
 
@@ -687,8 +758,7 @@ function applicaEtichetteMappa() {
     textEl.setAttribute("x", centerX);
     textEl.setAttribute("y", centerY);
 
-    // Renderizza il testo gestendo correttamente le righe multiple con <tspan>
-    creaTestoMultiriga(textEl, testoMappa, centerX, centerY);
+    creaTestoMultiriga(textEl, testoVisibile, centerX, centerY);
   });
 }
 
