@@ -15,120 +15,170 @@
       "sala-stampa",
       "snodo-aula-1"
     ],
-    "sala-stampa": [
-      "snodo-sala-stampa"
-    ],
-    "snodo-aula-1": [
-      "snodo-sala-stampa",
-      "aula-1",
-      "incrocio-nord-v2-sud"
-    ],
-    "aula-1": [
-      "snodo-aula-1"
-    ],
+    "sala-stampa": ["snodo-sala-stampa"],
+    "snodo-aula-1": ["snodo-sala-stampa", "aula-1", "incrocio-nord-v2-sud"],
+    "aula-1": ["snodo-aula-1"],
     "incrocio-nord-v2-sud": [
       "snodo-aula-1",
-      "snodo-infermeria"
-    ],
-    "snodo-infermeria": [
-      "incrocio-nord-v2-sud",
-      "infermeria",
-      "snodo-aula-2"
-    ],
-    "infermeria": [
-      "snodo-infermeria"
-    ],
-    "snodo-aula-2": [
       "snodo-infermeria",
-      "aula-2",
-      "snodo-aula-3"
+      "snodo-up-presidenza"
     ],
-    "aula-2": [
-      "snodo-aula-2"
-    ],
-    "snodo-aula-3": [
-      "snodo-aula-2",
-      "aula-3",
-      "snodo-aula-4"
-    ],
-    "aula-3": [
-      "snodo-aula-3"
-    ],
-    "snodo-aula-4": [
-      "snodo-aula-3",
-      "aula-4",
-      "incrocio-nord-v1-sud"
-    ],
-    "aula-4": [
-      "snodo-aula-4"
-    ],
+    "snodo-infermeria": ["incrocio-nord-v2-sud", "infermeria", "snodo-aula-2"],
+    "infermeria": ["snodo-infermeria"],
+    "snodo-aula-2": ["snodo-infermeria", "aula-2", "snodo-aula-3"],
+    "aula-2": ["snodo-aula-2"],
+    "snodo-aula-3": ["snodo-aula-2", "aula-3", "snodo-aula-4"],
+    "aula-3": ["snodo-aula-3"],
+    "snodo-aula-4": ["snodo-aula-3", "aula-4", "incrocio-nord-v1-sud"],
+    "aula-4": ["snodo-aula-4"],
     "incrocio-nord-v1-sud": [
       "snodo-aula-4",
-      "snodo-lab-arti-plastiche"
+      "snodo-lab-arti-plastiche",
+      "snodo-aula-6"
     ],
     "snodo-lab-arti-plastiche": [
       "incrocio-nord-v1-sud",
       "lab-arti-plastiche",
       "snodo-sicurezza-a-1"
     ],
-    "lab-arti-plastiche": [
-      "snodo-lab-arti-plastiche"
+    "lab-arti-plastiche": ["snodo-lab-arti-plastiche"],
+    "snodo-aula-6": ["incrocio-nord-v1-sud", "aula-6", "snodo-aula-7"],
+    "aula-6": ["snodo-aula-6"],
+    "snodo-aula-7": ["snodo-aula-6", "aula-7", "snodo-aula-8"],
+    "aula-7": ["snodo-aula-7"],
+    "snodo-aula-8": ["snodo-aula-7", "aula-8", "snodo-aula-9"],
+    "aula-8": ["snodo-aula-8"],
+    "snodo-aula-9": ["snodo-aula-8", "aula-9", "snodo-aula-10"],
+    "aula-9": ["snodo-aula-9"],
+    "snodo-aula-10": ["snodo-aula-9", "aula-10", "incrocio-nord-v1-nord"],
+    "aula-10": ["snodo-aula-10"],
+    "incrocio-nord-v1-nord": [
+      "snodo-aula-10",
+      "nodo-lab-chimica",
+      "snodo-vicepresidenza-prep"
     ],
-    "snodo-sicurezza-a-1": [
-      "snodo-lab-arti-plastiche",
-      "snodo-sicurezza-a-2"
+    "nodo-lab-chimica": ["incrocio-nord-v1-nord", "lab-chimica"],
+    "lab-chimica": ["nodo-lab-chimica"],
+    "snodo-vicepresidenza-prep": [
+      "incrocio-nord-v1-nord",
+      "ufficio-vicepresidenza",
+      "lab-preparazione",
+      "snodo-lab-chimica-organica"
     ],
-    "snodo-sicurezza-a-2": [
-      "snodo-sicurezza-a-1",
-      "punto-raccolta-a"
+    "ufficio-vicepresidenza": ["snodo-vicepresidenza-prep"],
+    "lab-preparazione": ["snodo-vicepresidenza-prep"],
+    "snodo-lab-chimica-organica": [
+      "snodo-vicepresidenza-prep",
+      "lab-chimica-organica",
+      "snodo-lab-strumentale"
     ],
-    "punto-raccolta-a": [
-      "snodo-sicurezza-a-2"
+    "lab-chimica-organica": ["snodo-lab-chimica-organica"],
+    "snodo-lab-strumentale": [
+      "snodo-lab-chimica-organica",
+      "lab-strumentale",
+      "incrocio-nord-v2-nord"
     ],
-    "snodo-sicurezza-e-1": [
-      "ingresso-principale",
-      "snodo-sicurezza-e-2"
+    "lab-strumentale": ["snodo-lab-strumentale"],
+    "incrocio-nord-v2-nord": [
+      "snodo-lab-strumentale",
+      "snodo-up-presidenza",
+      "snodo-aula-12"
     ],
-    "snodo-sicurezza-e-2": [
-      "snodo-sicurezza-e-1",
-      "punto-raccolta-e"
-    ],   
-    "punto-raccolta-e": [
-      "snodo-sicurezza-e-2"
+    "snodo-up-presidenza": [
+      "incrocio-nord-v2-nord",
+      "presidenza",
+      "ufficio-protocollo"
     ],
-    "ufficio-dsga": [
-      "ingresso-principale"
+    "presidenza": ["snodo-up-presidenza"],
+    "ufficio-protocollo": ["snodo-up-presidenza"],
+
+    "snodo-aula-12": ["incrocio-nord-v2-nord", "aula-12", "snodo-aula-14"],
+    "aula-12": ["snodo-aula-12"],
+    "snodo-aula-14": ["snodo-aula-12", "aula-14", "snodo-aula-13"],
+    "aula-14": ["snodo-aula-14"],
+    "snodo-aula-13": ["snodo-aula-14", "aula-13", "snodo-aula-15"],
+    "aula-13": ["snodo-aula-13"],
+    "snodo-aula-15": ["snodo-aula-13", "aula-15", "snodo-sicurezza-b-1"],
+    "aula-15": ["snodo-aula-15"],
+
+    "snodo-sicurezza-b-1": [
+      "snodo-aula-15",
+      "snodo-sicurezza-b-2",
+      "snodo-aula-16"
     ],
+    "snodo-sicurezza-b-2": ["snodo-sicurezza-b-1", "punto-raccolta-b"],
+    "punto-raccolta-b": ["snodo-sicurezza-b-2"],
+    
+    "snodo-aula-16": [
+        "snodo-sicurezza-b-1", 
+        "aula-16",
+        "snodo-sicurezza-c-1"],
+    "aula-16": ["snodo-aula-16"],
+
+    "snodo-sicurezza-c-1": [
+      "snodo-aula-16",
+      "snodo-sicurezza-c-2",
+      "snodo-aula-17"
+    ],
+    "snodo-sicurezza-c-2": ["snodo-sicurezza-c-1", "punto-raccolta-c"],
+    "punto-raccolta-c": ["snodo-sicurezza-c-2"],
+    "snodo-aula-17": [
+        "snodo-sicurezza-c-1", 
+        "aula-17",
+        "snodo-aula-19"],
+    "aula-17": ["snodo-aula-17"],
+    "snodo-aula-19": [
+        "snodo-aula-17", 
+        "aula-19",
+        "snodo-aula-18"],
+    "aula-19": ["snodo-aula-19"],
+    "snodo-aula-18": [
+        "snodo-aula-19",
+        "aula-18",
+        "snodo-aula-20"
+    ],
+    "aula-18": ["snodo-aula-18"],
+    "snodo-aula-20": [
+        "snodo-aula-18",
+        "aula-20",
+        "incrocio-nord-v3-nord"
+    ],
+    "aula-20": [
+        "snodo-aula-20"],
+    "incrocio-nord-v3-nord": [
+        "snodo-aula-20",
+        "snodo-aula-cic"
+    ],
+    "snodo-aula-cic": [
+        "incrocio-nord-v3-nord",
+        "aula-cic",
+        "incrocio-nord-v3-sud"
+    ],
+    "aula-cic": ["snodo-aula-cic"],
+
+    "snodo-sicurezza-a-1": ["snodo-lab-arti-plastiche", "snodo-sicurezza-a-2"],
+    "snodo-sicurezza-a-2": ["snodo-sicurezza-a-1", "punto-raccolta-a"],
+    "punto-raccolta-a": ["snodo-sicurezza-a-2"],
+
+    "snodo-sicurezza-e-1": ["ingresso-principale", "snodo-sicurezza-e-2"],
+    "snodo-sicurezza-e-2": ["snodo-sicurezza-e-1", "punto-raccolta-e"],
+    "punto-raccolta-e": ["snodo-sicurezza-e-2"],
+    "ufficio-dsga": ["ingresso-principale"],
     "snodo-ufficio-tecnico": [
       "ingresso-principale",
       "ufficio-tecnico",
       "snodo-sala-commissioni"
     ],
-    "ufficio-tecnico": [
-      "snodo-ufficio-tecnico"
-    ],
+    "ufficio-tecnico": ["snodo-ufficio-tecnico"],
     "snodo-sala-commissioni": [
       "snodo-ufficio-tecnico",
       "sala-commissioni",
       "snodo-pcto"
     ],
-    "sala-commissioni": [
-      "snodo-sala-commissioni"
-    ],
-    "snodo-pcto": [
-      "snodo-sala-commissioni",
-      "pcto",
-      "snodo-spogliatoio-ata"
-    ],
-    "pcto": [
-      "snodo-pcto"
-    ],
-    "snodo-spogliatoio-ata": [
-      "snodo-pcto",
-      "spogliatoio-ata"
-    ],
-    "spogliatoio-ata": [
-      "snodo-spogliatoio-ata"
-    ]
+    "sala-commissioni": ["snodo-sala-commissioni"],
+    "snodo-pcto": ["snodo-sala-commissioni", "pcto", "snodo-spogliatoio-ata"],
+    "pcto": ["snodo-pcto"],
+    "snodo-spogliatoio-ata": ["snodo-pcto", "spogliatoio-ata"],
+    "spogliatoio-ata": ["snodo-spogliatoio-ata"]
   }
 }

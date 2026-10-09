@@ -488,10 +488,47 @@
     </g>
     <g id="layer-nodi" class="layer-snodi-debug">
         <!-- Incroci Corridoi -->
+        <circle id="incrocio-nord-v1-nord" cx="968" cy="502" r="4" />
         <circle id="incrocio-nord-v1-sud" cx="968" cy="802" r="4" />
+        <circle id="incrocio-nord-v2-nord" cx="1188" cy="502" r="4" />
         <circle id="incrocio-nord-v2-sud" cx="1188" cy="802" r="4" />
+        <circle id="incrocio-nord-v3-nord" cx="1478" cy="502" r="4" />
+        <circle id="incrocio-nord-v3-sud" cx="1478" cy="802" r="4" />
 
         <circle id="incrocio-blocchi-nord-centrale" cx="1313" cy="802" r="4" />
+
+        <!-- Snodi Corridoio Nord Blocco Nord -->
+        <!-- lo snodo del lab chimica coincide con incrocio-nord-v1-nord -->
+        <!-- utilizziamo un nodo di appoggio del lab chimica per entrare verticalmente nella stanza  -->
+        <circle id="nodo-lab-chimica" cx="968" cy="450" r="4" />
+        <circle id="snodo-vicepresidenza-prep" cx="1020" cy="502" r="4" />
+        <circle id="snodo-lab-chimica-organica" cx="1075" cy="502" r="4" />
+        <circle id="snodo-lab-strumentale" cx="1140" cy="502" r="4" />
+        <circle id="snodo-lab-strumentale" cx="1140" cy="502" r="4" />
+        <circle id="snodo-aula-12" cx="1204" cy="502" r="4" />
+        <circle id="snodo-aula-14" cx="1230" cy="502" r="4" />
+        <circle id="snodo-aula-13" cx="1264" cy="502" r="4" />
+        <circle id="snodo-aula-15" cx="1281" cy="502" r="4" />
+        <circle id="snodo-sicurezza-b-1" cx="1315" cy="502" r="4" />
+        <circle id="snodo-aula-16" cx="1334" cy="502" r="4" />
+        <circle id="snodo-aula-17" cx="1384" cy="502" r="4" />    
+        <circle id="snodo-aula-19" cx="1408" cy="502" r="4" />    
+        <circle id="snodo-aula-19" cx="1408" cy="502" r="4" />    
+        <circle id="snodo-aula-18" cx="1434" cy="502" r="4" />
+        <circle id="snodo-aula-20" cx="1470" cy="502" r="4" />
+        <circle id="snodo-aula-cic" cx="1478" cy="548" r="4" />
+
+
+        <!-- Snodi Corridoio Vert.1 Blocco Nord -->
+        <circle id="snodo-aula-6" cx="968" cy="756" r="4" />
+        <circle id="snodo-aula-7" cx="968" cy="696" r="4" />
+        <circle id="snodo-aula-8" cx="968" cy="636" r="4" />
+        <circle id="snodo-aula-9" cx="968" cy="576" r="4" />
+        <circle id="snodo-aula-10" cx="968" cy="516" r="4" />
+
+        <!-- Snodi Corridoio Vert2 Blocco Nord -->
+        <circle id="snodo-up-presidenza" cx="1188" cy="547" r="4" />
+
 
         <!-- Snodi Corridoio Sud Blocco Nord -->
         <circle id="snodo-lab-arti-plastiche" cx="930" cy="802" r="4" />
@@ -502,7 +539,6 @@
         <circle id="snodo-aula-1" cx="1217" cy="802" r="4" />
         <circle id="snodo-sala-stampa" cx="1250" cy="802" r="4" />
 
-
         <!-- Snodi Corridoio Uffici (Nodi delle Dorsali) -->
         <circle id="snodo-ufficio-tecnico" cx="1313" cy="1030" r="4" />
         <circle id="snodo-sala-commissioni" cx="1313" cy="1070" r="4" />
@@ -512,7 +548,10 @@
         <!-- Snodi esterni verso i punti di raccolta -->
         <circle id="snodo-sicurezza-a-1" cx="783" cy="802" r="4" />
         <circle id="snodo-sicurezza-a-2" cx="783" cy="721" r="4" />
-
+        <circle id="snodo-sicurezza-b-1" cx="1315" cy="502" r="4" />
+        <circle id="snodo-sicurezza-b-2" cx="1315" cy="338" r="4" />
+        <circle id="snodo-sicurezza-c-1" cx="1354" cy="502" r="4" />
+        <circle id="snodo-sicurezza-c-2" cx="1354" cy="338" r="4" />
         <circle id="snodo-sicurezza-e-1" cx="783" cy="982" r="4" />
         <circle id="snodo-sicurezza-e-2" cx="783" cy="1052" r="4" />
     </g>
