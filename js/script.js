@@ -5,10 +5,10 @@ import { calcolaPercorsoMinimo, getCentroideNodo } from "./pathfinder.js";
    ========================================================================== */
 
 let partenzaId = "ingresso-principale";
-let destinazioneId = "evacuazione";
+let destinazioneId = ""; // Nessuna destinazione selezionata all'avvio
 
-// ViewBox completo della mappa originale
-let initialViewBox = "0 0 2143 2500";
+// ViewBox concentrato sull'Edificio ad H
+let viewBoxEdificioH = "850 380 1000 1200";
 
 let configurazioneAttiva = {}; // Configurazione finale unita (Base + Custom)
 let mappaSicurezza = {}; // Mappa uscite/punti di raccolta da sicurezza/punti-raccolta.json
@@ -245,10 +245,6 @@ function getTitoloFormattatoStanza(id) {
    INIZIALIZZAZIONE SELETTORI (DROPDOWNS DALLA CONFIGURAZIONE CUSTOM)
    ========================================================================== */
 
-/* ==========================================================================
-   INIZIALIZZAZIONE SELETTORI (DROPDOWNS DALLA CONFIGURAZIONE CUSTOM)
-   ========================================================================== */
-
 function popolaDropdowns() {
   const selectFrom = document.getElementById("select-from");
   const selectTo = document.getElementById("select-to");
@@ -345,7 +341,10 @@ function popolaDropdowns() {
   }
 
   let optionsFromHTML = generaHTMLGruppi(false);
-  let optionsToHTML = `<option value="evacuazione" style="background-color: #10b981; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
+
+  // Opzione vuota predefinita per il selettore di arrivo "A:"
+  let optionsToHTML = `<option value="" selected>-- Seleziona destinazione --</option>`;
+  optionsToHTML += `<option value="evacuazione" style="background-color: #10b981; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
   optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
   optionsToHTML += generaHTMLGruppi(true);
 
@@ -379,7 +378,7 @@ function gestisciStileSelettoreArrivo() {
 }
 
 function scambiaOrigineDestinazione() {
-  if (destinazioneId === "evacuazione") return;
+  if (!destinazioneId || destinazioneId === "evacuazione") return;
 
   const temp = partenzaId;
   partenzaId = destinazioneId;
@@ -532,6 +531,13 @@ function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
 
+  // Se non c'è una destinazione selezionata, mostra l'Edificio ad H
+  if (!destinazioneId) {
+    svg.setAttribute("viewBox", viewBoxEdificioH);
+    return;
+  }
+
+  // Raccoglie gli elementi da inquadrare (Partenza + Destinazione/Punto di Raccolta)
   const elementiInquadratura = [];
 
   const elFrom = document.getElementById(partenzaId);
@@ -539,7 +545,6 @@ function autoFitCamera() {
 
   if (destinazioneId === "evacuazione") {
     const settore = getSettorePuntoRaccolta(partenzaId);
-
     const elRaccolta = document.getElementById(`punto-raccolta-${settore}`);
     const elUscita =
       document.getElementById(`uscita-sicurezza-${settore}`) ||
@@ -547,46 +552,34 @@ function autoFitCamera() {
 
     if (elRaccolta) elementiInquadratura.push(elRaccolta);
     if (elUscita) elementiInquadratura.push(elUscita);
-  } else if (destinazioneId) {
+  } else {
     const elTo = document.getElementById(destinazioneId);
     if (elTo) elementiInquadratura.push(elTo);
   }
 
-  let minX = Infinity,
-    minY = Infinity;
-  let maxX = -Infinity,
-    maxY = -Infinity;
+  let minX = Infinity, minY = Infinity;
+  let maxX = -Infinity, maxY = -Infinity;
 
   elementiInquadratura.forEach((el) => {
-    let rx = 0,
-      ry = 0,
-      rw = 0,
-      rh = 0;
+    let rx = 0, ry = 0, rw = 0, rh = 0;
 
     try {
       const bbox = el.getBBox();
-      rx = bbox.x;
-      ry = bbox.y;
-      rw = bbox.width;
-      rh = bbox.height;
+      rx = bbox.x; ry = bbox.y; rw = bbox.width; rh = bbox.height;
 
       const transformAttr = el.getAttribute("transform");
       if (transformAttr) {
-        const translateMatch =
-          /translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/.exec(transformAttr);
+        const translateMatch = /translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/.exec(transformAttr);
         if (translateMatch) {
           rx += parseFloat(translateMatch[1]);
           ry += parseFloat(translateMatch[2]);
         }
 
-        const scaleMatch = /scale\(\s*([-\d.]+)[,\s]*([-\d.]*)\s*\)/.exec(
-          transformAttr,
-        );
+        const scaleMatch = /scale\(\s*([-\d.]+)[,\s]*([-\d.]*)\s*\)/.exec(transformAttr);
         if (scaleMatch) {
           const scaleX = parseFloat(scaleMatch[1]);
           const scaleY = scaleMatch[2] ? parseFloat(scaleMatch[2]) : scaleX;
-          rw *= scaleX;
-          rh *= scaleY;
+          rw *= scaleX; rh *= scaleY;
         }
       }
     } catch (e) {
@@ -602,7 +595,10 @@ function autoFitCamera() {
     maxY = Math.max(maxY, ry + rh);
   });
 
-  if (minX === Infinity) return;
+  if (minX === Infinity) {
+    svg.setAttribute("viewBox", viewBoxEdificioH);
+    return;
+  }
 
   const contentWidth = maxX - minX;
   const contentHeight = maxY - minY;
@@ -853,7 +849,7 @@ async function caricaMappaSVG() {
     const svg =
       document.getElementById("school-map") || container.querySelector("svg");
     if (svg) {
-      svg.setAttribute("viewBox", initialViewBox);
+      svg.setAttribute("viewBox", viewBoxEdificioH);
       svg.removeAttribute("preserveAspectRatio");
     }
     applicaEtichetteMappa();

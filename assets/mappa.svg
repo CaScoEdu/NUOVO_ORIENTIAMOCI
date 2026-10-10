@@ -313,9 +313,8 @@
         <!-- AREA INGRESSO PRINCIPALE (Zona aperta senza muri) -->
         <!-- Nodo Ingresso nel corridoio -->
         <g id="ingresso-principale" class="nodo-ingresso" style="cursor: pointer;">
-            <!-- Centro X=1300 (1295 + 40), Y=982 (952 + 30) -->
-            <circle cx="1313" cy="985" r="16" fill="#ea580c" stroke="#ffffff" stroke-width="2" />
-            <text x="1313" y="989" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="bold">IN</text>
+            <circle cx="1290" cy="982" r="16" fill="#ea580c" stroke="#ffffff" stroke-width="2" />
+            <text x="1290" y="987" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">IN</text>
         </g>
         <!-- ===== BLOCCO SUD: RIGA SUPERIORE ===== -->
         <rect id="ex-in-rete-2" class="room" x="883" y="1087" width="45" height="60" />
@@ -394,7 +393,7 @@
      3. LAYER SEGNALETICA & OVERLAY INFORMATIVI
      ========================================== -->
     <g id="layer-segnaletica">
-        <text id="ingresso-einstein" x="1000" y="982" fill="#000000" font-size="32" font-weight="900" letter-spacing="1"
+        <text id="ingresso-einstein" x="1030" y="982" fill="#000000" font-size="32" font-weight="900" letter-spacing="1"
             text-anchor="middle" dominant-baseline="central">ENTRATA QUI ➔</text>
     </g>
 
@@ -419,7 +418,7 @@
             <use href="#master-uscita-sicurezza-small" />
             <text x="72" y="18" class="evacuazione-text-small">D</text>
         </g>
-        <g id="uscita-sicurezza-e" class="evacuazione-icon" transform="translate(1284, 964) scale(-1, 1)">
+        <g id="uscita-sicurezza-e" class="evacuazione-icon" transform="translate(1270, 964) scale(-1, 1)">
             <use href="#master-uscita-sicurezza-small" />
             <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">E</text>
         </g>
@@ -511,9 +510,9 @@
         <circle id="snodo-aula-15" cx="1281" cy="502" r="4" />
         <circle id="snodo-sicurezza-b-1" cx="1315" cy="502" r="4" />
         <circle id="snodo-aula-16" cx="1334" cy="502" r="4" />
-        <circle id="snodo-aula-17" cx="1384" cy="502" r="4" />    
-        <circle id="snodo-aula-19" cx="1408" cy="502" r="4" />    
-        <circle id="snodo-aula-19" cx="1408" cy="502" r="4" />    
+        <circle id="snodo-aula-17" cx="1384" cy="502" r="4" />
+        <circle id="snodo-aula-19" cx="1408" cy="502" r="4" />
+        <circle id="snodo-aula-19" cx="1408" cy="502" r="4" />
         <circle id="snodo-aula-18" cx="1434" cy="502" r="4" />
         <circle id="snodo-aula-20" cx="1470" cy="502" r="4" />
         <circle id="snodo-aula-cic" cx="1478" cy="548" r="4" />
@@ -540,6 +539,7 @@
         <circle id="snodo-sala-stampa" cx="1250" cy="802" r="4" />
 
         <!-- Snodi Corridoio Uffici (Nodi delle Dorsali) -->
+        <circle id="snodo-ingresso-principale" cx="1313" cy="982" r="4" />
         <circle id="snodo-ufficio-tecnico" cx="1313" cy="1030" r="4" />
         <circle id="snodo-sala-commissioni" cx="1313" cy="1070" r="4" />
         <circle id="snodo-pcto" cx="1313" cy="1102" r="4" />

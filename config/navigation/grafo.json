@@ -1,10 +1,8 @@
 {
   "adiacenze": {
     "ingresso-principale": [
-      "ufficio-dsga",
-      "snodo-ufficio-tecnico",
       "snodo-sicurezza-e-1",
-      "incrocio-blocchi-nord-centrale"
+      "snodo-ingresso-principale"
     ],
     "incrocio-blocchi-nord-centrale": [
       "ingresso-principale",
@@ -160,12 +158,19 @@
     "snodo-sicurezza-a-2": ["snodo-sicurezza-a-1", "punto-raccolta-a"],
     "punto-raccolta-a": ["snodo-sicurezza-a-2"],
 
+   
     "snodo-sicurezza-e-1": ["ingresso-principale", "snodo-sicurezza-e-2"],
     "snodo-sicurezza-e-2": ["snodo-sicurezza-e-1", "punto-raccolta-e"],
     "punto-raccolta-e": ["snodo-sicurezza-e-2"],
-    "ufficio-dsga": ["ingresso-principale"],
-    "snodo-ufficio-tecnico": [
+    "ufficio-dsga": ["snodo-ingresso-principale"],
+    "snodo-ingresso-principale": [
       "ingresso-principale",
+      "snodo-ufficio-tecnico",
+      "ufficio-dsga",
+      "incrocio-blocchi-nord-centrale"
+    ],
+    "snodo-ufficio-tecnico": [
+      "snodo-ingresso-principale",
       "ufficio-tecnico",
       "snodo-sala-commissioni"
     ],
