@@ -89,7 +89,7 @@
       "etichetta-mappa": "Aula\n3",
       "punto-raccolta": "a"
     },
-    "aula-3-0": {
+    "aula-3.0": {
       "etichetta-mappa": "Aula\n3.0",
       "punto-raccolta": "d"
     },
@@ -230,7 +230,7 @@
       "punto-raccolta": "f"
     },
     "break-bagni": {
-      "etichetta-mappa": "Area\nBreak e\nBagni",
+      "etichetta-mappa": "Area\nBreak\nBagni",
       "punto-raccolta": "i"
     },
     "centro-sistemi": {
@@ -247,14 +247,14 @@
     },
     "ex-biblioteca": {
       "etichetta-mappa": "Ex\nBiblioteca",
-      "punto-raccolta": "f"
+      "punto-raccolta": "g"
     },
     "ex-in-rete-1": {
-      "etichetta-mappa": "Ex In\nRete 1",
+      "etichetta-mappa": "Ex In\nRete\n1",
       "punto-raccolta": "i"
     },
     "ex-in-rete-2": {
-      "etichetta-mappa": "Ex In\nRete 2",
+      "etichetta-mappa": "Ex In\nRete\n2",
       "punto-raccolta": "i"
     },
     "infermeria": {
@@ -297,8 +297,8 @@
       "etichetta-mappa": "Lab\nDesign",
       "punto-raccolta": "i"
     },
-    "lab-disegno-1": {
-      "etichetta-mappa": "Lab\nDisegno Tecnico",
+    "lab-disegno-tecnico": {
+      "etichetta-mappa": "Lab\nDisegno\nTecnico",
       "punto-raccolta": "c"
     },
     "lab-ele-tele": {
@@ -326,11 +326,11 @@
       "punto-raccolta": "b"
     },
     "lab-sistemi-1": {
-      "etichetta-mappa": "Lab\nSistemi 1",
+      "etichetta-mappa": "Lab\nSistemi\n1",
       "punto-raccolta": "h"
     },
     "lab-sistemi-2": {
-      "etichetta-mappa": "Lab\nSistemi 2",
+      "etichetta-mappa": "Lab\nSistemi\n2",
       "punto-raccolta": "h"
     },
     "lab-strumentale": {
@@ -378,7 +378,7 @@
       "punto-raccolta": "e"
     },
     "ufficio-magazzino": {
-      "etichetta-mappa": "Magazzino",
+      "etichetta-mappa": "Mag.",
       "punto-raccolta": "g"
     },
     "ufficio-protocollo": {
@@ -386,7 +386,7 @@
       "punto-raccolta": "b"
     },
     "ufficio-segreteria": {
-      "etichetta-mappa": "Segreteria",
+      "etichetta-mappa": "Ufficio\nSegreteria",
       "punto-raccolta": "e"
     },
     "ufficio-tecnico": {

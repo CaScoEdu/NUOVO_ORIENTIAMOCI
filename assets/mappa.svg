@@ -10,7 +10,7 @@
             /* Stili di base per la visualizzazione standalone ed Inkscape */
             .terreno {
                 fill: #bbf7d0;
-                fill-opacity: 0.4;
+                fill-opacity: 1;
                 stroke: #16a34a;
                 stroke-width: 5px;
                 rx: 30px;
@@ -279,7 +279,7 @@
         <rect id="aula-18" class="room" x="1411" y="517" width="52" height="60" />
 
         <rect id="aula-cic" class="room" x="1493" y="517" width="40" height="60" />
-        <rect id="lab-disegno-1" class="room" x="1533" y="517" width="95" height="60" />
+        <rect id="lab-disegno-tecnico" class="room" x="1533" y="517" width="95" height="60" />
         <rect id="aula-22" class="room" x="1628" y="517" width="55" height="60" />
 
         <!-- ===== BLOCCO NORD: RIGA INFERIORE (Uffici & Servizi) ===== -->
@@ -300,7 +300,7 @@
         <rect id="lab-gerosa" class="room" x="1413" y="817" width="140" height="60" />
         <rect id="aula-29" class="room" x="1553" y="817" width="70" height="60" />
         <rect id="aula-28" class="room" x="1623" y="817" width="70" height="60" />
-        <rect id="aula-3-0" class="room" x="1693" y="817" width="90" height="60" />
+        <rect id="aula-3.0" class="room" x="1693" y="817" width="90" height="60" />
 
         <!-- ===== UFFICI CENTRALI ===== -->
         <rect id="ufficio-segreteria" class="room" x="1333" y="847" width="80" height="115" />
@@ -422,7 +422,7 @@
             <use href="#master-uscita-sicurezza-small" />
             <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">E</text>
         </g>
-        <g id="uscita-sicurezza-f" class="evacuazione-icon" transform="translate(1750, 1150) scale(0.7, 0.7)">
+        <g id="uscita-sicurezza-f" class="evacuazione-icon" transform="translate(1783, 1150) scale(0.7, 0.7)">
             <use href="#master-uscita-sicurezza-small" />
             <text x="72" y="18" class="evacuazione-text-small">F</text>
         </g>
@@ -434,7 +434,7 @@
             <use href="#master-uscita-sicurezza-small" />
             <text x="-18" y="72" class="evacuazione-text-small" transform="rotate(-90)">H</text>
         </g>
-        <g id="uscita-sicurezza-i" class="evacuazione-icon" transform="translate(915, 1148) scale(-0.7, 0.7)">
+        <g id="uscita-sicurezza-i" class="evacuazione-icon" transform="translate(883, 1148) scale(-0.7, 0.7)">
             <use href="#master-uscita-sicurezza-small" />
             <text x="-72" y="18" class="evacuazione-text-small" transform="scale(-1, 1)">I</text>
         </g>
@@ -460,7 +460,7 @@
             <use href="#master-punto-raccolta" />
             <text x="105" y="40" class="evacuazione-text">E</text>
         </g>
-        <g id="punto-raccolta-f" class="evacuazione-icon" transform="translate(1950, 1140) scale(0.5, 0.5)">
+        <g id="punto-raccolta-f" class="evacuazione-icon" transform="translate(1950, 1142) scale(0.5, 0.5)">
             <use href="#master-punto-raccolta" />
             <text x="105" y="40" class="evacuazione-text">F</text>
         </g>
@@ -493,8 +493,18 @@
         <circle id="incrocio-nord-v2-sud" cx="1188" cy="802" r="4" />
         <circle id="incrocio-nord-v3-nord" cx="1478" cy="502" r="4" />
         <circle id="incrocio-nord-v3-sud" cx="1478" cy="802" r="4" />
-
+        <circle id="incrocio-nord-v4-nord" cx="1698" cy="502" r="4" />
+        <circle id="incrocio-nord-v4-sud" cx="1698" cy="802" r="4" />
         <circle id="incrocio-blocchi-nord-centrale" cx="1313" cy="802" r="4" />
+        <circle id="incrocio-blocchi-sud-centrale" cx="1313" cy="1162" r="4" />
+        <circle id="incrocio-sud-v1-nord" cx="968" cy="1162" r="4" />
+        <circle id="incrocio-sud-v1-sud" cx="968" cy="1462" r="4" />
+        <circle id="incrocio-sud-v2-nord" cx="1188" cy="1162" r="4" />
+        <circle id="incrocio-sud-v2-sud" cx="1188" cy="1462" r="4" />
+        <circle id="incrocio-sud-v3-nord" cx="1478" cy="1162" r="4" />
+        <circle id="incrocio-sud-v3-sud" cx="1478" cy="1462" r="4" />
+        <circle id="incrocio-sud-v4-nord" cx="1698" cy="1162" r="4" />
+        <circle id="incrocio-sud-v4-sud" cx="1698" cy="1462" r="4" />
 
         <!-- Snodi Corridoio Nord Blocco Nord -->
         <!-- lo snodo del lab chimica coincide con incrocio-nord-v1-nord -->
@@ -515,8 +525,11 @@
         <circle id="snodo-aula-19" cx="1408" cy="502" r="4" />
         <circle id="snodo-aula-18" cx="1434" cy="502" r="4" />
         <circle id="snodo-aula-20" cx="1470" cy="502" r="4" />
-        <circle id="snodo-aula-cic" cx="1478" cy="548" r="4" />
-
+        <circle id="snodo-lab-fisica" cx="1542" cy="502" r="4" />
+        <circle id="snodo-lab-disegno-tecnico" cx="1580" cy="502" r="4" />
+        <circle id="snodo-lab-arti-pittoriche" cx="1620" cy="502" r="4" />
+        <circle id="snodo-aula-22" cx="1655" cy="502" r="4" />
+        <circle id="snodo-lab-biologia" cx="1698" cy="480" r="4" />
 
         <!-- Snodi Corridoio Vert.1 Blocco Nord -->
         <circle id="snodo-aula-6" cx="968" cy="756" r="4" />
@@ -528,6 +541,15 @@
         <!-- Snodi Corridoio Vert2 Blocco Nord -->
         <circle id="snodo-up-presidenza" cx="1188" cy="547" r="4" />
 
+        <!-- Snodi Corridoio Vert3 Blocco Nord -->
+        <circle id="snodo-aula-cic" cx="1478" cy="548" r="4" />
+
+        <!-- Snodi Corridoio Vert4 Blocco Nord -->
+        <circle id="snodo-aula-23" cx="1698" cy="518" r="4" />
+        <circle id="snodo-aula-24" cx="1698" cy="576" r="4" />
+        <circle id="snodo-aula-25" cx="1698" cy="636" r="4" />
+        <circle id="snodo-aula-26" cx="1698" cy="696" r="4" />
+        <circle id="snodo-aula-27" cx="1698" cy="756" r="4" />
 
         <!-- Snodi Corridoio Sud Blocco Nord -->
         <circle id="snodo-lab-arti-plastiche" cx="930" cy="802" r="4" />
@@ -537,6 +559,13 @@
         <circle id="snodo-infermeria" cx="1161" cy="802" r="4" />
         <circle id="snodo-aula-1" cx="1217" cy="802" r="4" />
         <circle id="snodo-sala-stampa" cx="1250" cy="802" r="4" />
+        <circle id="snodo-segreteria" cx="1373" cy="802" r="4" />
+        <circle id="snodo-centro-stella" cx="1418" cy="802" r="4" />
+        <circle id="snodo-audiovisivi" cx="1538" cy="802" r="4" />
+        <circle id="snodo-aula-29" cx="1588" cy="802" r="4" />
+        <circle id="snodo-aula-28" cx="1658" cy="802" r="4" />
+
+        <circle id="snodo-aula-3.0" cx="1740" cy="802" r="4" />
 
         <!-- Snodi Corridoio Uffici (Nodi delle Dorsali) -->
         <circle id="snodo-ingresso-principale" cx="1313" cy="982" r="4" />
@@ -545,15 +574,79 @@
         <circle id="snodo-pcto" cx="1313" cy="1102" r="4" />
         <circle id="snodo-spogliatoio-ata" cx="1313" cy="1132" r="4" />
 
+        <!-- Snodi Corridoio Nord Blocco Sud -->
+        <circle id="snodo-ex-in-rete-2" cx="906" cy="1162" r="4" />
+        <circle id="snodo-ex-in-rete-1" cx="951" cy="1162" r="4" />
+        <circle id="snodo-aula-51" cx="1008" cy="1162" r="4" />
+        <circle id="snodo-aula-52" cx="1079" cy="1162" r="4" />
+        <circle id="snodo-spazio-ristoro" cx="1127" cy="1162" r="4" />
+        <circle id="snodo-aula-53" cx="1147" cy="1162" r="4" />
+        <circle id="snodo-aula-54" cx="1217" cy="1162" r="4" />
+        <circle id="snodo-aula-54" cx="1217" cy="1162" r="4" />
+        <circle id="snodo-sala-docenti" cx="1425" cy="1162" r="4" />
+        <circle id="snodo-aula-34" cx="1518" cy="1162" r="4" />
+        <circle id="snodo-aula-33" cx="1542" cy="1162" r="4" />
+        <circle id="snodo-aula-35" cx="1588" cy="1162" r="4" />
+        <circle id="snodo-aula-36" cx="1658" cy="1162" r="4" />
+        <circle id="snodo-lab-cisco" cx="1740" cy="1162" r="4" />
+
+        <!-- Snodi Corridoio Vert1 Blocco Sud -->
+        <circle id="snodo-aula-50" cx="968" cy="1228" r="4" />
+        <circle id="snodo-lab-design" cx="968" cy="1322" r="4" />
+
+        <!-- Snodi Corridoio Vert2 Blocco Sud -->
+        <circle id="snodo-centro-sistemi" cx="1188" cy="1398" r="4" />
+
+        <!-- Snodi Corridoio Vert3 Blocco Sud -->
+        <circle id="snodo-aula-32" cx="1478" cy="1203" r="4" />
+
+        <!-- Snodi Corridoio Vert4 Blocco Sud -->
+        <circle id="snodo-aula-37" cx="1698" cy="1202" r="4" />
+        <circle id="snodo-aula-38" cx="1698" cy="1260" r="4" />
+        <circle id="snodo-aula-39" cx="1698" cy="1330" r="4" />
+        <circle id="snodo-biblioteca" cx="1698" cy="1398" r="4" />
+        <circle id="snodo-ex-biblioteca" cx="1730" cy="1462" r="4" />
+
+        <!-- Snodi Corridoio Sud Blocco Sud -->
+        <circle id="snodo-aula-49" cx="908" cy="1462" r="4" />
+        <circle id="snodo-lab-ele-tele" cx="934" cy="1432" r="4" />
+        <circle id="snodo-aula-48" cx="934" cy="1462" r="4" />
+        <circle id="snodo-aula-47" cx="994" cy="1462" r="4" />
+        <circle id="snodo-lab-tpsee" cx="1050" cy="1462" r="4" />
+        <circle id="snodo-lab-sistemi-2" cx="1098" cy="1462" r="4" />
+        <circle id="snodo-lab-sistemi-1" cx="1228" cy="1462" r="4" />
+        <circle id="snodo-lab-microbiologia" cx="1252" cy="1462" r="4" />
+        <circle id="snodo-lab-chimica-fisica" cx="1342" cy="1462" r="4" />
+        <circle id="snodo-aula-45" cx="1406" cy="1462" r="4" />
+        <circle id="snodo-aula-46" cx="1425" cy="1462" r="4" />
+        <circle id="snodo-aula-44" cx="1464" cy="1462" r="4" />
+        <circle id="snodo-aula-44" cx="1464" cy="1462" r="4" />
+        <circle id="snodo-aula-43" cx="1518" cy="1462" r="4" />
+        <circle id="snodo-aula-42" cx="1568" cy="1462" r="4" />
+        <circle id="snodo-aula-41" cx="1572" cy="1462" r="4" />
+        <circle id="snodo-lab-informatica" cx="1638" cy="1462" r="4" />
+        <circle id="snodo-aula-40" cx="1646" cy="1462" r="4" />
+        <circle id="snodo-aula-40" cx="1646" cy="1462" r="4" />
+        <circle id="snodo-aula-polifunzionale" cx="1698" cy="1492" r="4" />
+
         <!-- Snodi esterni verso i punti di raccolta -->
         <circle id="snodo-sicurezza-a-1" cx="783" cy="802" r="4" />
         <circle id="snodo-sicurezza-a-2" cx="783" cy="721" r="4" />
-        <circle id="snodo-sicurezza-b-1" cx="1315" cy="502" r="4" />
-        <circle id="snodo-sicurezza-b-2" cx="1315" cy="338" r="4" />
-        <circle id="snodo-sicurezza-c-1" cx="1354" cy="502" r="4" />
-        <circle id="snodo-sicurezza-c-2" cx="1354" cy="338" r="4" />
+        <circle id="snodo-sicurezza-b-1" cx="1316" cy="502" r="4" />
+        <circle id="snodo-sicurezza-b-2" cx="1316" cy="338" r="4" />
+        <circle id="snodo-sicurezza-c-1" cx="1352" cy="502" r="4" />
+        <circle id="snodo-sicurezza-c-2" cx="1352" cy="338" r="4" />
         <circle id="snodo-sicurezza-e-1" cx="783" cy="982" r="4" />
         <circle id="snodo-sicurezza-e-2" cx="783" cy="1052" r="4" />
+        <circle id="snodo-sicurezza-i-1" cx="783" cy="1162" r="4" />
+        <circle id="snodo-sicurezza-i-2" cx="783" cy="1239" r="4" />
+        <circle id="snodo-sicurezza-h-1" cx="1316" cy="1462" r="4" />
+        <circle id="snodo-sicurezza-h-2" cx="1316" cy="1615" r="4" />
+        <circle id="snodo-sicurezza-h-3" cx="1833" cy="1615" r="4" />
+        <circle id="snodo-sicurezza-g-1" cx="1352" cy="1462" r="4" />
+        <circle id="snodo-sicurezza-g-2" cx="1352" cy="1615" r="4" />
+        <circle id="snodo-sicurezza-g-3" cx="1985" cy="1615" r="4" />
+    
     </g>
 
 </svg>

@@ -22,7 +22,7 @@
       "categoria": "Aule",
       "descrizione": "Aula didattica."
     },
-    "aula-3-0": {
+    "aula-3.0": {
       "etichetta-elenco": "Aula 3.0",
       "categoria": "Aule",
       "descrizione": "Aula didattica innovativa 3.0."
@@ -228,9 +228,9 @@
       "descrizione": "Aula didattica."
     },
     "aula-49": {
-      "etichetta-elenco": "Aula 49",
-      "categoria": "Aule",
-      "descrizione": "Aula didattica."
+      "etichetta-elenco": "Aula Colloqui",
+      "categoria": "Uffici",
+      "descrizione": "Aula dedicata ai colloqui."
     },
     "aula-50": {
       "etichetta-elenco": "Aula 50",
@@ -372,8 +372,8 @@
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di progettazione e design."
     },
-    "lab-disegno-1": {
-      "etichetta-elenco": "Lab   Disegno Tecnico",
+    "lab-disegno-tecnico": {
+      "etichetta-elenco": "Lab Disegno Tecnico",
       "categoria": "Laboratori",
       "descrizione": "Laboratorio di disegno tecnico e CAD."
     },

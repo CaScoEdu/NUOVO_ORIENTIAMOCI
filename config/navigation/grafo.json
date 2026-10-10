@@ -1,18 +1,47 @@
 {
   "adiacenze": {
-    "ingresso-principale": [
-      "snodo-sicurezza-e-1",
-      "snodo-ingresso-principale"
-    ],
+    "ingresso-principale": ["snodo-sicurezza-e-1", "snodo-ingresso-principale"],
     "incrocio-blocchi-nord-centrale": [
-      "ingresso-principale",
-      "snodo-sala-stampa"
+      "snodo-ingresso-principale",
+      "snodo-sala-stampa",
+      "snodo-segreteria"
     ],
+    "snodo-segreteria": [
+      "incrocio-blocchi-nord-centrale",
+      "ufficio-segreteria",
+      "snodo-centro-stella"
+    ],
+    "ufficio-segreteria": ["snodo-segreteria"],
     "snodo-sala-stampa": [
       "incrocio-blocchi-nord-centrale",
       "sala-stampa",
       "snodo-aula-1"
     ],
+    "snodo-centro-stella": [
+      "snodo-segreteria",
+      "centro-stella",
+      "incrocio-nord-v3-sud"
+    ],
+    "incrocio-nord-v3-sud": [
+      "snodo-centro-stella",
+      "snodo-aula-cic",
+      "lab-gerosa",
+      "snodo-audiovisivi"
+    ],
+    "centro-stella": ["snodo-centro-stella"],
+
+    "lab-gerosa": ["incrocio-nord-v3-sud"],
+    "snodo-audiovisivi": [
+      "snodo-centro-stella",
+      "audiovisivi",
+      "snodo-aula-29"
+    ],
+    "audiovisivi": ["snodo-audiovisivi"],
+    "snodo-aula-29": ["snodo-audiovisivi", "aula-29", "snodo-aula-28"],
+    "aula-29": ["snodo-aula-29"],
+    "snodo-aula-28": ["snodo-audiovisivi", "aula-28", "incrocio-nord-v4-sud"],
+    "aula-28": ["snodo-aula-28"],
+
     "sala-stampa": ["snodo-sala-stampa"],
     "snodo-aula-1": ["snodo-sala-stampa", "aula-1", "incrocio-nord-v2-sud"],
     "aula-1": ["snodo-aula-1"],
@@ -85,7 +114,8 @@
     "snodo-up-presidenza": [
       "incrocio-nord-v2-nord",
       "presidenza",
-      "ufficio-protocollo"
+      "ufficio-protocollo",
+      "incrocio-nord-v2-sud"
     ],
     "presidenza": ["snodo-up-presidenza"],
     "ufficio-protocollo": ["snodo-up-presidenza"],
@@ -106,11 +136,8 @@
     ],
     "snodo-sicurezza-b-2": ["snodo-sicurezza-b-1", "punto-raccolta-b"],
     "punto-raccolta-b": ["snodo-sicurezza-b-2"],
-    
-    "snodo-aula-16": [
-        "snodo-sicurezza-b-1", 
-        "aula-16",
-        "snodo-sicurezza-c-1"],
+
+    "snodo-aula-16": ["snodo-sicurezza-b-1", "aula-16", "snodo-sicurezza-c-1"],
     "aula-16": ["snodo-aula-16"],
 
     "snodo-sicurezza-c-1": [
@@ -120,45 +147,302 @@
     ],
     "snodo-sicurezza-c-2": ["snodo-sicurezza-c-1", "punto-raccolta-c"],
     "punto-raccolta-c": ["snodo-sicurezza-c-2"],
-    "snodo-aula-17": [
-        "snodo-sicurezza-c-1", 
-        "aula-17",
-        "snodo-aula-19"],
+    "snodo-aula-17": ["snodo-sicurezza-c-1", "aula-17", "snodo-aula-19"],
     "aula-17": ["snodo-aula-17"],
-    "snodo-aula-19": [
-        "snodo-aula-17", 
-        "aula-19",
-        "snodo-aula-18"],
+    "snodo-aula-19": ["snodo-aula-17", "aula-19", "snodo-aula-18"],
     "aula-19": ["snodo-aula-19"],
-    "snodo-aula-18": [
-        "snodo-aula-19",
-        "aula-18",
-        "snodo-aula-20"
-    ],
+    "snodo-aula-18": ["snodo-aula-19", "aula-18", "snodo-aula-20"],
     "aula-18": ["snodo-aula-18"],
-    "snodo-aula-20": [
-        "snodo-aula-18",
-        "aula-20",
-        "incrocio-nord-v3-nord"
-    ],
-    "aula-20": [
-        "snodo-aula-20"],
+    "snodo-aula-20": ["snodo-aula-18", "aula-20", "incrocio-nord-v3-nord"],
+    "aula-20": ["snodo-aula-20"],
     "incrocio-nord-v3-nord": [
-        "snodo-aula-20",
-        "snodo-aula-cic"
+      "snodo-aula-20",
+      "snodo-aula-cic",
+      "snodo-lab-fisica"
     ],
     "snodo-aula-cic": [
-        "incrocio-nord-v3-nord",
-        "aula-cic",
-        "incrocio-nord-v3-sud"
+      "incrocio-nord-v3-nord",
+      "aula-cic",
+      "incrocio-nord-v3-sud"
     ],
     "aula-cic": ["snodo-aula-cic"],
+
+    "snodo-lab-fisica": [
+      "lab-fisica",
+      "incrocio-nord-v3-nord",
+      "snodo-lab-disegno-tecnico"
+    ],
+    "lab-fisica": ["snodo-lab-fisica"],
+
+    "snodo-lab-disegno-tecnico": [
+      "lab-disegno-tecnico",
+      "snodo-lab-arti-pittoriche",
+      "snodo-lab-fisica"
+    ],
+    "lab-disegno-tecnico": ["snodo-lab-disegno-tecnico"],
+    "snodo-lab-arti-pittoriche": [
+      "snodo-lab-disegno-tecnico",
+      "lab-arti-pittoriche",
+      "snodo-aula-22"
+    ],
+
+    "lab-arti-pittoriche": ["snodo-lab-arti-pittoriche"],
+    "snodo-aula-22": [
+      "snodo-lab-arti-pittoriche",
+      "aula-22",
+      "incrocio-nord-v4-nord"
+    ],
+    "aula-22": ["snodo-aula-22"],
+    "incrocio-nord-v4-nord": [
+      "snodo-aula-22",
+      "snodo-lab-biologia",
+      "snodo-aula-23"
+    ],
+    "snodo-lab-biologia": ["incrocio-nord-v4-nord", "lab-biologia"],
+    "lab-biologia": ["snodo-lab-biologia"],
+
+    "snodo-aula-23": ["incrocio-nord-v4-nord", "aula-23", "snodo-aula-24"],
+    "aula-23": ["snodo-aula-23"],
+    "snodo-aula-24": ["snodo-aula-23", "aula-24", "snodo-aula-25"],
+    "aula-24": ["snodo-aula-24"],
+    "snodo-aula-25": ["snodo-aula-24", "aula-25", "snodo-aula-26"],
+    "aula-25": ["snodo-aula-25"],
+    "snodo-aula-26": ["snodo-aula-25", "aula-26", "snodo-aula-27"],
+    "aula-26": ["snodo-aula-26"],
+    "snodo-aula-27": ["snodo-aula-26", "aula-27", "incrocio-nord-v4-sud"],
+    "aula-27": ["snodo-aula-27"],
+    "incrocio-nord-v4-sud": ["snodo-aula-27", "snodo-aula-3.0"],
+    "snodo-aula-3.0": ["incrocio-nord-v4-sud", "aula-3.0", "punto-raccolta-d"],
+    "aula-3.0": ["snodo-aula-3.0"],
+
+    "punto-raccolta-d": ["snodo-aula-3.0"],
 
     "snodo-sicurezza-a-1": ["snodo-lab-arti-plastiche", "snodo-sicurezza-a-2"],
     "snodo-sicurezza-a-2": ["snodo-sicurezza-a-1", "punto-raccolta-a"],
     "punto-raccolta-a": ["snodo-sicurezza-a-2"],
 
-   
+    "punto-raccolta-i": ["snodo-sicurezza-i-2"],
+    "snodo-sicurezza-i-2": ["punto-raccolta-i", "snodo-sicurezza-i-1"],
+    "snodo-sicurezza-i-1": ["snodo-sicurezza-i-2", "snodo-ex-in-rete-2"],
+    "snodo-ex-in-rete-2": [
+      "snodo-sicurezza-i-1",
+      "ex-in-rete-2",
+      "snodo-ex-in-rete-1"
+    ],
+    "ex-in-rete-2": ["snodo-ex-in-rete-2"],
+
+    "snodo-ex-in-rete-1": [
+      "snodo-ex-in-rete-2",
+      "ex-in-rete-1",
+      "incrocio-sud-v1-nord"
+    ],
+    "ex-in-rete-1": ["snodo-ex-in-rete-1"],
+    "incrocio-sud-v1-nord": [
+      "snodo-ex-in-rete-1",
+      "snodo-aula-50",
+      "snodo-aula-51"
+    ],
+
+    "snodo-aula-51": ["incrocio-sud-v1-nord", "aula-51", "snodo-aula-52"],
+    "aula-51": ["snodo-aula-51"],
+    "snodo-aula-52": ["snodo-aula-51", "aula-52", "snodo-spazio-ristoro"],
+    "aula-52": ["snodo-aula-52"],
+    "snodo-spazio-ristoro": [
+      "snodo-aula-52",
+      "spazio-ristoro",
+      "snodo-aula-53"
+    ],
+    "spazio-ristoro": ["snodo-spazio-ristoro"],
+    "snodo-aula-53": [
+      "snodo-spazio-ristoro",
+      "aula-53",
+      "incrocio-sud-v2-nord"
+    ],
+    "aula-53": ["snodo-aula-53"],
+    "incrocio-sud-v2-nord": [
+      "snodo-aula-53",
+      "snodo-aula-54",
+      "snodo-centro-sistemi"
+    ],
+    "snodo-centro-sistemi": [
+      "incrocio-sud-v2-nord",
+      "centro-sistemi",
+      "incrocio-sud-v2-sud"
+    ],
+    "centro-sistemi": ["snodo-centro-sistemi"],
+    "incrocio-sud-v2-sud": [
+      "snodo-centro-sistemi",
+      "snodo-lab-sistemi-2",
+      "snodo-lab-sistemi-1"
+    ],
+
+    "snodo-lab-sistemi-1": [
+      "incrocio-sud-v2-sud",
+      "lab-sistemi-1",
+      "snodo-lab-microbiologia"
+    ],
+    "lab-sistemi-1": ["snodo-lab-sistemi-1"],
+    "snodo-lab-microbiologia": [
+      "snodo-lab-sistemi-1",
+      "lab-microbiologia",
+      "snodo-sicurezza-h-1"
+    ],
+    "lab-microbiologia": ["snodo-lab-microbiologia"],
+
+    "snodo-sicurezza-h-1": [
+      "snodo-lab-microbiologia",
+      "snodo-sicurezza-h-2",
+      "snodo-lab-chimica-fisica"
+    ],
+    "snodo-sicurezza-h-2": ["snodo-sicurezza-h-1", "snodo-sicurezza-h-3"],
+    "snodo-sicurezza-h-3": ["snodo-sicurezza-h-2", "punto-raccolta-h"],
+    "punto-raccolta-h": ["snodo-sicurezza-h-3"],
+
+    "snodo-lab-chimica-fisica": [
+      "snodo-sicurezza-h-1",
+      "lab-chimica-fisica",
+      "snodo-sicurezza-g-1"
+    ],
+    "lab-chimica-fisica": ["snodo-lab-chimica-fisica"],
+    "snodo-sicurezza-g-1": [
+      "snodo-lab-chimica-fisica",
+      "snodo-sicurezza-g-2",
+      "snodo-aula-45"
+    ],
+    "snodo-sicurezza-g-2": ["snodo-sicurezza-g-1", "snodo-sicurezza-g-3"],
+    "snodo-sicurezza-g-3": ["snodo-sicurezza-g-2", "punto-raccolta-g"],
+    "punto-raccolta-g": ["snodo-sicurezza-g-3"],
+
+    "snodo-aula-45": ["snodo-sicurezza-g-1", "aula-45", "snodo-aula-46"],
+    "aula-45": ["snodo-aula-45"],
+    "snodo-aula-46": ["snodo-aula-45", "aula-46", "snodo-aula-44"],
+    "aula-46": ["snodo-aula-46"],
+    "snodo-aula-44": ["snodo-aula-46", "aula-44", "incrocio-sud-v3-sud"],
+    "aula-44": ["snodo-aula-44"],
+    "incrocio-sud-v3-sud": ["snodo-aula-44", "snodo-aula-32", "snodo-aula-43"],
+    "snodo-aula-43": ["incrocio-sud-v3-sud", "aula-43", "snodo-aula-42"],
+    "aula-43": ["snodo-aula-43"],
+    "snodo-aula-42": ["snodo-aula-43", "aula-42", "snodo-aula-41"],
+    "aula-42": ["snodo-aula-42"],
+    "snodo-aula-41": ["snodo-aula-42", "aula-41", "snodo-lab-informatica"],
+    "aula-41": ["snodo-aula-41"],
+    "snodo-lab-informatica": [
+      "snodo-aula-41",
+      "lab-informatica",
+      "snodo-aula-40"
+    ],
+    "lab-informatica": ["snodo-lab-informatica"],
+    "snodo-aula-40": [
+      "snodo-lab-informatica",
+      "aula-40",
+      "incrocio-sud-v4-sud"
+    ],
+    "aula-40": ["snodo-aula-40"],
+
+    "snodo-aula-54": [
+      "incrocio-sud-v2-nord",
+      "aula-54",
+      "incrocio-blocchi-sud-centrale"
+    ],
+    "aula-54": ["snodo-aula-54"],
+
+    "snodo-aula-50": ["incrocio-sud-v1-nord", "aula-50", "snodo-lab-design"],
+    "aula-50": ["snodo-aula-50"],
+    "snodo-lab-design": ["snodo-aula-50", "lab-design", "incrocio-sud-v1-sud"],
+    "lab-design": ["snodo-lab-design"],
+    "incrocio-sud-v1-sud": [
+      "snodo-lab-design",
+      "snodo-aula-48",
+      "snodo-aula-47"
+    ],
+
+    "snodo-aula-47": ["incrocio-sud-v1-sud", "aula-47", "snodo-lab-tpsee"],
+    "aula-47": ["snodo-aula-47"],
+    "snodo-lab-tpsee": ["snodo-aula-47", "lab-tpsee", "snodo-lab-sistemi-2"],
+    "lab-tpsee": ["snodo-lab-tpsee"],
+    "snodo-lab-sistemi-2": [
+      "snodo-lab-tpsee",
+      "lab-sistemi-2",
+      "incrocio-sud-v2-sud"
+    ],
+    "lab-sistemi-2": ["snodo-lab-sistemi-2"],
+
+    "snodo-aula-48": [
+      "incrocio-sud-v1-sud",
+      "aula-48",
+      "snodo-lab-ele-tele",
+      "snodo-aula-49"
+    ],
+    "aula-48": ["snodo-aula-48"],
+    "snodo-lab-ele-tele": ["snodo-aula-48", "lab-ele-tele"],
+    "lab-ele-tele": ["snodo-lab-ele-tele"],
+    "snodo-aula-49": ["snodo-aula-48", "aula-49"],
+    "aula-49": ["snodo-aula-49"],
+
+    "incrocio-blocchi-sud-centrale": [
+      "snodo-aula-54",
+      "snodo-spogliatoio-ata",
+      "snodo-sala-docenti"
+    ],
+
+    "snodo-sala-docenti": [
+      "incrocio-blocchi-sud-centrale",
+      "sala-docenti",
+      "incrocio-sud-v3-nord"
+    ],
+    "sala-docenti": ["snodo-sala-docenti"],
+    "incrocio-sud-v3-nord": [
+      "snodo-sala-docenti",
+      "snodo-aula-34",
+      "snodo-aula-32"
+    ],
+    "snodo-aula-32": ["incrocio-sud-v3-nord", "aula-32", "incrocio-sud-v3-sud"],
+    "aula-32": ["snodo-aula-32"],
+    "snodo-aula-34": ["incrocio-sud-v3-nord", "aula-34", "snodo-aula-33"],
+    "aula-34": ["snodo-aula-34"],
+    "snodo-aula-33": ["snodo-aula-34", "aula-33", "snodo-aula-35"],
+    "aula-33": ["snodo-aula-33"],
+    "snodo-aula-35": ["snodo-aula-33", "aula-35", "snodo-aula-36"],
+    "aula-35": ["snodo-aula-35"],
+    "snodo-aula-36": ["snodo-aula-35", "aula-36", "incrocio-sud-v4-nord"],
+    "aula-36": ["snodo-aula-36"],
+
+    "incrocio-sud-v4-nord": [
+      "snodo-aula-36",
+      "snodo-lab-cisco",
+      "snodo-aula-37"
+    ],
+    "snodo-lab-cisco": [
+      "incrocio-sud-v4-nord",
+      "lab-cisco",
+      "punto-raccolta-f"
+    ],
+    "lab-cisco": ["snodo-lab-cisco"],
+    "punto-raccolta-f": ["snodo-lab-cisco"],
+
+    "snodo-aula-37": ["incrocio-sud-v4-nord", "aula-37", "snodo-aula-38"],
+    "aula-37": ["snodo-aula-37"],
+    "snodo-aula-38": ["snodo-aula-37", "aula-38", "snodo-aula-39"],
+    "aula-38": ["snodo-aula-38"],
+    "snodo-aula-39": ["snodo-aula-38", "aula-39", "snodo-biblioteca"],
+    "aula-39": ["snodo-aula-39"],
+    "snodo-biblioteca": ["snodo-aula-39", "biblioteca",
+      "incrocio-sud-v4-sud"],
+    "biblioteca": ["snodo-biblioteca"],
+    "snodo-ex-biblioteca": [
+      "snodo-biblioteca",
+      "ex-biblioteca"
+    ],
+    "ex-biblioteca": ["snodo-ex-biblioteca"],
+    "incrocio-sud-v4-sud": [
+      "snodo-ex-biblioteca",
+      "snodo-biblioteca",
+      "snodo-aula-40",
+      "snodo-aula-polifunzionale"
+    ],
+    "snodo-aula-polifunzionale": ["incrocio-sud-v4-sud", "aula-polifunzionale"],
+    "aula-polifunzionale": ["snodo-aula-polifunzionale"],
+
     "snodo-sicurezza-e-1": ["ingresso-principale", "snodo-sicurezza-e-2"],
     "snodo-sicurezza-e-2": ["snodo-sicurezza-e-1", "punto-raccolta-e"],
     "punto-raccolta-e": ["snodo-sicurezza-e-2"],
@@ -183,7 +467,11 @@
     "sala-commissioni": ["snodo-sala-commissioni"],
     "snodo-pcto": ["snodo-sala-commissioni", "pcto", "snodo-spogliatoio-ata"],
     "pcto": ["snodo-pcto"],
-    "snodo-spogliatoio-ata": ["snodo-pcto", "spogliatoio-ata"],
+    "snodo-spogliatoio-ata": [
+      "snodo-pcto",
+      "spogliatoio-ata",
+      "incrocio-blocchi-sud-centrale"
+    ],
     "spogliatoio-ata": ["snodo-spogliatoio-ata"]
   }
 }
