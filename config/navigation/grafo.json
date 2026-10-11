@@ -211,7 +211,10 @@
     "aula-26": ["snodo-aula-26"],
     "snodo-aula-27": ["snodo-aula-26", "aula-27", "incrocio-nord-v4-sud"],
     "aula-27": ["snodo-aula-27"],
-    "incrocio-nord-v4-sud": ["snodo-aula-27", "snodo-aula-3.0"],
+    "incrocio-nord-v4-sud": [
+        "snodo-aula-27", 
+        "snodo-aula-28",
+        "snodo-aula-3.0"],
     "snodo-aula-3.0": ["incrocio-nord-v4-sud", "aula-3.0", "punto-raccolta-d"],
     "aula-3.0": ["snodo-aula-3.0"],
 

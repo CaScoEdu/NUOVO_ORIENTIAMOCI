@@ -14,6 +14,10 @@ let configurazioneAttiva = {}; // Configurazione finale unita (Base + Custom)
 let mappaSicurezza = {}; // Mappa uscite/punti di raccolta da sicurezza/punti-raccolta.json
 let grafoDati = null; // Struttura del grafo caricata da navigation/grafo.json
 
+// Istanze Tom-Select
+let tomSelectFrom = null;
+let tomSelectTo = null;
+
 /* Mappa cromatica delle categorie stilata con le variabili di style.css */
 const MappaColoriCategorie = {
   "Aule": "var(--color-aule)",
@@ -77,26 +81,22 @@ async function caricaMappaSicurezza() {
 
 async function caricaConfigurazioneDaURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  // Se manca ?config=, il valore predefinito è sempre "school-day"
   const configFile = urlParams.get("config") || "school-day";
 
   await Promise.all([caricaMappaSicurezza(), caricaGrafo()]);
 
   try {
-    // 1. CARICAMENTO INIZIALE BASE: config/base/stanze.json
     const resBase = await fetch("config/base/stanze.json");
     if (!resBase.ok)
       throw new Error("Impossibile caricare config/base/stanze.json");
     const datiBase = await resBase.json();
 
-    // 2. CARICAMENTO OVERRIDE CUSTOM: config/custom/[configFile].json
     let configurazioneCustom = {};
     try {
       const resCustom = await fetch(`config/custom/${configFile}.json`);
       if (resCustom.ok) {
         configurazioneCustom = await resCustom.json();
       } else if (configFile !== "school-day") {
-        // Fallback a school-day se il file custom richiesto non esiste
         const resFallback = await fetch("config/custom/school-day.json");
         if (resFallback.ok) configurazioneCustom = await resFallback.json();
       }
@@ -117,19 +117,16 @@ async function caricaConfigurazioneDaURL() {
 
     const stanzeCustom = configurazioneCustom.stanze || {};
 
-    // 3. MERGE UNIFORME PER TUTTI I CUSTOM
     Object.keys(datiBase.stanze).forEach((roomId) => {
       const stanzaBase = datiBase.stanze[roomId];
       const stanzaCustom = stanzeCustom[roomId];
 
-      // Nome fisico originale di base (es. "Aula 1" o "Lab. Informatica")
       const nomeFisicoBase =
         stanzaBase?.["etichetta-mappa"] ||
         stanzaBase?.etichettaMappa ||
         stanzaBase?.etichetta ||
         roomId.replace(/-/g, " ");
 
-      // Priorità al file custom per etichetta-mappa ed etichetta-elenco
       const etichettaMappa =
         stanzaCustom?.["etichetta-mappa"] ||
         stanzaCustom?.etichettaMappa ||
@@ -148,7 +145,6 @@ async function caricaConfigurazioneDaURL() {
         etichettaMappa;
 
       if (stanzaCustom) {
-        // Stanza presente nel file custom selezionato: attiva
         configurazioneAttiva.stanze[roomId] = {
           ...stanzaBase,
           ...stanzaCustom,
@@ -165,7 +161,6 @@ async function caricaConfigurazioneDaURL() {
           attivaInEvento: true,
         };
       } else {
-        // Stanza non presente nel file custom: disabilitata
         configurazioneAttiva.stanze[roomId] = {
           ...stanzaBase,
           etichettaMappa,
@@ -204,13 +199,12 @@ function getSettorePuntoRaccolta(idStanza) {
   return settore.toLowerCase();
 }
 
-// Pulisce e normalizza le stringhe rimuovendo \n, trattini, emoji e spazi doppi per il confronto
 function normalizzaStringa(str) {
   if (!str) return "";
   return str
-    .replace(/\n/g, " ") // Rimuove i caratteri a capo
-    .replace(/^[^\w\d]+/, "") // Rimuove emoji/simboli in testa
-    .replace(/\s+/g, " ") // Riduce gli spazi multipli a uno solo
+    .replace(/\n/g, " ")
+    .replace(/^[^\w\d]+/, "")
+    .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
 }
@@ -229,7 +223,6 @@ function getTitoloFormattatoStanza(id) {
     const cleanEtichetta = normalizzaStringa(etichetta);
     const cleanOriginale = normalizzaStringa(stanza.aulaOriginale);
 
-    // Mostra l'ubicazione tra parentesi SOLO SE è sostanzialmente diversa
     if (cleanOriginale && cleanOriginale !== cleanEtichetta) {
       const originalePulito = stanza.aulaOriginale.replace(/\n/g, " ");
       return `${etichetta} (${originalePulito})`;
@@ -242,8 +235,40 @@ function getTitoloFormattatoStanza(id) {
 }
 
 /* ==========================================================================
-   INIZIALIZZAZIONE SELETTORI (DROPDOWNS DALLA CONFIGURAZIONE CUSTOM)
+   INIZIALIZZAZIONE TOM-SELECT E SELETTORI
    ========================================================================== */
+
+function inizializzaTomSelect() {
+  if (tomSelectFrom) tomSelectFrom.destroy();
+  if (tomSelectTo) tomSelectTo.destroy();
+
+  const selectFrom = document.getElementById("select-from");
+  const selectTo = document.getElementById("select-to");
+
+  const opzioniComuni = {
+    create: false,
+    maxOptions: null, // Evita che Tom-Select nasconda elementi oltre il limite predefinito
+    sortField: [],    // Rispetta l'ordine esatto dell'HTML generato
+    searchField: ["text"],
+    lockOptgroupOrder: true
+  };
+
+  if (selectFrom) {
+    tomSelectFrom = new TomSelect("#select-from", {
+      ...opzioniComuni,
+      placeholder: "Cerca partenza...",
+      allowEmptyOption: false
+    });
+  }
+
+  if (selectTo) {
+    tomSelectTo = new TomSelect("#select-to", {
+      ...opzioniComuni,
+      placeholder: "Cerca destinazione...",
+      allowEmptyOption: true
+    });
+  }
+}
 
 function popolaDropdowns() {
   const selectFrom = document.getElementById("select-from");
@@ -263,7 +288,6 @@ function popolaDropdowns() {
     const eIngresso = id === "ingresso-principale";
     const stanza = configurazioneAttiva?.stanze?.[id];
 
-    // Esclude le stanze non attive nell'evento corrente (tranne l'ingresso che è sempre attivo)
     if (!eIngresso && stanza?.attivaInEvento === false) {
       return;
     }
@@ -278,7 +302,6 @@ function popolaDropdowns() {
     gruppiPerCategoria[categoria].push({ id, titolo });
   });
 
-  // Ordina alfabeticamente le stanze dentro ciascuna categoria, ma mantiene l'ingresso SEMPRE in cima
   Object.keys(gruppiPerCategoria).forEach((cat) => {
     gruppiPerCategoria[cat].sort((a, b) => {
       if (a.id === "ingresso-principale") return -1;
@@ -291,7 +314,6 @@ function popolaDropdowns() {
     });
   });
 
-  // Ordine rigido delle categorie (Accesso è tassativamente la prima)
   const ordinePredefinitoCategorie = [
     "Accesso",
     "Aule",
@@ -302,7 +324,6 @@ function popolaDropdowns() {
     "Sport",
   ];
 
-  // Ordina le categorie secondo l'elenco specificato, assicurando Accesso in cima
   const categorieOrdinate = Object.keys(gruppiPerCategoria).sort((a, b) => {
     if (a === "Accesso") return -1;
     if (b === "Accesso") return 1;
@@ -332,7 +353,7 @@ function popolaDropdowns() {
 
         html += `<optgroup label="── ${cat.toUpperCase()} ──" style="background-color: ${coloreBg}; color: ${coloreTesto}; font-weight: bold;">`;
         opzioniFiltrare.forEach((opt) => {
-          html += `<option value="${opt.id}" style="background-color: #1e293b; color: #ffffff;">${opt.titolo}</option>`;
+          html += `<option value="${opt.id}">${opt.titolo}</option>`;
         });
         html += `</optgroup>`;
       }
@@ -342,16 +363,14 @@ function popolaDropdowns() {
 
   let optionsFromHTML = generaHTMLGruppi(false);
 
-  // Opzione vuota predefinita per il selettore di arrivo "A:"
   let optionsToHTML = `<option value="" selected>-- Seleziona destinazione --</option>`;
-  optionsToHTML += `<option value="evacuazione" style="background-color: #10b981; color: white; font-weight: bold;">🚨 EVACUAZIONE / SICUREZZA</option>`;
+  optionsToHTML += `<option value="evacuazione">🚨 EVACUAZIONE / SICUREZZA</option>`;
   optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
   optionsToHTML += generaHTMLGruppi(true);
 
   selectFrom.innerHTML = optionsFromHTML;
   selectTo.innerHTML = optionsToHTML;
 
-  // Imposta l'ingresso-principale come valore predefinito di partenza se disponibile
   const tutteLeOpzioniFrom = Object.values(gruppiPerCategoria).flat();
   if (tutteLeOpzioniFrom.some((opt) => opt.id === partenzaId)) {
     selectFrom.value = partenzaId;
@@ -364,13 +383,16 @@ function popolaDropdowns() {
   }
 
   selectTo.value = destinazioneId;
+
+  // Inizializza le istanze di Tom-Select rispettando l'ordinamento generato
+  inizializzaTomSelect();
   gestisciStileSelettoreArrivo();
 }
 
 function gestisciStileSelettoreArrivo() {
-  const selectTo = document.getElementById("select-to");
-  if (selectTo) {
-    selectTo.classList.toggle(
+  const wrapperTo = tomSelectTo ? tomSelectTo.wrapper : document.getElementById("select-to");
+  if (wrapperTo) {
+    wrapperTo.classList.toggle(
       "mode-evacuazione",
       destinazioneId === "evacuazione",
     );
@@ -452,10 +474,12 @@ function disegnaPercorsoSVG(percorsoNodi, isEvacuazione = false) {
    ========================================================================== */
 
 function aggiornaMappa(focusActive = false) {
-  const selectFrom = document.getElementById("select-from");
-  const selectTo = document.getElementById("select-to");
-  if (selectFrom) selectFrom.value = partenzaId;
-  if (selectTo) selectTo.value = destinazioneId;
+  if (tomSelectFrom && tomSelectFrom.getValue() !== partenzaId) {
+    tomSelectFrom.setValue(partenzaId, true);
+  }
+  if (tomSelectTo && tomSelectTo.getValue() !== destinazioneId) {
+    tomSelectTo.setValue(destinazioneId, true);
+  }
 
   document
     .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
@@ -531,13 +555,11 @@ function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
 
-  // Se non c'è una destinazione selezionata, mostra l'Edificio ad H
   if (!destinazioneId) {
     svg.setAttribute("viewBox", viewBoxEdificioH);
     return;
   }
 
-  // Raccoglie gli elementi da inquadrare (Partenza + Destinazione/Punto di Raccolta)
   const elementiInquadratura = [];
 
   const elFrom = document.getElementById(partenzaId);
