@@ -561,6 +561,10 @@ function mostraPianoEvacuazionePerStanza(idPartenza) {
    GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
    ========================================================================== */
 
+/* ==========================================================================
+   GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
+   ========================================================================== */
+
 function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
@@ -570,8 +574,18 @@ function autoFitCamera() {
     return;
   }
 
-  const elementiInquadratura = [];
+  let minX = Infinity, minY = Infinity;
+  let maxX = -Infinity, maxY = -Infinity;
 
+  function estendiBBox(x, y, w = 0, h = 0) {
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x + w);
+    maxY = Math.max(maxY, y + h);
+  }
+
+  // 1. Aggiunge i bounding box degli elementi di partenza e destinazione/sicurezza
+  const elementiInquadratura = [];
   const elFrom = document.getElementById(partenzaId);
   if (elFrom) elementiInquadratura.push(elFrom);
 
@@ -588,9 +602,6 @@ function autoFitCamera() {
     const elTo = document.getElementById(destinazioneId);
     if (elTo) elementiInquadratura.push(elTo);
   }
-
-  let minX = Infinity, minY = Infinity;
-  let maxX = -Infinity, maxY = -Infinity;
 
   elementiInquadratura.forEach((el) => {
     let rx = 0, ry = 0, rw = 0, rh = 0;
@@ -621,11 +632,29 @@ function autoFitCamera() {
       rh = parseFloat(el.getAttribute("height")) || 0;
     }
 
-    minX = Math.min(minX, rx);
-    minY = Math.min(minY, ry);
-    maxX = Math.max(maxX, rx + rw);
-    maxY = Math.max(maxY, ry + rh);
+    estendiBBox(rx, ry, rw, rh);
   });
+
+  // 2. Calcola il percorso poligonale effettivo e include ogni singolo nodo
+  let percorsoNodi = [];
+  if (grafoDati && partenzaId) {
+    if (destinazioneId === "evacuazione") {
+      const settore = getSettorePuntoRaccolta(partenzaId);
+      const idPuntoRaccolta = `punto-raccolta-${settore}`;
+      percorsoNodi = calcolaPercorsoMinimo(grafoDati, partenzaId, idPuntoRaccolta);
+    } else {
+      percorsoNodi = calcolaPercorsoMinimo(grafoDati, partenzaId, destinazioneId);
+    }
+  }
+
+  if (percorsoNodi && percorsoNodi.length > 0) {
+    percorsoNodi.forEach((nodoId) => {
+      const pos = getCentroideNodo(nodoId);
+      if (pos) {
+        estendiBBox(pos.x, pos.y);
+      }
+    });
+  }
 
   if (minX === Infinity) {
     svg.setAttribute("viewBox", viewBoxEdificioH);
@@ -635,8 +664,9 @@ function autoFitCamera() {
   const contentWidth = maxX - minX;
   const contentHeight = maxY - minY;
 
-  const paddingX = Math.max(120, contentWidth * 0.25);
-  const paddingY = Math.max(120, contentHeight * 0.25);
+  // Margini/Padding ridotti per aumentare lo zoom
+  const paddingX = Math.max(40, contentWidth * 0.1);
+  const paddingY = Math.max(40, contentHeight * 0.1);
 
   const vX = minX - paddingX;
   const vY = minY - paddingY;
