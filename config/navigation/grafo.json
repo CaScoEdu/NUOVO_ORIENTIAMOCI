@@ -1,6 +1,42 @@
 {
   "adiacenze": {
-    "ingresso-principale": ["snodo-sicurezza-e-1", "snodo-ingresso-principale"],
+    "ingresso-principale": [
+      "snodo-sicurezza-e-1",
+      "snodo-ingresso-principale",
+      "incrocio-corridoio-vert-ingresso"
+    ],
+    "incrocio-corridoio-vert-ingresso": [
+      "ingresso-principale",
+      "incrocio-corridoio-vert-palestra-m"
+    ],
+    "incrocio-corridoio-vert-palestra-m": [
+      "incrocio-corridoio-vert-ingresso",
+      "snodo-palestra-m",
+      "snodo-sicurezza-m"
+    ],
+    "snodo-sicurezza-m": [
+      "incrocio-corridoio-vert-palestra-m",
+      "punto-raccolta-m",
+      "snodo-palazzina-distaccata"
+    ],
+    "punto-raccolta-m": [
+      "snodo-sicurezza-m"
+    ],
+    "snodo-palazzina-distaccata": [
+      "snodo-sicurezza-m",
+      "aule-palazzina-distaccata"
+    ],
+    "aule-palazzina-distaccata": [
+      "snodo-palazzina-distaccata"
+    ],
+    "snodo-palestra-m": [
+      "incrocio-corridoio-vert-palestra-m",
+      "palestra-m"
+    ],
+    "palestra-m": [
+      "snodo-palestra-m"
+    ],
+
     "incrocio-blocchi-nord-centrale": [
       "snodo-ingresso-principale",
       "snodo-sala-stampa",
@@ -212,9 +248,10 @@
     "snodo-aula-27": ["snodo-aula-26", "aula-27", "incrocio-nord-v4-sud"],
     "aula-27": ["snodo-aula-27"],
     "incrocio-nord-v4-sud": [
-        "snodo-aula-27", 
-        "snodo-aula-28",
-        "snodo-aula-3.0"],
+      "snodo-aula-27", 
+      "snodo-aula-28",
+      "snodo-aula-3.0"
+    ],
     "snodo-aula-3.0": ["incrocio-nord-v4-sud", "aula-3.0", "punto-raccolta-d"],
     "aula-3.0": ["snodo-aula-3.0"],
 
@@ -429,8 +466,11 @@
     "aula-38": ["snodo-aula-38"],
     "snodo-aula-39": ["snodo-aula-38", "aula-39", "snodo-biblioteca"],
     "aula-39": ["snodo-aula-39"],
-    "snodo-biblioteca": ["snodo-aula-39", "biblioteca",
-      "incrocio-sud-v4-sud"],
+    "snodo-biblioteca": [
+      "snodo-aula-39",
+      "biblioteca",
+      "incrocio-sud-v4-sud"
+    ],
     "biblioteca": ["snodo-biblioteca"],
     "snodo-ex-biblioteca": [
       "snodo-biblioteca",

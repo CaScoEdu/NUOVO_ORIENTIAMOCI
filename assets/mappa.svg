@@ -186,7 +186,7 @@
         <rect id="floriani-4" x="240" y="1290" width="150" height="150" class="edificio-esterno" />
         <rect id="floriani-5" x="240" y="1090" width="150" height="150" class="edificio-esterno" />
         <rect id="floriani-6" x="410" y="1570" width="320" height="140" class="edificio-esterno" />
-        <rect id="palestra-M-blocco" x="410" y="1290" width="150" height="150" class="blocco" />
+        <rect id="palestra-m-blocco" x="410" y="1290" width="150" height="150" class="blocco" />
         <rect id="palazzina-distaccata-blocco" x="410" y="1840" width="320" height="140" class="blocco" />
         <rect id="blocco-palestre-blocco" x="883.33" y="1700" width="500" height="720" class="blocco" />
         <rect id="blocco-tensostruttura-blocco" x="1500" y="1900" width="160" height="400" class="blocco" />
@@ -235,7 +235,7 @@
        Rettangoli delle aule, laboratori, uffici, bagni, icone di sicurezza.
        ======================================================================== -->
         <!-- Aule e Palestre esterne usate dall'Einstein -->
-        <rect id="palestra-M" x="410" y="1290" width="150" height="150" class="room" />
+        <rect id="palestra-m" x="410" y="1290" width="150" height="150" class="room" />
         <rect id="aule-palazzina-distaccata" x="410" y="1840" width="320" height="140" class="room" />
         <rect id="palestre-ABCDE" x="883" y="1700" width="500" height="720" class="room" />
         <rect id="tensostruttura" x="1500" y="1900" width="160" height="400" class="room" />
@@ -629,6 +629,13 @@
         <circle id="snodo-aula-40" cx="1646" cy="1462" r="4" />
         <circle id="snodo-aula-polifunzionale" cx="1698" cy="1492" r="4" />
 
+        <!-- Snodi esterni -->
+        <circle id="incrocio-corridoio-vert-ingresso" cx="783" cy="982" r="4" />
+        <circle id="incrocio-corridoio-vert-palestra-m" cx="783" cy="1455" r="4" />
+        <circle id="snodo-palestra-m" cx="558" cy="1455" r="4" />
+        <circle id="snodo-palazzina-distaccata" cx="783" cy="1910" r="4" />
+
+
         <!-- Snodi esterni verso i punti di raccolta -->
         <circle id="snodo-sicurezza-a-1" cx="783" cy="802" r="4" />
         <circle id="snodo-sicurezza-a-2" cx="783" cy="721" r="4" />
@@ -646,7 +653,11 @@
         <circle id="snodo-sicurezza-g-1" cx="1352" cy="1462" r="4" />
         <circle id="snodo-sicurezza-g-2" cx="1352" cy="1615" r="4" />
         <circle id="snodo-sicurezza-g-3" cx="1985" cy="1615" r="4" />
-    
+        <circle id="snodo-sicurezza-m" cx="783" cy="1772" r="4" />
+
+
+
+
     </g>
 
 </svg>
