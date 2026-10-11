@@ -11,7 +11,24 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="manifest" href="manifest.json" />
+    <!-- Iniezione Dinamica del Manifest PWA -->
+    <script>
+      (function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const configFile = urlParams.get("config") || "school-day";
+
+        const link = document.createElement("link");
+        link.rel = "manifest";
+
+        if (configFile === "open-school") {
+          link.href = "manifest-open-school.json";
+        } else {
+          link.href = "manifest-school-day.json";
+        }
+
+        document.head.appendChild(link);
+      })();
+    </script>
 
     <meta name="theme-color" content="#0f172a" />
     <meta name="apple-mobile-web-app-capable" content="yes" />

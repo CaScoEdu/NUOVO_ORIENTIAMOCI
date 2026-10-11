@@ -1,0 +1,21 @@
+{
+  "id": "/index.html?config=open-school",
+  "name": "Mappa Interattiva School",
+  "short_name": "Open School",
+  "start_url": "./index.html?config=open-school",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "assets/icons/icon-open-school-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-open-school-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

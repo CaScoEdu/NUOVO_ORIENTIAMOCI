@@ -9,8 +9,8 @@ const urlsToCache = [
   "./assets/icon-192.png",
   "./assets/icon-512.png",
   "./config/base/stanze.json",
-  "./config/custom/2027-career-day.json",
-  "./config/custom/2026-open-school.json",
+  "./config/custom/career-day.json",
+  "./config/custom/open-school.json",
   "./config/custom/school-day.json",
   "./config/navigation/grafo.json",
   "./sicurezza/punti-raccolta.json"
