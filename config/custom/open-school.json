@@ -1,26 +1,115 @@
 {
-  "titoloEvento": "Career Day 2026",
+  "titoloEvento": "Mappa dell'Istituto",
   "stanze": {
     "ingresso-principale": {
-      "etichetta-mappa": "ING",
+        "etichetta-mappa": "Ing",
       "etichetta-elenco": "📍 INGRESSO",
-      "categoria": "Generale",
-      "descrizione": "Punto di accoglienza e registrazione dei partecipanti."
+      "categoria": "Accesso",
+      "descrizione": "Ingresso principale dell'istituto."
     },
-    "aula-3-0": {
-      "etichetta-elenco": "Stand Ferrari",
-      "categoria": "Automazione",
-      "descrizione": "Incontro con i recruiter di Ferrari S.p.A. per le posizioni in automazione e meccanica."
+    
+    "aula-3.0": {
+      "etichetta-elenco": "Aula 3.0",
+      "categoria": "generale",
+      "descrizione": "Aula didattica innovativa 3.0."
+    },
+    
+    "aula-polifunzionale": {
+      "etichetta-elenco": "Aula Polifunzionale",
+      "categoria": "generale",
+      "descrizione": "Spazio versatile per lezioni, seminari e conferenze."
+    },
+    
+    "lab-arti-pittoriche": {
+      "etichetta-elenco": "Lab Arti Pittoriche",
+      "categoria": "artistico",
+      "descrizione": "Laboratorio pratico di pittura e arti visive."
+    },
+    "lab-arti-plastiche": {
+      "etichetta-elenco": "Lab Arti Plastiche",
+      "categoria": "artistico",
+      "descrizione": "Laboratorio per modellazione e scultura."
+    },
+    "lab-biologia": {
+      "etichetta-elenco": "Lab Biologia",
+      "categoria": "biotecnologie",
+      "descrizione": "Laboratorio per le scienze biologiche."
+    },
+    "lab-chimica": {
+      "etichetta-elenco": "Lab Chimica",
+      "categoria": "scientifico",
+      "descrizione": "Laboratorio per esercitazioni di chimica generale."
+    },
+    "lab-chimica-fisica": {
+      "etichetta-elenco": "Lab Chimica Fisica",
+      "categoria": "scientifico",
+      "descrizione": "Laboratorio di analisi chimico-fisiche."
+    },
+    "lab-chimica-organica": {
+      "etichetta-elenco": "Lab Chimica Organica",
+      "categoria": "biotecnologie",
+      "descrizione": "Laboratorio specializzato in chimica organica."
+    },
+    "lab-cisco": {
+      "etichetta-elenco": "Lab Cisco",
+      "categoria": "informatica",
+      "descrizione": "Laboratorio per la formazione sulle reti Cisco."
+    },
+    "lab-design": {
+      "etichetta-elenco": "Lab Design",
+      "categoria": "artistico",
+      "descrizione": "Laboratorio di progettazione e design."
+    },
+    "lab-disegno-tecnico": {
+      "etichetta-elenco": "Lab Disegno Tecnico",
+      "categoria": "artistico",
+      "descrizione": "Laboratorio di disegno tecnico e CAD."
+    },
+    "lab-ele-tele": {
+      "etichetta-elenco": "Lab Elettronica",
+      "categoria": "elettronica",
+      "descrizione": "Laboratorio di Elettronica e Telecomunicazioni."
+    },
+    "lab-fisica": {
+      "etichetta-elenco": "Lab Fisica",
+      "categoria": "scientifico",
+      "descrizione": "Laboratorio per esperienze di fisica."
+    },
+    "lab-gerosa": {
+      "etichetta-elenco": "Lab Gerosa",
+      "categoria": "artistico",
+      "descrizione": "Laboratorio polifunzionale."
     },
     "lab-informatica": {
-      "etichetta-elenco": "Stand Cisco",
-      "categoria": "Informatica",
-      "descrizione": "Dimostrazioni di sicurezza di rete e opportunità di stage nell'ambito Cloud & Networking."
+      "etichetta-elenco": "Lab Informatica",
+      "categoria": "informatica",
+      "descrizione": "Laboratorio di didattica informatica."
     },
-    "biblioteca": {
-      "etichetta-elenco": "Desk Orientamento",
-      "categoria": "Liceo Scientifico Scienze Applicate",
-      "descrizione": "Presentazione dell'offerta formativa e percorsi universitari post-diploma."
+    "lab-microbiologia": {
+      "etichetta-elenco": "Lab. Microbiologia",
+      "categoria": "biotecnologie",
+      "descrizione": "Laboratorio per la coltura dei microrganismi."
+    },
+    "lab-sistemi-1": {
+      "etichetta-elenco": "Lab Sistemi 1",
+      "categoria": "informatica",
+      "descrizione": "Laboratorio di sistemi operativi e reti."
+    },
+    "lab-strumentale": {
+      "etichetta-elenco": "Lab Analisi Strumentali",
+      "categoria": "biotecnologie",
+      "descrizione": "Laboratorio per analisi instrumentali avanzate."
+    },
+    "lab-tpsee": {
+      "etichetta-elenco": "Lab TPSEE",
+      "categoria": "elettronica",
+      "descrizione": "Tecnologie e Progettazione di Sistemi Elettrici ed Elettronici."
+    },
+    "audiovisivi": {
+      "etichetta-elenco": "Audiovisivi",
+      "categoria": "artistico",
+      "descrizione": "Archivio ed attrezzature multimediali."
     }
+   
   }
 }
