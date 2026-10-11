@@ -561,10 +561,6 @@ function mostraPianoEvacuazionePerStanza(idPartenza) {
    GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
    ========================================================================== */
 
-/* ==========================================================================
-   GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
-   ========================================================================== */
-
 function autoFitCamera() {
   const svg = document.getElementById("school-map");
   if (!svg) return;
@@ -665,8 +661,8 @@ function autoFitCamera() {
   const contentHeight = maxY - minY;
 
   // Margini/Padding ridotti per aumentare lo zoom
-  const paddingX = Math.max(40, contentWidth * 0.1);
-  const paddingY = Math.max(40, contentHeight * 0.1);
+  const paddingX = Math.max(40, contentWidth * 0.05);
+  const paddingY = Math.max(40, contentHeight * 0.05);
 
   const vX = minX - paddingX;
   const vY = minY - paddingY;
