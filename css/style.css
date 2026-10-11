@@ -11,11 +11,11 @@
   --color-sport: #10b981;
 
   /* Palette Indirizzi Ufficiale / Eventi Custom */
-  --color-biotecnologie: #57c25b; /* Verde */
-  --color-artistico: #88349e;    /* Viola */
-  --color-scientifico: #e63042;   /* Rosso */
-  --color-elettronica: #f9ad25;   /* Arancione chiaro */
-  --color-informatica: #f47424;   /* Arancione */
+  --color-biotecnologie: #4CAF50; /* Verde */
+  --color-artistico: #9C27B0;    /* Viola */
+  --color-scientifico: #E91E63;   /* Rosso */
+  --color-elettronica: #FF9800;   /* Arancione chiaro */
+  --color-informatica: #E65100;   /* Arancione */
 
   /* Categoria Generale / Eventi */
   --color-generale: #25518e;      /* Blu Istituzionale */
@@ -271,7 +271,9 @@ body {
 }
 
 .room.room-disabled {
-  opacity: 0.35;
+  fill: #e2e8f0 !important; /* Grigio opaco uniforme che copre il layer sottostante */
+  stroke: #cbd5e1 !important; /* Bordo grigio chiaro per mantenere la definizione */
+  opacity: 1 !important; /* Mantiene la stanza del tutto opaca evitando la trasparenza */
   cursor: not-allowed !important;
 }
 
