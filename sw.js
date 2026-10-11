@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mappa-pwa-v0.8.2';
+const CACHE_NAME = 'mappa-pwa-v0.8.3';
 const urlsToCache = [
   "./",
   "./index.html",

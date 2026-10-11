@@ -506,24 +506,36 @@ text.room-label.state-to {
 
 .pwa-toast {
   position: fixed;
-  bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   right: 20px;
   background-color: #0f172a;
   color: #ffffff;
   border: 1px solid #334155;
-  padding: 12px 20px;
+  padding: 12px 18px;
   border-radius: 8px;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+  font-weight: 600;
   z-index: 2000;
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
 }
 
 .pwa-toast.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Adattamento per Smartphone / Android */
+@media (max-width: 768px) {
+  .pwa-toast {
+    left: 15px;
+    right: 15px;
+    text-align: center;
+    bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* ==========================================================================
