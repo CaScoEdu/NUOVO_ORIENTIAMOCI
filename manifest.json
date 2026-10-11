@@ -1,7 +1,7 @@
 {
   "name": "Mappa Interattiva Istituto",
-  "short_name": "MappaIis",
-  "description": "Mappa e navigazione interna dell'istituto",
+  "short_name": "Orientiamoci",
+  "description": "Mappa e navigazione nell'istituto",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
