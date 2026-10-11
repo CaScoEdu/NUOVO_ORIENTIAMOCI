@@ -11,7 +11,6 @@ let destinazioneId = ""; // Nessuna destinazione selezionata all'avvio
 let viewBoxEdificioH = "850 380 1000 1200";
 
 let configurazioneAttiva = {}; // Configurazione finale unita (Base + Custom)
-let mappaSicurezza = {}; // Mappa uscite/punti di raccolta da sicurezza/punti-raccolta.json
 let grafoDati = null; // Struttura del grafo caricata da navigation/grafo.json
 
 // Istanze Tom-Select
@@ -49,7 +48,7 @@ function getColoreCategoria(categoria) {
 }
 
 /* ==========================================================================
-   CARICAMENTO CONFIGURAZIONI, SICUREZZA, GRAFO ED EVENTI
+   CARICAMENTO CONFIGURAZIONI, GRAFO ED EVENTI
    ========================================================================== */
 
 async function caricaGrafo() {
@@ -64,26 +63,11 @@ async function caricaGrafo() {
   }
 }
 
-async function caricaMappaSicurezza() {
-  try {
-    const res = await fetch("config/sicurezza/punti-raccolta.json");
-    if (res.ok) {
-      const data = await res.json();
-      mappaSicurezza = data.puntiRaccolta || {};
-    }
-  } catch (err) {
-    console.warn(
-      "Impossibile caricare config/sicurezza/punti-raccolta.json:",
-      err,
-    );
-  }
-}
-
 async function caricaConfigurazioneDaURL() {
   const urlParams = new URLSearchParams(window.location.search);
   const configFile = urlParams.get("config") || "school-day";
 
-  await Promise.all([caricaMappaSicurezza(), caricaGrafo()]);
+  await caricaGrafo();
 
   try {
     const resBase = await fetch("config/base/stanze.json");
@@ -166,6 +150,9 @@ async function caricaConfigurazioneDaURL() {
           etichettaMappa,
           etichettaElenco,
           aulaOriginale: nomeFisicoBase,
+          puntoRaccolta:
+            stanzaBase?.["punto-raccolta"] ||
+            stanzaBase?.puntoRaccolta,
           attivaInEvento: false,
         };
       }
@@ -193,7 +180,6 @@ function getSettorePuntoRaccolta(idStanza) {
   const settore =
     configurazioneAttiva?.stanze?.[idStanza]?.puntoRaccolta ||
     configurazioneAttiva?.stanze?.[idStanza]?.["punto-raccolta"] ||
-    mappaSicurezza[idStanza] ||
     "e";
 
   return settore.toLowerCase();
@@ -260,7 +246,6 @@ function inizializzaTomSelect() {
       allowEmptyOption: false
     });
 
-    // Chiude la tastiera virtuale su mobile dopo la selezione
     tomSelectFrom.on("change", function () {
       this.blur();
     });
@@ -273,7 +258,6 @@ function inizializzaTomSelect() {
       allowEmptyOption: true
     });
 
-    // Chiude la tastiera virtuale su mobile dopo la selezione
     tomSelectTo.on("change", function () {
       this.blur();
     });
@@ -394,7 +378,6 @@ function popolaDropdowns() {
 
   selectTo.value = destinazioneId;
 
-  // Inizializza le istanze di Tom-Select rispettando l'ordinamento generato
   inizializzaTomSelect();
   gestisciStileSelettoreArrivo();
 }
@@ -580,7 +563,6 @@ function autoFitCamera() {
     maxY = Math.max(maxY, y + h);
   }
 
-  // 1. Aggiunge i bounding box degli elementi di partenza e destinazione/sicurezza
   const elementiInquadratura = [];
   const elFrom = document.getElementById(partenzaId);
   if (elFrom) elementiInquadratura.push(elFrom);
@@ -631,7 +613,6 @@ function autoFitCamera() {
     estendiBBox(rx, ry, rw, rh);
   });
 
-  // 2. Calcola il percorso poligonale effettivo e include ogni singolo nodo
   let percorsoNodi = [];
   if (grafoDati && partenzaId) {
     if (destinazioneId === "evacuazione") {
@@ -660,7 +641,6 @@ function autoFitCamera() {
   const contentWidth = maxX - minX;
   const contentHeight = maxY - minY;
 
-  // Margini/Padding ridotti per aumentare lo zoom
   const paddingX = Math.max(40, contentWidth * 0.05);
   const paddingY = Math.max(40, contentHeight * 0.05);
 
@@ -927,7 +907,7 @@ document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("./sw.js")
+      .register("/sw.js")
       .then(() => console.log("Service Worker registrato correttamente."))
       .catch((err) => console.log("Errore registrazione Service Worker:", err));
   });
