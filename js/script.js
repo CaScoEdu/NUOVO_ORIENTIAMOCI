@@ -1,479 +1,35 @@
-import { calcolaPercorsoMinimo, getCentroideNodo } from "./pathfinder.js";
+import { calcolaPercorsoMinimo } from "./pathfinder.js";
+import grafoDatiStatico from "../config/navigation/grafo.js";
+import {
+  caricaConfigurazioneDaURL,
+  getSettorePuntoRaccolta,
+} from "./config.js";
+import { autoFitCamera, viewBoxEdificioH } from "./camera.js";
+import { disegnaPercorsoSVG, applicaEtichetteMappa } from "./mapRenderer.js";
+import {
+  popolaDropdowns,
+  sincronizzaValoriTomSelect,
+  gestisciStileSelettoreArrivo,
+  mostraPopUpStanza,
+  chiudiPopUp,
+} from "./ui.js";
 
 /* ==========================================================================
-   CONFIGURAZIONE E VARIABILI GLOBALI
+   STATO GLOBALE DELL'APPLICAZIONE
    ========================================================================== */
 
 let partenzaId = "ingresso-principale";
-let destinazioneId = ""; // Nessuna destinazione selezionata all'avvio
-
-// ViewBox concentrato sull'Edificio ad H
-let viewBoxEdificioH = "850 380 1000 1200";
-
-let configurazioneAttiva = {}; // Configurazione finale unita (Base + Custom)
-let grafoDati = null; // Struttura del grafo caricata da navigation/grafo.json
-
-// Istanze Tom-Select
-let tomSelectFrom = null;
-let tomSelectTo = null;
-
-/* Mappa cromatica delle categorie stilata con le variabili di style.css */
-const MappaColoriCategorie = {
-  "Aule": "var(--color-aule)",
-  "Aule Didattiche": "var(--color-aule)",
-  "Laboratori": "var(--color-laboratori)",
-  "Uffici": "var(--color-uffici)",
-  "Direzione & Uffici": "var(--color-uffici)",
-  "Servizi": "var(--color-servizi)",
-  "Locali Tecnici": "var(--color-locali-tecnici)",
-  "Sport": "var(--color-sport)",
-  "Accesso": "var(--color-generale)",
-
-  // Categorie / Indirizzi Custom (es. Career Day)
-  "biotecnologie": "var(--color-biotecnologie)",
-  "artistico": "var(--color-artistico)",
-  "scientifico": "var(--color-scientifico)",
-  "elettronica": "var(--color-elettronica)",
-  "informatica": "var(--color-informatica)",
-  "generale": "var(--color-generale)",
-};
-
-function getColoreCategoria(categoria) {
-  if (!categoria) return "var(--color-default)";
-  return (
-    MappaColoriCategorie[categoria] ||
-    MappaColoriCategorie[categoria.toLowerCase()] ||
-    "var(--color-generale)"
-  );
-}
-
-/* ==========================================================================
-   CARICAMENTO CONFIGURAZIONI, GRAFO ED EVENTI
-   ========================================================================== */
-
-async function caricaGrafo() {
-  try {
-    const res = await fetch("config/navigation/grafo.json");
-    if (res.ok) {
-      grafoDati = await res.json();
-      console.log("Grafo di navigazione caricato con successo:", grafoDati);
-    }
-  } catch (err) {
-    console.warn("Impossibile caricare config/navigation/grafo.json:", err);
-  }
-}
-
-async function caricaConfigurazioneDaURL() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const configFile = urlParams.get("config") || "school-day";
-
-  await caricaGrafo();
-
-  try {
-    const resBase = await fetch("config/base/stanze.json");
-    if (!resBase.ok)
-      throw new Error("Impossibile caricare config/base/stanze.json");
-    const datiBase = await resBase.json();
-
-    let configurazioneCustom = {};
-    try {
-      const resCustom = await fetch(`config/custom/${configFile}.json`);
-      if (resCustom.ok) {
-        configurazioneCustom = await resCustom.json();
-      } else if (configFile !== "school-day") {
-        const resFallback = await fetch("config/custom/school-day.json");
-        if (resFallback.ok) configurazioneCustom = await resFallback.json();
-      }
-    } catch (errCustom) {
-      console.warn(
-        `Impossibile caricare config/custom/${configFile}.json, utilizzo fallback.`,
-        errCustom,
-      );
-    }
-
-    configurazioneAttiva = {
-      titoloEvento:
-        configurazioneCustom.titoloEvento ||
-        datiBase.titoloEvento ||
-        "Mappa dell'Istituto",
-      stanze: {},
-    };
-
-    const stanzeCustom = configurazioneCustom.stanze || {};
-
-    Object.keys(datiBase.stanze).forEach((roomId) => {
-      const stanzaBase = datiBase.stanze[roomId];
-      const stanzaCustom = stanzeCustom[roomId];
-
-      const nomeFisicoBase =
-        stanzaBase?.["etichetta-mappa"] ||
-        stanzaBase?.etichettaMappa ||
-        stanzaBase?.etichetta ||
-        roomId.replace(/-/g, " ");
-
-      const etichettaMappa =
-        stanzaCustom?.["etichetta-mappa"] ||
-        stanzaCustom?.etichettaMappa ||
-        stanzaBase?.["etichetta-mappa"] ||
-        stanzaBase?.etichettaMappa ||
-        stanzaBase?.etichetta ||
-        roomId;
-
-      const etichettaElenco =
-        stanzaCustom?.["etichetta-elenco"] ||
-        stanzaCustom?.etichettaElenco ||
-        stanzaCustom?.etichetta ||
-        stanzaBase?.["etichetta-elenco"] ||
-        stanzaBase?.etichettaElenco ||
-        stanzaBase?.etichetta ||
-        etichettaMappa;
-
-      if (stanzaCustom) {
-        configurazioneAttiva.stanze[roomId] = {
-          ...stanzaBase,
-          ...stanzaCustom,
-          etichettaMappa,
-          etichettaElenco,
-          categoria:
-            stanzaCustom.categoria || stanzaBase?.categoria || "Aule",
-          aulaOriginale: nomeFisicoBase,
-          puntoRaccolta:
-            stanzaCustom["punto-raccolta"] ||
-            stanzaCustom.puntoRaccolta ||
-            stanzaBase?.["punto-raccolta"] ||
-            stanzaBase?.puntoRaccolta,
-          attivaInEvento: true,
-        };
-      } else {
-        configurazioneAttiva.stanze[roomId] = {
-          ...stanzaBase,
-          etichettaMappa,
-          etichettaElenco,
-          aulaOriginale: nomeFisicoBase,
-          puntoRaccolta:
-            stanzaBase?.["punto-raccolta"] ||
-            stanzaBase?.puntoRaccolta,
-          attivaInEvento: false,
-        };
-      }
-    });
-
-    if (configurazioneAttiva.titoloEvento) {
-      const headerTitle = document.querySelector(".app-header h1");
-      if (headerTitle) {
-        headerTitle.textContent = configurazioneAttiva.titoloEvento;
-      }
-    }
-  } catch (err) {
-    console.error(
-      "Errore durante il caricamento e merge delle configurazioni:",
-      err,
-    );
-  }
-}
-
-/* ==========================================================================
-   FUNZIONI DI SUPPORTO E UTILITY
-   ========================================================================== */
-
-function getSettorePuntoRaccolta(idStanza) {
-  const settore =
-    configurazioneAttiva?.stanze?.[idStanza]?.puntoRaccolta ||
-    configurazioneAttiva?.stanze?.[idStanza]?.["punto-raccolta"] ||
-    "e";
-
-  return settore.toLowerCase();
-}
-
-function normalizzaStringa(str) {
-  if (!str) return "";
-  return str
-    .replace(/\n/g, " ")
-    .replace(/^[^\w\d]+/, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase();
-}
-
-function getTitoloFormattatoStanza(id) {
-  if (id === "ingresso-principale") return "📍 INGRESSO";
-
-  const stanza = configurazioneAttiva?.stanze?.[id];
-  if (stanza) {
-    const etichetta =
-      stanza.etichettaElenco ||
-      stanza["etichetta-elenco"] ||
-      stanza.etichetta ||
-      id;
-
-    const cleanEtichetta = normalizzaStringa(etichetta);
-    const cleanOriginale = normalizzaStringa(stanza.aulaOriginale);
-
-    if (cleanOriginale && cleanOriginale !== cleanEtichetta) {
-      const originalePulito = stanza.aulaOriginale.replace(/\n/g, " ");
-      return `${etichetta} (${originalePulito})`;
-    }
-
-    return etichetta;
-  }
-
-  return id.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-}
-
-/* ==========================================================================
-   INIZIALIZZAZIONE TOM-SELECT E SELETTORI
-   ========================================================================== */
-
-function inizializzaTomSelect() {
-  if (tomSelectFrom) tomSelectFrom.destroy();
-  if (tomSelectTo) tomSelectTo.destroy();
-
-  const selectFrom = document.getElementById("select-from");
-  const selectTo = document.getElementById("select-to");
-
-  const opzioniComuni = {
-    create: false,
-    maxOptions: null,
-    sortField: [],
-    searchField: ["text"],
-    lockOptgroupOrder: true
-  };
-
-  if (selectFrom) {
-    tomSelectFrom = new TomSelect("#select-from", {
-      ...opzioniComuni,
-      placeholder: "Cerca partenza...",
-      allowEmptyOption: false
-    });
-
-    tomSelectFrom.on("change", function () {
-      this.blur();
-    });
-  }
-
-  if (selectTo) {
-    tomSelectTo = new TomSelect("#select-to", {
-      ...opzioniComuni,
-      placeholder: "Cerca destinazione...",
-      allowEmptyOption: true
-    });
-
-    tomSelectTo.on("change", function () {
-      this.blur();
-    });
-  }
-}
-
-function popolaDropdowns() {
-  const selectFrom = document.getElementById("select-from");
-  const selectTo = document.getElementById("select-to");
-  if (!selectFrom || !selectTo) return;
-
-  const elementiSelezionabili = Array.from(
-    document.querySelectorAll(".room, #ingresso-principale"),
-  );
-
-  const gruppiPerCategoria = {};
-
-  elementiSelezionabili.forEach((el) => {
-    const id = el.getAttribute("id");
-    if (!id) return;
-
-    const eIngresso = id === "ingresso-principale";
-    const stanza = configurazioneAttiva?.stanze?.[id];
-
-    if (!eIngresso && stanza?.attivaInEvento === false) {
-      return;
-    }
-
-    const categoria = eIngresso ? "Accesso" : (stanza?.categoria || "Aule");
-    const titolo = getTitoloFormattatoStanza(id);
-
-    if (!gruppiPerCategoria[categoria]) {
-      gruppiPerCategoria[categoria] = [];
-    }
-
-    gruppiPerCategoria[categoria].push({ id, titolo });
-  });
-
-  Object.keys(gruppiPerCategoria).forEach((cat) => {
-    gruppiPerCategoria[cat].sort((a, b) => {
-      if (a.id === "ingresso-principale") return -1;
-      if (b.id === "ingresso-principale") return 1;
-
-      return a.titolo.localeCompare(b.titolo, "it", {
-        numeric: true,
-        sensitivity: "base",
-      });
-    });
-  });
-
-  const ordinePredefinitoCategorie = [
-    "Accesso",
-    "Aule",
-    "Laboratori",
-    "Uffici",
-    "Servizi",
-    "Locali Tecnici",
-    "Sport",
-  ];
-
-  const categorieOrdinate = Object.keys(gruppiPerCategoria).sort((a, b) => {
-    if (a === "Accesso") return -1;
-    if (b === "Accesso") return 1;
-
-    const indexA = ordinePredefinitoCategorie.indexOf(a);
-    const indexB = ordinePredefinitoCategorie.indexOf(b);
-
-    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-    if (indexA !== -1) return -1;
-    if (indexB !== -1) return 1;
-    return a.localeCompare(b, "it");
-  });
-
-  function generaHTMLGruppi(escludiIngresso = false) {
-    let html = "";
-    categorieOrdinate.forEach((cat) => {
-      const opzioniFiltrare = gruppiPerCategoria[cat].filter(
-        (opt) => !(escludiIngresso && opt.id === "ingresso-principale"),
-      );
-
-      if (opzioniFiltrare.length > 0) {
-        const coloreBg = getColoreCategoria(cat);
-        const coloreTesto =
-          cat === "Aule" || cat === "Servizi" || cat === "Aule Didattiche"
-            ? "#000000"
-            : "#ffffff";
-
-        html += `<optgroup label="── ${cat.toUpperCase()} ──" style="background-color: ${coloreBg}; color: ${coloreTesto}; font-weight: bold;">`;
-        opzioniFiltrare.forEach((opt) => {
-          html += `<option value="${opt.id}">${opt.titolo}</option>`;
-        });
-        html += `</optgroup>`;
-      }
-    });
-    return html;
-  }
-
-  let optionsFromHTML = generaHTMLGruppi(false);
-
-  let optionsToHTML = `<option value="" selected>-- Seleziona destinazione --</option>`;
-  optionsToHTML += `<option value="evacuazione">🚨 EVACUAZIONE / SICUREZZA</option>`;
-  optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
-  optionsToHTML += generaHTMLGruppi(true);
-
-  selectFrom.innerHTML = optionsFromHTML;
-  selectTo.innerHTML = optionsToHTML;
-
-  const tutteLeOpzioniFrom = Object.values(gruppiPerCategoria).flat();
-  if (tutteLeOpzioniFrom.some((opt) => opt.id === partenzaId)) {
-    selectFrom.value = partenzaId;
-  } else if (tutteLeOpzioniFrom.some((opt) => opt.id === "ingresso-principale")) {
-    partenzaId = "ingresso-principale";
-    selectFrom.value = partenzaId;
-  } else if (tutteLeOpzioniFrom.length > 0) {
-    partenzaId = tutteLeOpzioniFrom[0].id;
-    selectFrom.value = partenzaId;
-  }
-
-  selectTo.value = destinazioneId;
-
-  inizializzaTomSelect();
-  gestisciStileSelettoreArrivo();
-}
-
-function gestisciStileSelettoreArrivo() {
-  const wrapperTo = tomSelectTo ? tomSelectTo.wrapper : document.getElementById("select-to");
-  if (wrapperTo) {
-    wrapperTo.classList.toggle(
-      "mode-evacuazione",
-      destinazioneId === "evacuazione",
-    );
-  }
-}
-
-function scambiaOrigineDestinazione() {
-  if (!destinazioneId || destinazioneId === "evacuazione") return;
-
-  const temp = partenzaId;
-  partenzaId = destinazioneId;
-  destinazioneId = temp;
-
-  aggiornaMappa(true);
-}
-
-function evidenziaElemento(id, cssClass) {
-  const el = document.getElementById(id);
-  if (el) {
-    const parent = el.parentElement;
-    parent.appendChild(el);
-    el.classList.add(cssClass);
-
-    const textEl = document.getElementById(`label-${id}`);
-    if (textEl) {
-      textEl.classList.add(cssClass);
-      parent.appendChild(textEl);
-    }
-  }
-}
-
-/* ==========================================================================
-   TRACCIAMENTO GRAFICO DEL PERCORSO SULL'SVG
-   ========================================================================== */
-
-function disegnaPercorsoSVG(percorsoNodi, isEvacuazione = false) {
-  const targetContainer =
-    document.getElementById("layer-percorso") ||
-    document.getElementById("school-map") ||
-    document.querySelector("svg");
-
-  if (!targetContainer) return;
-
-  let polyline = document.getElementById("path-percorso");
-
-  if (!polyline) {
-    polyline = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline",
-    );
-    polyline.setAttribute("id", "path-percorso");
-    targetContainer.appendChild(polyline);
-  }
-
-  if (isEvacuazione) {
-    polyline.classList.add("evacuazione");
-  } else {
-    polyline.classList.remove("evacuazione");
-  }
-
-  if (!percorsoNodi || percorsoNodi.length < 2) {
-    polyline.setAttribute("points", "");
-    return;
-  }
-
-  const punti = percorsoNodi
-    .map((nodoId) => {
-      const pos = getCentroideNodo(nodoId);
-      return pos ? `${pos.x},${pos.y}` : null;
-    })
-    .filter((p) => p !== null)
-    .join(" ");
-
-  polyline.setAttribute("points", punti);
-}
+let destinazioneId = "";
 
 /* ==========================================================================
    AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
    ========================================================================== */
 
 function aggiornaMappa(focusActive = false) {
-  if (tomSelectFrom && tomSelectFrom.getValue() !== partenzaId) {
-    tomSelectFrom.setValue(partenzaId, true);
-  }
-  if (tomSelectTo && tomSelectTo.getValue() !== destinazioneId) {
-    tomSelectTo.setValue(destinazioneId, true);
-  }
+  // Sincronizza lo stato visivo di Tom-Select
+  sincronizzaValoriTomSelect(partenzaId, destinazioneId);
 
+  // Rimuove gli stati precedenti dagli elementi dell'SVG
   document
     .querySelectorAll(".room, .area-aperta, #ingresso-principale, .room-label")
     .forEach((r) => r.classList.remove("state-from", "state-to"));
@@ -491,9 +47,9 @@ function aggiornaMappa(focusActive = false) {
   if (destinazioneId && destinazioneId !== "evacuazione") {
     evidenziaElemento(destinazioneId, "state-to");
 
-    if (grafoDati && partenzaId) {
+    if (grafoDatiStatico && partenzaId) {
       const percorso = calcolaPercorsoMinimo(
-        grafoDati,
+        grafoDatiStatico,
         partenzaId,
         destinazioneId,
       );
@@ -504,7 +60,22 @@ function aggiornaMappa(focusActive = false) {
   }
 
   if (focusActive) {
-    autoFitCamera();
+    autoFitCamera(partenzaId, destinazioneId, grafoDatiStatico);
+  }
+}
+
+function evidenziaElemento(id, cssClass) {
+  const el = document.getElementById(id);
+  if (el) {
+    const parent = el.parentElement;
+    parent.appendChild(el);
+    el.classList.add(cssClass);
+
+    const textEl = document.getElementById(`label-${id}`);
+    if (textEl) {
+      textEl.classList.add(cssClass);
+      parent.appendChild(textEl);
+    }
   }
 }
 
@@ -512,27 +83,21 @@ function mostraPianoEvacuazionePerStanza(idPartenza) {
   const settore = getSettorePuntoRaccolta(idPartenza);
 
   const layerEvacuazione = document.getElementById("layer-evacuazione");
-  if (layerEvacuazione) {
-    layerEvacuazione.classList.add("evacuazione-visibile");
-  }
+  if (layerEvacuazione) layerEvacuazione.classList.add("evacuazione-visibile");
 
   const idPuntoRaccolta = `punto-raccolta-${settore}`;
   const elPuntoRaccolta = document.getElementById(idPuntoRaccolta);
-  if (elPuntoRaccolta) {
-    elPuntoRaccolta.classList.add("evacuazione-visibile");
-  }
+  if (elPuntoRaccolta) elPuntoRaccolta.classList.add("evacuazione-visibile");
 
   const elUscita =
     document.getElementById(`uscita-sicurezza-${settore}`) ||
     document.getElementById(`uscita-${settore}`);
 
-  if (elUscita) {
-    elUscita.classList.add("evacuazione-visibile");
-  }
+  if (elUscita) elUscita.classList.add("evacuazione-visibile");
 
-  if (grafoDati && idPartenza && idPuntoRaccolta) {
+  if (grafoDatiStatico && idPartenza && idPuntoRaccolta) {
     const percorsoEvacuazione = calcolaPercorsoMinimo(
-      grafoDati,
+      grafoDatiStatico,
       idPartenza,
       idPuntoRaccolta,
     );
@@ -540,333 +105,44 @@ function mostraPianoEvacuazionePerStanza(idPartenza) {
   }
 }
 
-/* ==========================================================================
-   GESTIONE FOCUS E CAMERA (ZOOM CIRCOSCRITTO)
-   ========================================================================== */
+function scambiaOrigineDestinazione() {
+  if (!destinazioneId || destinazioneId === "evacuazione") return;
 
-function autoFitCamera() {
-  const svg = document.getElementById("school-map");
-  if (!svg) return;
+  const temp = partenzaId;
+  partenzaId = destinazioneId;
+  destinazioneId = temp;
 
-  if (!destinazioneId) {
-    svg.setAttribute("viewBox", viewBoxEdificioH);
-    return;
-  }
-
-  let minX = Infinity, minY = Infinity;
-  let maxX = -Infinity, maxY = -Infinity;
-
-  function estendiBBox(x, y, w = 0, h = 0) {
-    minX = Math.min(minX, x);
-    minY = Math.min(minY, y);
-    maxX = Math.max(maxX, x + w);
-    maxY = Math.max(maxY, y + h);
-  }
-
-  const elementiInquadratura = [];
-  const elFrom = document.getElementById(partenzaId);
-  if (elFrom) elementiInquadratura.push(elFrom);
-
-  if (destinazioneId === "evacuazione") {
-    const settore = getSettorePuntoRaccolta(partenzaId);
-    const elRaccolta = document.getElementById(`punto-raccolta-${settore}`);
-    const elUscita =
-      document.getElementById(`uscita-sicurezza-${settore}`) ||
-      document.getElementById(`uscita-${settore}`);
-
-    if (elRaccolta) elementiInquadratura.push(elRaccolta);
-    if (elUscita) elementiInquadratura.push(elUscita);
-  } else {
-    const elTo = document.getElementById(destinazioneId);
-    if (elTo) elementiInquadratura.push(elTo);
-  }
-
-  elementiInquadratura.forEach((el) => {
-    let rx = 0, ry = 0, rw = 0, rh = 0;
-
-    try {
-      const bbox = el.getBBox();
-      rx = bbox.x; ry = bbox.y; rw = bbox.width; rh = bbox.height;
-
-      const transformAttr = el.getAttribute("transform");
-      if (transformAttr) {
-        const translateMatch = /translate\(\s*([-\d.]+)[,\s]+([-\d.]+)\s*\)/.exec(transformAttr);
-        if (translateMatch) {
-          rx += parseFloat(translateMatch[1]);
-          ry += parseFloat(translateMatch[2]);
-        }
-
-        const scaleMatch = /scale\(\s*([-\d.]+)[,\s]*([-\d.]*)\s*\)/.exec(transformAttr);
-        if (scaleMatch) {
-          const scaleX = parseFloat(scaleMatch[1]);
-          const scaleY = scaleMatch[2] ? parseFloat(scaleMatch[2]) : scaleX;
-          rw *= scaleX; rh *= scaleY;
-        }
-      }
-    } catch (e) {
-      rx = parseFloat(el.getAttribute("x")) || 0;
-      ry = parseFloat(el.getAttribute("y")) || 0;
-      rw = parseFloat(el.getAttribute("width")) || 0;
-      rh = parseFloat(el.getAttribute("height")) || 0;
-    }
-
-    estendiBBox(rx, ry, rw, rh);
-  });
-
-  let percorsoNodi = [];
-  if (grafoDati && partenzaId) {
-    if (destinazioneId === "evacuazione") {
-      const settore = getSettorePuntoRaccolta(partenzaId);
-      const idPuntoRaccolta = `punto-raccolta-${settore}`;
-      percorsoNodi = calcolaPercorsoMinimo(grafoDati, partenzaId, idPuntoRaccolta);
-    } else {
-      percorsoNodi = calcolaPercorsoMinimo(grafoDati, partenzaId, destinazioneId);
-    }
-  }
-
-  if (percorsoNodi && percorsoNodi.length > 0) {
-    percorsoNodi.forEach((nodoId) => {
-      const pos = getCentroideNodo(nodoId);
-      if (pos) {
-        estendiBBox(pos.x, pos.y);
-      }
-    });
-  }
-
-  if (minX === Infinity) {
-    svg.setAttribute("viewBox", viewBoxEdificioH);
-    return;
-  }
-
-  const contentWidth = maxX - minX;
-  const contentHeight = maxY - minY;
-
-  const paddingX = Math.max(40, contentWidth * 0.05);
-  const paddingY = Math.max(40, contentHeight * 0.05);
-
-  const vX = minX - paddingX;
-  const vY = minY - paddingY;
-  const vW = contentWidth + paddingX * 2;
-  const vH = contentHeight + paddingY * 2;
-
-  svg.setAttribute("viewBox", `${vX} ${vY} ${vW} ${vH}`);
+  aggiornaMappa(true);
 }
 
 /* ==========================================================================
-   INTERAZIONE CLICK DIRETTO E POP-UP MODAL
-   ========================================================================== */
-
-function mostraPopUpStanza(id) {
-  const modal = document.getElementById("room-modal");
-  if (!modal) return;
-
-  const stanza = configurazioneAttiva?.stanze?.[id];
-
-  const info = {
-    titolo:
-      stanza?.etichettaElenco ||
-      stanza?.etichettaMappa ||
-      id.replace(/-/g, " "),
-    categoria: stanza?.categoria || "Aule",
-    descrizione:
-      stanza?.descrizione ||
-      "Nessuna descrizione aggiuntiva per questo locale.",
-    aulaOriginale: stanza?.aulaOriginale || null,
-  };
-
-  const modalTitle = document.getElementById("modal-title");
-  const modalCategory = document.getElementById("modal-category");
-  const modalDesc = document.getElementById("modal-description");
-  const btnSetDest = document.getElementById("btn-set-destination");
-  const refElement = document.getElementById("modal-room-reference");
-
-  if (modalTitle) modalTitle.textContent = info.titolo;
-  if (modalDesc) modalDesc.textContent = info.descrizione;
-
-  if (modalCategory) {
-    modalCategory.textContent = info.categoria;
-    const coloreBg = getColoreCategoria(info.categoria);
-    modalCategory.style.backgroundColor = coloreBg;
-
-    if (
-      info.categoria === "Aule" ||
-      info.categoria === "Servizi" ||
-      info.categoria === "Aule Didattiche"
-    ) {
-      modalCategory.style.color = "#000000";
-    } else {
-      modalCategory.style.color = "#ffffff";
-    }
-  }
-
-  if (refElement) {
-    const cleanTitolo = normalizzaStringa(info.titolo);
-    const cleanOriginale = normalizzaStringa(info.aulaOriginale);
-
-    if (cleanOriginale && cleanOriginale !== cleanTitolo) {
-      refElement.textContent = `📍 Ubicazione: ${info.aulaOriginale}`;
-      refElement.style.display = "block";
-    } else {
-      refElement.style.display = "none";
-    }
-  }
-
-  if (btnSetDest) {
-    btnSetDest.onclick = () => {
-      destinazioneId = id;
-      gestisciStileSelettoreArrivo();
-      aggiornaMappa(true);
-      chiudiPopUp();
-    };
-  }
-
-  modal.classList.remove("hidden");
-}
-
-function chiudiPopUp() {
-  const modal = document.getElementById("room-modal");
-  if (modal) modal.classList.add("hidden");
-}
-
-/* ==========================================================================
-   ETICHETTE DINAMICHE MAPPA (MULTIRIGA) E COLORAZIONE CATEGORIE
-   ========================================================================== */
-
-function applicaEtichetteMappa() {
-  const elementi = document.querySelectorAll(".room, #ingresso-principale");
-
-  elementi.forEach((el) => {
-    const id = el.getAttribute("id");
-    if (!id) return;
-
-    const stanza = configurazioneAttiva?.stanze?.[id];
-
-    if (stanza && stanza.categoria) {
-      el.dataset.category = stanza.categoria.toLowerCase();
-      el.style.fill = getColoreCategoria(stanza.categoria);
-    } else {
-      delete el.dataset.category;
-    }
-
-    if (stanza && stanza.attivaInEvento === false) {
-      el.classList.add("room-disabled");
-      el.classList.remove("room-enabled");
-    } else {
-      el.classList.add("room-enabled");
-      el.classList.remove("room-disabled");
-    }
-
-    let testoVisibile = stanza
-      ? stanza.etichettaMappa || stanza["etichetta-mappa"]
-      : id.replace(/-/g, " ");
-
-    let tooltipText =
-      stanza?.etichettaElenco || testoVisibile.replace(/\n/g, " ");
-
-    const cleanElenco = normalizzaStringa(stanza?.etichettaElenco);
-    const cleanOriginale = normalizzaStringa(stanza?.aulaOriginale);
-
-    if (cleanOriginale && cleanOriginale !== cleanElenco) {
-      tooltipText = `${stanza.etichettaElenco} - Ubicazione: ${stanza.aulaOriginale}`;
-    }
-
-    const pos = getCentroideNodo(id);
-    const centerX = pos ? pos.x : 0;
-    const centerY = pos ? pos.y : 0;
-
-    let titleEl = el.querySelector("title");
-    if (!titleEl) {
-      titleEl = document.createElementNS("http://www.w3.org/2000/svg", "title");
-      el.appendChild(titleEl);
-    }
-    titleEl.textContent = tooltipText;
-
-    let textEl = document.getElementById(`label-${id}`);
-    if (!textEl) {
-      textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      textEl.setAttribute("id", `label-${id}`);
-      textEl.setAttribute("class", "room-label");
-      el.parentElement.appendChild(textEl);
-    }
-
-    textEl.setAttribute("x", centerX);
-    textEl.setAttribute("y", centerY);
-
-    creaTestoMultiriga(textEl, testoVisibile, centerX, centerY);
-  });
-}
-
-function creaTestoMultiriga(textEl, testo, centerX, centerY) {
-  textEl.innerHTML = "";
-
-  const righe = testo.split("\n");
-
-  if (righe.length === 1) {
-    textEl.textContent = testo;
-    return;
-  }
-
-  const lineHeight = 13;
-  const totalLines = righe.length;
-  const startY = centerY - ((totalLines - 1) * lineHeight) / 2;
-
-  righe.forEach((linea, index) => {
-    const tspan = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "tspan",
-    );
-    tspan.setAttribute("x", centerX);
-
-    if (index === 0) {
-      tspan.setAttribute("y", startY);
-    } else {
-      tspan.setAttribute("dy", `${lineHeight}px`);
-    }
-
-    tspan.textContent = linea;
-    textEl.appendChild(tspan);
-  });
-}
-
-/* ==========================================================================
-   EVENT LISTENERS & INIZIALIZZAZIONE
+   EVENT LISTENERS E AVVIO
    ========================================================================== */
 
 function setupEventListeners() {
-  const selectFrom = document.getElementById("select-from");
-  const selectTo = document.getElementById("select-to");
   const btnSwap = document.getElementById("btn-swap");
-
-  selectFrom?.addEventListener("change", (e) => {
-    partenzaId = e.target.value;
-    aggiornaMappa(true);
-  });
-
-  selectTo?.addEventListener("change", (e) => {
-    destinazioneId = e.target.value;
-    gestisciStileSelettoreArrivo();
-    aggiornaMappa(true);
-  });
-
   btnSwap?.addEventListener("click", scambiaOrigineDestinazione);
 
   document
     .getElementById("modal-close")
     ?.addEventListener("click", chiudiPopUp);
+
   document.getElementById("room-modal")?.addEventListener("click", (e) => {
     if (e.target.id === "room-modal") chiudiPopUp();
   });
 
+  // Listener per il click sulle stanze SVG
   document.querySelectorAll(".room, #ingresso-principale").forEach((roomEl) => {
     roomEl.addEventListener("click", (e) => {
       e.stopPropagation();
       const clickedId = roomEl.getAttribute("id");
       if (!clickedId) return;
 
-      const stanza = configurazioneAttiva?.stanze?.[clickedId];
-      if (stanza?.attivaInEvento === false) return;
-
-      mostraPopUpStanza(clickedId);
+      mostraPopUpStanza(clickedId, (nuovaDestinazione) => {
+        destinazioneId = nuovaDestinazione;
+        gestisciStileSelettoreArrivo(destinazioneId);
+        aggiornaMappa(true);
+      });
     });
   });
 }
@@ -876,8 +152,10 @@ async function caricaMappaSVG() {
   if (!container) return;
 
   try {
+    // 1. Carica prima la configurazione JSON dell'evento
     await caricaConfigurazioneDaURL();
 
+    // 2. Carica ed inietta il file SVG della mappa
     const response = await fetch("assets/mappa.svg");
     if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
 
@@ -890,10 +168,30 @@ async function caricaMappaSVG() {
       svg.setAttribute("viewBox", viewBoxEdificioH);
       svg.removeAttribute("preserveAspectRatio");
     }
-    applicaEtichetteMappa();
-    popolaDropdowns();
-    setupEventListeners();
 
+    // 3. Applica stili ed etichette agli elementi SVG
+    applicaEtichetteMappa();
+
+    // 4. Popola i dropdown con le stanze caricate dall'SVG e dalla configurazione
+    const statoIniziale = popolaDropdowns({
+      partenzaId,
+      destinazioneId,
+      onFromChange: (val) => {
+        partenzaId = val;
+        aggiornaMappa(true);
+      },
+      onToChange: (val) => {
+        destinazioneId = val;
+        gestisciStileSelettoreArrivo(destinazioneId);
+        aggiornaMappa(true);
+      },
+    });
+
+    partenzaId = statoIniziale.partenzaId;
+    destinazioneId = statoIniziale.destinazioneId;
+
+    // 5. Attiva gli eventi di click ed aggiorna lo stato visivo
+    setupEventListeners();
     aggiornaMappa(true);
   } catch (error) {
     console.error("Errore durante il caricamento della mappa:", error);
@@ -907,7 +205,7 @@ document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/sw.js")
+      .register("./sw.js")
       .then(() => console.log("Service Worker registrato correttamente."))
       .catch((err) => console.log("Errore registrazione Service Worker:", err));
   });
