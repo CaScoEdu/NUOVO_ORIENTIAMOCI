@@ -247,8 +247,8 @@ function inizializzaTomSelect() {
 
   const opzioniComuni = {
     create: false,
-    maxOptions: null, // Evita che Tom-Select nasconda elementi oltre il limite predefinito
-    sortField: [],    // Rispetta l'ordine esatto dell'HTML generato
+    maxOptions: null,
+    sortField: [],
     searchField: ["text"],
     lockOptgroupOrder: true
   };
@@ -259,6 +259,11 @@ function inizializzaTomSelect() {
       placeholder: "Cerca partenza...",
       allowEmptyOption: false
     });
+
+    // Chiude la tastiera virtuale su mobile dopo la selezione
+    tomSelectFrom.on("change", function () {
+      this.blur();
+    });
   }
 
   if (selectTo) {
@@ -266,6 +271,11 @@ function inizializzaTomSelect() {
       ...opzioniComuni,
       placeholder: "Cerca destinazione...",
       allowEmptyOption: true
+    });
+
+    // Chiude la tastiera virtuale su mobile dopo la selezione
+    tomSelectTo.on("change", function () {
+      this.blur();
     });
   }
 }
