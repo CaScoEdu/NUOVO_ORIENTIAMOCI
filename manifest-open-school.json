@@ -1,6 +1,6 @@
 {
   "id": "/index.html?config=open-school",
-  "name": "Mappa Interattiva School",
+  "name": "Mappa Interattiva Open School",
   "short_name": "Open School",
   "start_url": "./index.html?config=open-school",
   "display": "standalone",

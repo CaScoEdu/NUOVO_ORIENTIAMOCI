@@ -24,10 +24,30 @@
     ],
     "snodo-palazzina-distaccata": [
       "snodo-sicurezza-m",
-      "aule-palazzina-distaccata"
+      "aule-palazzina-distaccata",
+      "snodo-palestre-abcde-1"
     ],
     "aule-palazzina-distaccata": [
       "snodo-palazzina-distaccata"
+    ],
+    "snodo-palestre-abcde-1": [
+      "snodo-palazzina-distaccata",
+      "palestre-abcde"
+    ],
+    "palestre-abcde": [
+      "snodo-palestre-abcde-1",
+      "snodo-palestre-abcde-2"
+    ],
+    "snodo-palestre-abcde-2": [
+      "palestre-abcde",
+      "snodo-sicurezza-l"
+    ],
+    "snodo-sicurezza-l": [
+      "snodo-palestre-abcde-2",
+      "punto-raccolta-l"
+    ],
+    "punto-raccolta-l": [
+      "snodo-sicurezza-l"
     ],
     "snodo-palestra-m": [
       "incrocio-corridoio-vert-palestra-m",
