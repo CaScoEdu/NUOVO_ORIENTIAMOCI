@@ -202,6 +202,26 @@ async function caricaMappaSVG() {
 
 document.addEventListener("DOMContentLoaded", caricaMappaSVG);
 
+window.addEventListener("online", () =>
+  mostranotifica("Connessione ripristinata"),
+);
+window.addEventListener("offline", () =>
+  mostranotifica("Sei offline: la mappa funziona comunque!"),
+);
+
+function mostranotifica(messaggio) {
+  let toast = document.getElementById("pwa-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "pwa-toast";
+    toast.className = "pwa-toast";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = messaggio;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 4000);
+}
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker

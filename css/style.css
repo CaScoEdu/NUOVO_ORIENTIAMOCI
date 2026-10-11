@@ -405,7 +405,7 @@ text.room-label.state-to {
 }
 
 /* ==========================================================================
-   7. POPUPS & MODALS
+   7. POPUPS, TOASTS & MODALS
    ========================================================================== */
 .modal-overlay {
   position: fixed;
@@ -502,6 +502,28 @@ text.room-label.state-to {
 
 .btn-primary:hover {
   background-color: #1d4ed8;
+}
+
+.pwa-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: 1px solid #334155;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.pwa-toast.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ==========================================================================
