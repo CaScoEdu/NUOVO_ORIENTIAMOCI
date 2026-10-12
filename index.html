@@ -11,6 +11,17 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <!-- Favicon / Icona PWA predefinita per il tab del browser -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/icons/icon-school-day-192.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="./assets/icons/icon-school-day-192.png"
+    />
     <!-- Iniezione Dinamica del Manifest PWA -->
     <script>
       (function () {
@@ -82,6 +93,9 @@
             <label for="select-to" class="label-to">A:</label>
             <select id="select-to" class="route-dropdown dropdown-to"></select>
           </div>
+          <button id="btn-share" class="btn-share" title="Condividi percorso">
+            🔗 Condividi percorso
+          </button>
         </div>
       </aside>
 

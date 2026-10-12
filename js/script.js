@@ -170,6 +170,9 @@ function setupEventListeners() {
       });
     });
   });
+
+  const btnShare = document.getElementById("btn-share");
+  btnShare?.addEventListener("click", condividiPercorso);
 }
 
 async function caricaMappaSVG() {
@@ -231,6 +234,31 @@ async function caricaMappaSVG() {
     console.error("Errore durante il caricamento della mappa:", error);
     container.innerHTML =
       "<p style='color: white; padding: 20px;'>Errore nel caricamento della mappa dell'istituto.</p>";
+  }
+}
+
+async function condividiPercorso() {
+  const shareData = {
+    title: "Mappa Istituto",
+    text: "Ecco le indicazioni per la mappa:",
+    url: window.location.href, // Prende l'URL corrente aggiornato con ?from=...&to=...
+  };
+
+  // Se il dispositivo supporta la condivisione nativa (Android / iOS)
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      // Ignora l'errore se l'utente annulla la condivisione
+    }
+  } else {
+    // Fallback per browser PC o non supportati: copia negli appunti
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      mostranotifica("Link del percorso copiato negli appunti!");
+    } catch (err) {
+      mostranotifica("Impossibile copiare il link.");
+    }
   }
 }
 
