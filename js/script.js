@@ -239,8 +239,8 @@ async function caricaMappaSVG() {
 
 async function condividiPercorso() {
   const shareData = {
-    title: "Mappa Istituto",
-    text: "Ecco le indicazioni per la mappa:",
+    title: "Condivisione Percorso",
+    text: "Ecco le indicazioni:",
     url: window.location.href, // Prende l'URL corrente aggiornato con ?from=...&to=...
   };
 

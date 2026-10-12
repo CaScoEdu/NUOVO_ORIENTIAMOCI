@@ -146,14 +146,23 @@ body {
   font-weight: 600;
 }
 
-.btn-swap {
+/* Contenitore e Pulsanti d'Azione Compatta (Swap + Share) */
+.actions-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn-swap,
+.btn-share {
   background-color: #334155;
   color: #f8fafc;
   border: 1px solid #475569;
   border-radius: 8px;
   height: 38px;
-  width: 100%;
-  font-size: 1.2rem;
+  flex: 1;
+  font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
   display: flex;
@@ -165,37 +174,13 @@ body {
   user-select: none;
 }
 
-.btn-swap:hover {
+.btn-swap:hover,
+.btn-share:hover {
   background-color: #475569;
   border-color: #64748b;
 }
 
-.btn-swap:active {
-  transform: scale(0.98);
-}
-
-.btn-share {
-  background-color: #1e293b;
-  color: #f8fafc;
-  border: 1px solid #334155;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  transition: all 0.2s ease;
-}
-
-.btn-share:hover {
-  background-color: #334155;
-  border-color: #475569;
-}
-
+.btn-swap:active,
 .btn-share:active {
   transform: scale(0.98);
 }
@@ -554,16 +539,6 @@ text.room-label.state-to {
   transform: translateY(0);
 }
 
-/* Adattamento per Smartphone / Android */
-@media (max-width: 768px) {
-  .pwa-toast {
-    left: 15px;
-    right: 15px;
-    text-align: center;
-    bottom: calc(15px + env(safe-area-inset-bottom, 0px));
-  }
-}
-
 /* ==========================================================================
    8. GESTIONE VISIBILITÀ EVACUAZIONE E SICUREZZA
    ========================================================================== */
@@ -634,14 +609,29 @@ text.room-label.state-to {
     font-size: 0.8rem;
   }
 
-  .btn-swap {
+  .actions-row {
+    width: auto;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .btn-swap,
+  .btn-share {
     width: 36px;
     height: 36px;
-    flex-shrink: 0;
+    flex: initial;
+    font-size: 1rem;
   }
 
   .map-wrapper {
     padding: 8px;
+  }
+
+  .pwa-toast {
+    left: 15px;
+    right: 15px;
+    text-align: center;
+    bottom: calc(15px + env(safe-area-inset-bottom, 0px));
   }
 }
 
