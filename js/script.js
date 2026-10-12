@@ -22,12 +22,37 @@ let partenzaId = "ingresso-principale";
 let destinazioneId = "";
 
 /* ==========================================================================
+   SINCRONIZZAZIONE PARAMETRI URL
+   ========================================================================== */
+
+function aggiornaURLParams() {
+  const url = new URL(window.location);
+
+  if (partenzaId && partenzaId !== "ingresso-principale") {
+    url.searchParams.set("from", partenzaId);
+  } else {
+    url.searchParams.delete("from");
+  }
+
+  if (destinazioneId) {
+    url.searchParams.set("to", destinazioneId);
+  } else {
+    url.searchParams.delete("to");
+  }
+
+  window.history.replaceState({}, "", url);
+}
+
+/* ==========================================================================
    AGGIORNAMENTO MAPPA ED EVIDENZIAZIONE
    ========================================================================== */
 
 function aggiornaMappa(focusActive = false) {
   // Sincronizza lo stato visivo di Tom-Select
   sincronizzaValoriTomSelect(partenzaId, destinazioneId);
+
+  // Aggiorna l'URL corrente senza ricaricare la pagina
+  aggiornaURLParams();
 
   // Rimuove gli stati precedenti dagli elementi dell'SVG
   document
@@ -155,7 +180,16 @@ async function caricaMappaSVG() {
     // 1. Carica prima la configurazione JSON dell'evento
     await caricaConfigurazioneDaURL();
 
-    // 2. Carica ed inietta il file SVG della mappa
+    // 2. Legge eventuali posizioni iniziali dall'URL (?from=...&to=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("from")) {
+      partenzaId = urlParams.get("from");
+    }
+    if (urlParams.has("to")) {
+      destinazioneId = urlParams.get("to");
+    }
+
+    // 3. Carica ed inietta il file SVG della mappa
     const response = await fetch("assets/mappa.svg");
     if (!response.ok) throw new Error("Impossibile caricare mappa.svg");
 
@@ -169,10 +203,10 @@ async function caricaMappaSVG() {
       svg.removeAttribute("preserveAspectRatio");
     }
 
-    // 3. Applica stili ed etichette agli elementi SVG
+    // 4. Applica stili ed etichette agli elementi SVG
     applicaEtichetteMappa();
 
-    // 4. Popola i dropdown con le stanze caricate dall'SVG e dalla configurazione
+    // 5. Popola i dropdown con le stanze caricate e imposta le selezioni da URL
     const statoIniziale = popolaDropdowns({
       partenzaId,
       destinazioneId,
@@ -190,7 +224,7 @@ async function caricaMappaSVG() {
     partenzaId = statoIniziale.partenzaId;
     destinazioneId = statoIniziale.destinazioneId;
 
-    // 5. Attiva gli eventi di click ed aggiorna lo stato visivo
+    // 6. Attiva gli eventi ed aggiorna la vista e l'URL
     setupEventListeners();
     aggiornaMappa(true);
   } catch (error) {

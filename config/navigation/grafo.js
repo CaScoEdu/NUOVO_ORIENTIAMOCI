@@ -280,13 +280,18 @@ export default {
     "incrocio-nord-v3-sud": [
       "snodo-centro-stella",
       "snodo-aula-cic",
-      "lab-gerosa",
-      "snodo-audiovisivi"
+      "snodo-lab-gerosa",
     ],
-    "lab-gerosa": ["incrocio-nord-v3-sud"],
+
+    "snodo-lab-gerosa": [
+        "incrocio-nord-v3-sud",
+        "lab-gerosa",
+        "snodo-audiovisivi"
+    ],
+    "lab-gerosa": ["snodo-lab-gerosa"],
 
     "snodo-audiovisivi": [
-      "snodo-centro-stella",
+      "snodo-lab-gerosa",
       "audiovisivi",
       "snodo-aula-29"
     ],
@@ -294,7 +299,7 @@ export default {
 
     "snodo-aula-29": ["snodo-audiovisivi", "aula-29", "snodo-aula-28"],
     "aula-29": ["snodo-aula-29"],
-    "snodo-aula-28": ["snodo-audiovisivi", "aula-28", "incrocio-nord-v4-sud"],
+    "snodo-aula-28": ["snodo-aula-29", "aula-28", "incrocio-nord-v4-sud"],
     "aula-28": ["snodo-aula-28"],
 
     "snodo-lab-fisica": [

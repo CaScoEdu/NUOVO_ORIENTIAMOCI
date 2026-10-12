@@ -561,6 +561,7 @@
         <circle id="snodo-sala-stampa" cx="1250" cy="802" r="4" />
         <circle id="snodo-segreteria" cx="1373" cy="802" r="4" />
         <circle id="snodo-centro-stella" cx="1418" cy="802" r="4" />
+        <circle id="snodo-lab-gerosa" cx="1482" cy="802" r="4" />
         <circle id="snodo-audiovisivi" cx="1538" cy="802" r="4" />
         <circle id="snodo-aula-29" cx="1588" cy="802" r="4" />
         <circle id="snodo-aula-28" cx="1658" cy="802" r="4" />

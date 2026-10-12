@@ -1,7 +1,4 @@
-import {
-  configurazioneAttiva,
-  getColoreCategoria,
-} from "./config.js";
+import { configurazioneAttiva, getColoreCategoria } from "./config.js";
 
 /* ==========================================================================
    STATO E ISTANZE UI
@@ -14,7 +11,16 @@ let tomSelectTo = null;
    INIZIALIZZAZIONE TOM-SELECT E SELETTORI
    ========================================================================== */
 
-export function inizializzaTomSelect(onFromChange, onToChange) {
+/* ==========================================================================
+   INIZIALIZZAZIONE TOM-SELECT E SELETTORI
+   ========================================================================== */
+
+export function inizializzaTomSelect(
+  partenzaId,
+  destinazioneId,
+  onFromChange,
+  onToChange,
+) {
   if (tomSelectFrom) tomSelectFrom.destroy();
   if (tomSelectTo) tomSelectTo.destroy();
 
@@ -36,6 +42,10 @@ export function inizializzaTomSelect(onFromChange, onToChange) {
       allowEmptyOption: false,
     });
 
+    if (partenzaId) {
+      tomSelectFrom.setValue(partenzaId, true); // Imposta il valore da URL senza scatenare eventi
+    }
+
     tomSelectFrom.on("change", function (val) {
       this.blur();
       if (onFromChange) onFromChange(val);
@@ -48,6 +58,10 @@ export function inizializzaTomSelect(onFromChange, onToChange) {
       placeholder: "Cerca destinazione...",
       allowEmptyOption: true,
     });
+
+    if (destinazioneId) {
+      tomSelectTo.setValue(destinazioneId, true); // Imposta il valore da URL senza scatenare eventi
+    }
 
     tomSelectTo.on("change", function (val) {
       this.blur();
@@ -144,7 +158,8 @@ export function popolaDropdowns({
 
         html += `<optgroup label="── ${cat.toUpperCase()} ──" style="background-color: ${coloreBg}; color: ${coloreTesto}; font-weight: bold;">`;
         opzioniFiltrare.forEach((opt) => {
-          html += `<option value="${opt.id}">${opt.titolo}</option>`;
+          const selFrom = opt.id === partenzaId ? "selected" : "";
+          html += `<option value="${opt.id}" ${selFrom}>${opt.titolo}</option>`;
         });
         html += `</optgroup>`;
       }
@@ -154,9 +169,13 @@ export function popolaDropdowns({
 
   let optionsFromHTML = generaHTMLGruppi(false);
 
-  let optionsToHTML = `<option value="" selected>-- Seleziona destinazione --</option>`;
-  optionsToHTML += `<option value="evacuazione">🚨 EVACUAZIONE / SICUREZZA</option>`;
-  optionsToHTML += `<option value="ingresso-principale">📍 INGRESSO</option>`;
+  let optionsToHTML = `<option value="">-- Seleziona destinazione --</option>`;
+  optionsToHTML += `<option value="evacuazione" ${
+    destinazioneId === "evacuazione" ? "selected" : ""
+  }>🚨 EVACUAZIONE / SICUREZZA</option>`;
+  optionsToHTML += `<option value="ingresso-principale" ${
+    destinazioneId === "ingresso-principale" ? "selected" : ""
+  }>📍 INGRESSO</option>`;
   optionsToHTML += generaHTMLGruppi(true);
 
   selectFrom.innerHTML = optionsFromHTML;
@@ -166,7 +185,9 @@ export function popolaDropdowns({
   const tutteLeOpzioniFrom = Object.values(gruppiPerCategoria).flat();
   if (tutteLeOpzioniFrom.some((opt) => opt.id === partenzaId)) {
     selectFrom.value = partenzaId;
-  } else if (tutteLeOpzioniFrom.some((opt) => opt.id === "ingresso-principale")) {
+  } else if (
+    tutteLeOpzioniFrom.some((opt) => opt.id === "ingresso-principale")
+  ) {
     nuovaPartenzaId = "ingresso-principale";
     selectFrom.value = nuovaPartenzaId;
   } else if (tutteLeOpzioniFrom.length > 0) {
@@ -176,7 +197,13 @@ export function popolaDropdowns({
 
   selectTo.value = destinazioneId;
 
-  inizializzaTomSelect(onFromChange, onToChange);
+  // Inizializza TomSelect passando esplicitamente gli ID di partenza e destinazione
+  inizializzaTomSelect(
+    nuovaPartenzaId,
+    destinazioneId,
+    onFromChange,
+    onToChange,
+  );
   gestisciStileSelettoreArrivo(destinazioneId);
 
   return { partenzaId: nuovaPartenzaId, destinazioneId };
